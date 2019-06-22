@@ -1,4 +1,4 @@
-package railwayoriented;
+package common;
 
 import lombok.AllArgsConstructor;
 import lombok.ToString;
@@ -19,7 +19,7 @@ public enum ValidationFailure {
         return this;
     }
     
-    static ValidationFailure withErrorMessage(String errorMessage) {
+    public static ValidationFailure withErrorMessage(String errorMessage) {
         return VALIDATION_FAILURE_WITH_EXCEPTION.setErrorMessage(errorMessage);
     }
 }

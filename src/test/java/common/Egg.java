@@ -4,15 +4,15 @@
  * 	http://creativecommons.org/licenses/by-sa/4.0/
  */
 
-package railwayoriented;
+package common;
 
 import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static railwayoriented.Egg.Condition.BAD;
-import static railwayoriented.Egg.Condition.GOOD;
+import static common.Egg.Condition.BAD;
+import static common.Egg.Condition.GOOD;
 
 @Value
 public class Egg {
@@ -20,7 +20,7 @@ public class Egg {
 
     Yellow yellow;
 
-    static List<Egg> getEggCarton() {
+    public static List<Egg> getEggCarton() {
         List<Egg> eggList = new ArrayList<>();
         eggList.add(new Egg(1, new Yellow(GOOD)));
         eggList.add(new Egg(2, new Yellow(BAD)));
