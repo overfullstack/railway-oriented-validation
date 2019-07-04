@@ -1,5 +1,6 @@
 package imperative;
 
+import domain.Yolk;
 import org.junit.jupiter.api.Test;
 import domain.Egg;
 import domain.ValidationFailure;
@@ -35,7 +36,7 @@ public class ImperativeEggValidation2 {
             // Adding a new validation in-between requires you to understand all the validations above and below, which slows down development and makes it prone to bugs.
             if (!validate2(badEggFailureBucketMap, eggIndex, iterator, eggTobeValidated)) continue;
             
-            validate3(badEggFailureBucketMap, eggIndex, iterator, eggTobeValidated);
+            validate31(badEggFailureBucketMap, eggIndex, iterator, eggTobeValidated);
         }
 
         for (var entry : badEggFailureBucketMap.entrySet()) {
@@ -68,22 +69,11 @@ public class ImperativeEggValidation2 {
     }
 
     
-    private void validate3(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggTobeValidated) {
-        // pyramid of doom!
+    private void validate31(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggTobeValidated) {
         try {
             if (throwableOperation31(eggTobeValidated)) {
                 var yolkTobeValidated = eggTobeValidated.getYolk();
-                if (yolkTobeValidated != null) { // Every nested object needs a null-check.
-                    try {
-                        if (!throwableAndNestedOperation32(yolkTobeValidated)) {
-                            iterator.remove();
-                            badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_32);
-                        }
-                    } catch (Exception e) {
-                        iterator.remove();
-                        badEggFailureBucketMap.put(eggIndex, ValidationFailure.withErrorMessage(e.getMessage()));
-                    }
-                }
+                validate32(badEggFailureBucketMap, eggIndex, iterator, yolkTobeValidated);
             } else {
                 iterator.remove();
                 badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_2);
@@ -91,6 +81,20 @@ public class ImperativeEggValidation2 {
         } catch (Exception e) {
             iterator.remove();
             badEggFailureBucketMap.put(eggIndex, ValidationFailure.withErrorMessage(e.getMessage()));
+        }
+    }
+
+    private void validate32(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Yolk yolkTobeValidated) {
+        if (yolkTobeValidated != null) { // Every nested object needs a null-check.
+            try {
+                if (!throwableAndNestedOperation32(yolkTobeValidated)) {
+                    iterator.remove();
+                    badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_32);
+                }
+            } catch (Exception e) {
+                iterator.remove();
+                badEggFailureBucketMap.put(eggIndex, ValidationFailure.withErrorMessage(e.getMessage()));
+            }
         }
     }
 

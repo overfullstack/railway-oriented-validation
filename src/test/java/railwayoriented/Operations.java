@@ -21,7 +21,7 @@ class Operations {
             if (eggTobeValidated.getDaysToHatch() >= Egg.MAX_DAYS_TO_HATCH) {
                 throw new IllegalArgumentException("throwableOperation2: Might never hatch 😕");
             } else {
-                return eggTobeValidated.getDaysToHatch() >= 10;
+                return eggTobeValidated.getDaysToHatch() >= 5;
             }
         });
     }
@@ -31,11 +31,12 @@ class Operations {
             if (eggTobeValidated.getDaysToHatch() <= 0) {
                 throw new IllegalArgumentException("throwableValidation31: Chicken might already be out! 🐣");
             } else {
-                return eggTobeValidated.getDaysToHatch() <= 5;
+                return eggTobeValidated.getDaysToHatch() <= 10;
             }
         });
     }
 
+    // TODO 2019-07-04 gakshintala: Place this validation into a different class say YolkValidation and demonstrate how it can be shared by different validators.
     static Try<Boolean> throwableAndNestedOperation32(Yolk yolkTobeValidated) throws IllegalArgumentException {
         return Try.of(() -> {
             if (yolkTobeValidated.getCondition() == BAD) {

@@ -27,13 +27,13 @@ public class Egg {
         // TODO 2019-06-30 gakshintala: Prepare appropriate test data set
         return List.of(
                 new Egg(1, new Yolk(GOOD, GOLD)),
-                new Egg(2, new Yolk(BAD, ORANGE)),
-                new Egg(3, new Yolk(GOOD, YELLOW)),
+                new Egg(8, new Yolk(BAD, ORANGE)),
+                new Egg(7, null), // Null Yolk
                 new Egg(14, new Yolk(GOOD, GOLD)),
                 new Egg(25, new Yolk(GOOD, GOLD)),
                 new Egg(-1, new Yolk(GOOD, ORANGE)),
                 new Egg(0, new Yolk(BAD, YELLOW)),
-                new Egg(1, new Yolk(BAD, GOLD))
+                new Egg(6, new Yolk(BAD, GOLD))
         );
 
     }

@@ -47,6 +47,7 @@ public class RailwayEggValidation {
             .getOrElse(() -> Validation.invalid(VALIDATION_FAILURE_2))
             .flatMap(ignore -> validatedEgg);
 
+    // TODO 2019-07-04 gakshintala: This validation needs to be split into two, and place Yolk validation in a different class and demonstrate how it can be shared.
     private static UnaryOperator<Validation<ValidationFailure, Egg>> validate3 = validatedEgg -> validatedEgg
             .map(Operations::throwableOperation31)
             .flatMap(tryResult -> tryResult.toValidation(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
