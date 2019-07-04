@@ -26,7 +26,7 @@ class Operations {
         });
     }
 
-    static Try<Boolean> throwableOperation31(Egg eggTobeValidated) throws IllegalArgumentException {
+    static Try<Boolean> throwableOperation3(Egg eggTobeValidated) throws IllegalArgumentException {
         return Try.of(() -> {
             if (eggTobeValidated.getDaysToHatch() <= 0) {
                 throw new IllegalArgumentException("throwableValidation31: Chicken might already be out! 🐣");
@@ -37,7 +37,7 @@ class Operations {
     }
 
     // TODO 2019-07-04 gakshintala: Place this validation into a different class say YolkValidation and demonstrate how it can be shared by different validators.
-    static Try<Boolean> throwableAndNestedOperation32(Yolk yolkTobeValidated) throws IllegalArgumentException {
+    static Try<Boolean> throwableAndNestedOperation31(Yolk yolkTobeValidated) throws IllegalArgumentException {
         return Try.of(() -> {
             if (yolkTobeValidated.getCondition() == BAD) {
                 throw new IllegalArgumentException("throwableAndNestedOperation32: Yolk is Bad 🤮");

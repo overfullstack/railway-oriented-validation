@@ -18,19 +18,19 @@ class Operations {
         if (eggTobeValidated.getDaysToHatch() >= Egg.MAX_DAYS_TO_HATCH) {
             throw new IllegalArgumentException("throwableOperation2: Might never hatch 😕");
         } else {
-            return eggTobeValidated.getDaysToHatch() >= 10;
-        }
-    }
-
-    static boolean throwableOperation31(Egg eggTobeValidated) throws IllegalArgumentException {
-        if (eggTobeValidated.getDaysToHatch() <= 0) {
-            throw new IllegalArgumentException("throwableValidation31: Chicken might already be out! 🐣");
-        } else {
             return eggTobeValidated.getDaysToHatch() <= 5;
         }
     }
 
-    static boolean throwableAndNestedOperation32(Yolk yolkTobeValidated) throws IllegalArgumentException {
+    static boolean throwableOperation3(Egg eggTobeValidated) throws IllegalArgumentException {
+        if (eggTobeValidated.getDaysToHatch() <= 0) {
+            throw new IllegalArgumentException("throwableValidation31: Chicken might already be out! 🐣");
+        } else {
+            return eggTobeValidated.getDaysToHatch() >= 10;
+        }
+    }
+
+    static boolean throwableAndNestedOperation31(Yolk yolkTobeValidated) throws IllegalArgumentException {
         if (yolkTobeValidated.getCondition() == BAD) {
             throw new IllegalArgumentException("throwableAndNestedOperation32: Yellow is Bad 👎");
         } else {

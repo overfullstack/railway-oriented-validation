@@ -2,6 +2,7 @@ package railwayoriented;
 
 import domain.Egg;
 import domain.ValidationFailure;
+import domain.Yolk;
 import io.vavr.collection.List;
 import io.vavr.control.Validation;
 import org.junit.jupiter.api.Test;
@@ -48,17 +49,23 @@ public class RailwayEggValidation {
             .flatMap(ignore -> validatedEgg);
 
     // TODO 2019-07-04 gakshintala: This validation needs to be split into two, and place Yolk validation in a different class and demonstrate how it can be shared.
+    private static UnaryOperator<Validation<ValidationFailure, Yolk>> validate31 = validatedYolk -> validatedYolk
+            .map(Operations::throwableAndNestedOperation31)
+            .flatMap(tryResult -> tryResult.toValidation(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
+            .filter(Boolean::booleanValue)
+            .getOrElse(() -> Validation.invalid(VALIDATION_FAILURE_32))
+            .flatMap(ignore -> validatedYolk);
+    
     private static UnaryOperator<Validation<ValidationFailure, Egg>> validate3 = validatedEgg -> validatedEgg
-            .map(Operations::throwableOperation31)
+            .map(Operations::throwableOperation3)
             .flatMap(tryResult -> tryResult.toValidation(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
             .filter(Boolean::booleanValue)
             .getOrElse(() -> Validation.invalid(VALIDATION_FAILURE_31))
             .flatMap(ignore -> validatedEgg)
             .map(Egg::getYolk)
-            .map(Operations::throwableAndNestedOperation32)
-            .flatMap(tryResult -> tryResult.toValidation(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
-            .filter(Boolean::booleanValue)
-            .getOrElse(() -> Validation.invalid(VALIDATION_FAILURE_32))
+            .map(Validation::<ValidationFailure, Yolk>valid)
+            .flatMap(validate31)
             .flatMap(ignore -> validatedEgg);
+
 
 }

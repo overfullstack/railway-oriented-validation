@@ -11,9 +11,9 @@ import static domain.ValidationFailure.VALIDATION_FAILURE_1;
 import static domain.ValidationFailure.VALIDATION_FAILURE_2;
 import static domain.ValidationFailure.VALIDATION_FAILURE_32;
 import static imperative.Operations.simpleOperation1;
-import static imperative.Operations.throwableAndNestedOperation32;
+import static imperative.Operations.throwableAndNestedOperation31;
 import static imperative.Operations.throwableOperation2;
-import static imperative.Operations.throwableOperation31;
+import static imperative.Operations.throwableOperation3;
 
 public class ImperativeEggValidation {
     @Test
@@ -40,11 +40,11 @@ public class ImperativeEggValidation {
                 continue;
             }
             try { // Inter-dependent validations
-                if (throwableOperation31(eggTobeValidated)) {
+                if (throwableOperation3(eggTobeValidated)) {
                     var yolkTobeValidated = eggTobeValidated.getYolk();
                     if (yolkTobeValidated != null) { // Nested-if for null checking nested objects
                         try {
-                            if (!throwableAndNestedOperation32(yolkTobeValidated)) {
+                            if (!throwableAndNestedOperation31(yolkTobeValidated)) {
                                 iterator.remove();
                                 badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_32);
                             }
