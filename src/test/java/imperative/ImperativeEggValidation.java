@@ -1,15 +1,19 @@
 package imperative;
 
+import domain.Egg;
+import domain.ValidationFailure;
 import org.junit.jupiter.api.Test;
-import common.Egg;
-import common.ValidationFailure;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static common.ValidationFailure.VALIDATION_FAILURE_1;
-import static common.ValidationFailure.VALIDATION_FAILURE_2;
-import static common.ValidationFailure.VALIDATION_FAILURE_32;
+import static domain.ValidationFailure.VALIDATION_FAILURE_1;
+import static domain.ValidationFailure.VALIDATION_FAILURE_2;
+import static domain.ValidationFailure.VALIDATION_FAILURE_32;
+import static imperative.Operations.simpleOperation1;
+import static imperative.Operations.throwableAndNestedOperation32;
+import static imperative.Operations.throwableOperation2;
+import static imperative.Operations.throwableOperation31;
 
 public class ImperativeEggValidation {
     @Test
@@ -19,14 +23,14 @@ public class ImperativeEggValidation {
         var eggIndex = 0;
         for (var iterator = eggList.iterator(); iterator.hasNext(); eggIndex++) {
             var eggTobeValidated = iterator.next();
-            if (!Validations.simpleValidation1(eggTobeValidated)) {
+            if (!simpleOperation1(eggTobeValidated)) {
                 iterator.remove(); // Mutation
-                // How do you cleanly map validation-failure to which validation-method failed?
+                // How can you cleanly map validation-failure to which validation-method failed?
                 badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_1);
                 continue;
             }
             try {
-                if (!Validations.throwableValidation2(eggTobeValidated)) {
+                if (!throwableOperation2(eggTobeValidated)) {
                     iterator.remove();
                     badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_2);
                 }
@@ -36,11 +40,11 @@ public class ImperativeEggValidation {
                 continue;
             }
             try { // Inter-dependent validations
-                if (Validations.throwableValidation31(eggTobeValidated)) {
-                    var yellowTobeValidated = eggTobeValidated.getYellow();
-                    if (yellowTobeValidated != null) { // Nested-if for null checking nested objects
+                if (throwableOperation31(eggTobeValidated)) {
+                    var yolkTobeValidated = eggTobeValidated.getYolk();
+                    if (yolkTobeValidated != null) { // Nested-if for null checking nested objects
                         try {
-                            if (!Validations.throwableAndNestedValidation32(yellowTobeValidated)) {
+                            if (!throwableAndNestedOperation32(yolkTobeValidated)) {
                                 iterator.remove();
                                 badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_32);
                             }
@@ -58,8 +62,6 @@ public class ImperativeEggValidation {
                 badEggFailureBucketMap.put(eggIndex, ValidationFailure.withErrorMessage(e.getMessage()));
             }
         }
-        // This algorithm is tightly coupled with One-type 'Omega', 
-        // We need to repeat the entire algo for another type.
         for (var entry : badEggFailureBucketMap.entrySet()) {
             System.out.println(entry);
         }

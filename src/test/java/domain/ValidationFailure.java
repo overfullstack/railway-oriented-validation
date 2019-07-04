@@ -1,4 +1,4 @@
-package common;
+package domain;
 
 import lombok.AllArgsConstructor;
 import lombok.ToString;
@@ -6,8 +6,9 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 public enum ValidationFailure {
+    // TODO 2019-07-03 gakshintala: Have meaningful messages for validation failures
     VALIDATION_FAILURE_1("VALIDATION_FAILURE_1"),
-    VALIDATION_FAILURE_2("VALIDATION_FAILURE_2"),
+    VALIDATION_FAILURE_2("VF2: Too late to hatch"),
     VALIDATION_FAILURE_31("VALIDATION_FAILURE_31"),
     VALIDATION_FAILURE_32("VALIDATION_FAILURE_32"),
     VALIDATION_FAILURE_WITH_EXCEPTION("");
