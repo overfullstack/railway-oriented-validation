@@ -1,16 +1,14 @@
 /*
- * Copyright (c) 2019 - Present, Gopal S Akshintala 
+ * Copyright (c) 2019 - Present, Gopal S Akshintala
  * This source code is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License.
  * 	http://creativecommons.org/licenses/by-sa/4.0/
  */
 
 package domain;
 
+import io.vavr.collection.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static domain.Color.GOLD;
 import static domain.Color.ORANGE;
@@ -26,17 +24,17 @@ public class Egg {
     Yolk yolk;
 
     public static List<Egg> getEggCarton() {
-        List<Egg> eggList = new ArrayList<>();
         // TODO 2019-06-30 gakshintala: Prepare appropriate test data set
-        // TODO 2019-07-03 gakshintala: Convert to Vavr List.of
-        eggList.add(new Egg(1, new Yolk(GOOD, GOLD)));
-        eggList.add(new Egg(2, new Yolk(BAD, ORANGE)));
-        eggList.add(new Egg(3, new Yolk(GOOD, YELLOW)));
-        eggList.add(new Egg(14, new Yolk(GOOD, GOLD)));
-        eggList.add(new Egg(25, new Yolk(GOOD, GOLD)));
-        eggList.add(new Egg(-1, new Yolk(GOOD, ORANGE)));
-        eggList.add(new Egg(0, new Yolk(BAD, YELLOW)));
-        eggList.add(new Egg(1, new Yolk(BAD, GOLD)));
-        return eggList;
+        return List.of(
+                new Egg(1, new Yolk(GOOD, GOLD)),
+                new Egg(2, new Yolk(BAD, ORANGE)),
+                new Egg(3, new Yolk(GOOD, YELLOW)),
+                new Egg(14, new Yolk(GOOD, GOLD)),
+                new Egg(25, new Yolk(GOOD, GOLD)),
+                new Egg(-1, new Yolk(GOOD, ORANGE)),
+                new Egg(0, new Yolk(BAD, YELLOW)),
+                new Egg(1, new Yolk(BAD, GOLD))
+        );
+
     }
 }

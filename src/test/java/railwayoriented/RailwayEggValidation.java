@@ -2,6 +2,7 @@ package railwayoriented;
 
 import domain.Egg;
 import domain.ValidationFailure;
+import io.vavr.collection.List;
 import io.vavr.control.Validation;
 import org.junit.jupiter.api.Test;
 
@@ -15,15 +16,24 @@ import static domain.ValidationFailure.VALIDATION_FAILURE_32;
 public class RailwayEggValidation {
     @Test
     void railwayCode() {
-        // TODO 2019-07-03 gakshintala: Use List map instead of Stream
-        var validationStream = Egg.getEggCarton().stream()
+        Egg.getEggCarton()
                 .map(Validation::<ValidationFailure, Egg>valid)
                 .map(validate1)
                 .map(validate2)
-                .map(validate3);
-        
+                .map(validate3)
+                .forEach(System.out::println);
+
         // TODO 2019-07-03 gakshintala: after standardization add assertion, to check every time you make changes
-        validationStream.forEach(System.out::println);
+    }
+
+    @Test
+    void railwayCodeElegant() {
+        var validationList = List.of(validate1, validate2, validate3);
+
+        Egg.getEggCarton()
+                .map(Validation::<ValidationFailure, Egg>valid)
+                .map(eggToBeValidated -> validationList.foldLeft(eggToBeValidated, (previousValidationsResult, currentValidation) -> currentValidation.apply(previousValidationsResult)))
+                .forEach(System.out::println);
     }
 
     private static UnaryOperator<Validation<ValidationFailure, Egg>> validate1 = validatedEgg -> validatedEgg
