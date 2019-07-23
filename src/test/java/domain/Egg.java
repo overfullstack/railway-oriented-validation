@@ -35,6 +35,5 @@ public class Egg {
                 new Egg(0, new Yolk(BAD, YELLOW)),
                 new Egg(6, new Yolk(BAD, GOLD))
         );
-
     }
 }
