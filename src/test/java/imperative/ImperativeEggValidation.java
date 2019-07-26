@@ -1,14 +1,17 @@
 package imperative;
 
-import domain.Egg;
-import domain.ValidationFailure;
+import common.DataSet;
+import domain.validation.ValidationFailure;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
-import static domain.ValidationFailure.VALIDATION_FAILURE_1;
-import static domain.ValidationFailure.VALIDATION_FAILURE_2;
-import static domain.ValidationFailure.VALIDATION_FAILURE_32;
+import static common.DataSet.getExpectedEggValidationResults;
+import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_1;
+import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_2;
+import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_CHILD_3;
+import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_PARENT_3;
 import static imperative.Operations.simpleOperation1;
 import static imperative.Operations.throwableNestedOperation3;
 import static imperative.Operations.throwableOperation2;
@@ -17,7 +20,7 @@ import static imperative.Operations.throwableOperation3;
 public class ImperativeEggValidation {
     @Test
     void cyclomaticCode() {
-        var eggList = Egg.getEggCarton();
+        var eggList = DataSet.getEggCarton();
         var badEggFailureBucketMap = new HashMap<Integer, ValidationFailure>();
         var eggIndex = 0;
         for (var iterator = eggList.iterator(); iterator.hasNext(); eggIndex++) {
@@ -42,20 +45,19 @@ public class ImperativeEggValidation {
             try { // Inter-dependent validations
                 if (throwableOperation3(eggToBeValidated)) {
                     var yolkTobeValidated = eggToBeValidated.getYolk();
-                    if (yolkTobeValidated != null) { // Nested-if for null checking nested objects
-                        try {
-                            if (!throwableNestedOperation3(yolkTobeValidated)) {
-                                iterator.remove();
-                                badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_32);
-                            }
-                        } catch (Exception e) {
+                    try {
+                        if (!throwableNestedOperation3(yolkTobeValidated)) {
                             iterator.remove();
-                            badEggFailureBucketMap.put(eggIndex, ValidationFailure.withErrorMessage(e.getMessage()));
+                            badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_CHILD_3);
                         }
+                    } catch (Exception e) {
+                        iterator.remove();
+                        badEggFailureBucketMap.put(eggIndex, ValidationFailure.withErrorMessage(e.getMessage()));
                     }
                 } else {
                     iterator.remove();
-                    badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_2);
+                    badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_PARENT_3);
+                    continue;
                 }
             } catch (Exception e) {
                 iterator.remove();
@@ -65,6 +67,7 @@ public class ImperativeEggValidation {
         for (var entry : badEggFailureBucketMap.entrySet()) {
             System.out.println(entry);
         }
+        Assertions.assertEquals(getExpectedEggValidationResults(), badEggFailureBucketMap);
     }
 
 }

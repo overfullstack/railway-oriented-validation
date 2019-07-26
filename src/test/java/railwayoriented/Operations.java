@@ -2,13 +2,15 @@ package railwayoriented;
 
 import domain.ImmutableEgg;
 import domain.Yolk;
+import domain.validation.ValidationErrorMessages;
 import io.vavr.control.Try;
 import lombok.experimental.UtilityClass;
 
 import static domain.Color.GOLD;
 import static domain.Color.YELLOW;
 import static domain.Condition.BAD;
-import static domain.ImmutableEgg.MAX_DAYS_TO_HATCH;
+import static common.EggConstants.MAX_DAYS_TO_HATCH;
+import static common.EggConstants.MIN_DAYS_TO_HATCH;
 
 @UtilityClass
 class Operations {
@@ -20,9 +22,9 @@ class Operations {
     static Try<Boolean> throwableOperation2(ImmutableEgg eggToBeValidated) {
         return Try.of(() -> {
             if (eggToBeValidated.getDaysToHatch() >= MAX_DAYS_TO_HATCH) {
-                throw new IllegalArgumentException("throwableOperation2: Might never hatch 😕");
+                throw new IllegalArgumentException(ValidationErrorMessages.THROWABLE_OPERATION_2);
             } else {
-                return eggToBeValidated.getDaysToHatch() >= 5;
+                return eggToBeValidated.getDaysToHatch() <= MIN_DAYS_TO_HATCH;
             }
         });
     }
@@ -30,18 +32,19 @@ class Operations {
     static Try<Boolean> throwableOperation3(ImmutableEgg eggToBeValidated) {
         return Try.of(() -> {
             if (eggToBeValidated.getDaysToHatch() <= 0) {
-                throw new IllegalArgumentException("throwableValidation31: Chicken might already be out! 🐣");
+                throw new IllegalArgumentException(ValidationErrorMessages.THROWABLE_VALIDATION_3);
             } else {
-                return eggToBeValidated.getDaysToHatch() <= 10;
+                return eggToBeValidated.getDaysToHatch() >= 5;
             }
         });
     }
 
-    // TODO 2019-07-04 gakshintala: Place this validation into a different class say YolkValidation and demonstrate how it can be shared by different validators.
-    static Try<Boolean> throwableAndNestedOperation31(Yolk yolkTobeValidated) {
+    static Try<Boolean> throwableNestedOperation3(Yolk yolkTobeValidated) {
         return Try.of(() -> {
-            if (yolkTobeValidated.getCondition() == BAD) {
-                throw new IllegalArgumentException("throwableAndNestedOperation32: Yolk is Bad 🤮");
+            if (yolkTobeValidated == null) {
+                throw new IllegalArgumentException(ValidationErrorMessages.THROWABLE_NESTED_OPERATION_31);
+            } else if (yolkTobeValidated.getCondition() == BAD) {
+                throw new IllegalArgumentException(ValidationErrorMessages.THROWABLE_NESTED_OPERATION_32);
             } else {
                 return yolkTobeValidated.getColor() == GOLD || yolkTobeValidated.getColor() == YELLOW;
             }

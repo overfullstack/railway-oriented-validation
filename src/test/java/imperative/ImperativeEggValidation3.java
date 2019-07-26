@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import static common.DataSet.getExpectedEggValidationResults;
+import static domain.validation.ValidationFailureConstants.NONE;
 import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_1;
 import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_2;
 import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_CHILD_3;
@@ -23,7 +24,7 @@ import static imperative.Operations.throwableOperation3;
 /**
  * Validations are broken down to separate functions.
  */
-public class ImperativeEggValidation2 {
+public class ImperativeEggValidation3 {
     @Test
         // This Octopus turns into a monster someday
     void octopusOrchestrator() {
@@ -35,83 +36,80 @@ public class ImperativeEggValidation2 {
             var eggToBeValidated = iterator.next();
 
             // Global state is dangerous. badEggFailureBucketMap and iterator being passed to each and every function, difficult to keep track of how they are being mutated during debugging.
-            if (!validate1(badEggFailureBucketMap, eggIndex, iterator, eggToBeValidated)) {
+            final var validate1Failure = validate1(eggToBeValidated);
+            if (validate1Failure != NONE) {
+                updateFailureForEgg(iterator, eggIndex, badEggFailureBucketMap, validate1Failure);
                 continue;
             }
 
             // Adding a new validation in-between requires you to understand all the validations above and below, which slows down development and makes it prone to bugs.
-            if (!validate2(badEggFailureBucketMap, eggIndex, iterator, eggToBeValidated)) {
+            final var validate2Failure = validate2(eggToBeValidated);
+            if (validate2Failure != NONE) {
+                updateFailureForEgg(iterator, eggIndex, badEggFailureBucketMap, validate2Failure);
                 continue;
             }
 
-            validateChild3(badEggFailureBucketMap, eggIndex, iterator, eggToBeValidated);
+            final var validate3Failure = validateChild3(eggToBeValidated);
+            if (validate3Failure != NONE) {
+                updateFailureForEgg(iterator, eggIndex, badEggFailureBucketMap, validate3Failure);
+                continue;
+            }
         }
 
         for (var entry : badEggFailureBucketMap.entrySet()) {
             System.out.println(entry);
         }
-
         Assertions.assertEquals(getExpectedEggValidationResults(), badEggFailureBucketMap);
     }
 
-    // Can't ensure the uniformity of signature among validations, which can increase the complexity. 
-    private static boolean validate1(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggToBeValidated) {
-        if (!simpleOperation1(eggToBeValidated)) {
-            iterator.remove();
-            badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_1);
-            return false;
-        }
-        return true;
+    private static void updateFailureForEgg(Iterator<Egg> iterator, int eggIndex, Map<Integer, ValidationFailure> badEggFailureBucketMap, ValidationFailure ValidationFailure) {
+        iterator.remove();
+        badEggFailureBucketMap.put(eggIndex, ValidationFailure);
     }
 
-    private static boolean validate2(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggToBeValidated) {
+    private static ValidationFailure validate1(Egg eggToBeValidated) {
+        if (!simpleOperation1(eggToBeValidated)) {
+            return VALIDATION_FAILURE_1;
+        }
+        return NONE;
+    }
+
+    private static ValidationFailure validate2(Egg eggToBeValidated) {
         try {
             if (!throwableOperation2(eggToBeValidated)) {
-                iterator.remove();
-                badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_2);
-                return false;
+                return VALIDATION_FAILURE_2;
             }
         } catch (Exception e) {
-            iterator.remove();
-            badEggFailureBucketMap.put(eggIndex, ValidationFailure.withErrorMessage(e.getMessage()));
-            return false;
+            return ValidationFailure.withErrorMessage(e.getMessage());
         }
-        return true;
+        return NONE;
     }
 
-    private static boolean validateParent3(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggToBeValidated) {
+    private static ValidationFailure validateParent3(Egg eggToBeValidated) {
         try {
             if (!throwableOperation3(eggToBeValidated)) {
-                iterator.remove();
-                badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_PARENT_3);
-                return false;
+                return VALIDATION_FAILURE_PARENT_3;
             }
         } catch (Exception e) {
-            iterator.remove();
-            badEggFailureBucketMap.put(eggIndex, ValidationFailure.withErrorMessage(e.getMessage()));
-            return false;
+            return ValidationFailure.withErrorMessage(e.getMessage());
         }
-        return true;
+        return NONE;
     }
 
-    private static boolean validateChild3(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggToBeValidated) {
-        if (!validateParent3(badEggFailureBucketMap, eggIndex, iterator, eggToBeValidated)) {
-            return false;
+    private static ValidationFailure validateChild3(Egg eggToBeValidated) {
+        final var parentValidationFailure = validateParent3(eggToBeValidated);
+        if (parentValidationFailure != NONE) {
+            return parentValidationFailure;
         }
         var yolkTobeValidated = eggToBeValidated.getYolk();
-        try {
-            if (!throwableNestedOperation3(yolkTobeValidated)) {
-                iterator.remove();
-                badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_CHILD_3);
-                return false;
+            try {
+                if (!throwableNestedOperation3(yolkTobeValidated)) {
+                    return VALIDATION_FAILURE_CHILD_3;
+                }
+            } catch (Exception e) {
+                return ValidationFailure.withErrorMessage(e.getMessage());
             }
-        } catch (Exception e) {
-            iterator.remove();
-            badEggFailureBucketMap.put(eggIndex, ValidationFailure.withErrorMessage(e.getMessage()));
-            return false;
-        }
-        
-        return true;
+        return NONE;
     }
 
 }

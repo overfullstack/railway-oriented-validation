@@ -1,18 +1,22 @@
 package railwayoriented;
 
+import common.DataSet;
 import domain.ImmutableEgg;
-import domain.ValidationFailure;
+import domain.validation.ValidationFailure;
 import io.vavr.collection.List;
 import io.vavr.control.Validation;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
 
-import static domain.ValidationFailure.VALIDATION_FAILURE_1;
-import static domain.ValidationFailure.VALIDATION_FAILURE_2;
-import static domain.ValidationFailure.VALIDATION_FAILURE_31;
-import static domain.ValidationFailure.VALIDATION_FAILURE_32;
+import static common.DataSet.getExpectedImmutableEggValidationResults;
+import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_1;
+import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_2;
+import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_CHILD_3;
+import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_PARENT_3;
 
 /**
  * This class contains validations as functions.
@@ -21,8 +25,8 @@ public class RailwayEggValidation {
     @Test
     void plainOldImperative() {
         List<UnaryOperator<Validation<ValidationFailure, ImmutableEgg>>> validationList =
-                List.of(RailwayEggValidation::validate1, RailwayEggValidation::validate2, RailwayEggValidation::validateParent31);
-        final var eggCarton = ImmutableEgg.getEggCarton();
+                List.of(RailwayEggValidation::validate1, RailwayEggValidation::validate2, RailwayEggValidation::validateChild3);
+        final var eggCarton = DataSet.getImmutableEggCarton();
         var validationResults = new ArrayList<Validation<ValidationFailure, ImmutableEgg>>();
         for (ImmutableEgg egg : eggCarton) {
             Validation<ValidationFailure, ImmutableEgg> validatedEgg = Validation.valid(egg);
@@ -34,28 +38,47 @@ public class RailwayEggValidation {
         for (Validation<ValidationFailure, ImmutableEgg> validationResult : validationResults) {
             System.out.println(validationResult);
         }
+        Assertions.assertEquals(getExpectedImmutableEggValidationResults().toJavaList(), validationResults);
     }
 
     @Test
     void railwayCode() {
-        ImmutableEgg.getEggCarton()
+        final var validationResults = DataSet.getImmutableEggCarton()
                 .map(Validation::<ValidationFailure, ImmutableEgg>valid)
                 .map(RailwayEggValidation::validate1)
                 .map(RailwayEggValidation::validate2)
-                .map(RailwayEggValidation::validate3)
-                .forEach(System.out::println);
-
-        // TODO 2019-07-03 gakshintala: after standardization add assertion, to check every time you make changes
+                .map(RailwayEggValidation::validateChild3);
+        validationResults.forEach(System.out::println);
+        Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
     }
 
     @Test
     void railwayCodeElegant() {
         List<UnaryOperator<Validation<ValidationFailure, ImmutableEgg>>> validationList =
-                List.of(RailwayEggValidation::validate1, RailwayEggValidation::validate2, RailwayEggValidation::validate3);
-        ImmutableEgg.getEggCarton()
+                List.of(RailwayEggValidation::validate1, RailwayEggValidation::validate2, RailwayEggValidation::validateChild3);
+        final var validationResults = DataSet.getImmutableEggCarton()
                 .map(Validation::<ValidationFailure, ImmutableEgg>valid)
-                .map(eggToBeValidated -> validationList.foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
-                .forEach(System.out::println);
+                .map(eggToBeValidated -> validationList
+                        .foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)));
+        validationResults.forEach(System.out::println);
+        Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
+    }
+
+    @Test
+    void railwayCodeElegantParallel() {
+        List<UnaryOperator<Validation<ValidationFailure, ImmutableEgg>>> validationList =
+                List.of(RailwayEggValidation::validate1, RailwayEggValidation::validate2, RailwayEggValidation::validateChild3);
+        final var immutableEggCarton = DataSet.getImmutableEggCarton();
+        var eggStream = immutableEggCarton.size() >= 10000
+                ? immutableEggCarton.toJavaStream()
+                : immutableEggCarton.toJavaParallelStream();
+        final var validationResults = eggStream
+                .map(Validation::<ValidationFailure, ImmutableEgg>valid)
+                .map(eggToBeValidated -> validationList
+                        .foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
+                .collect(Collectors.toList());
+        validationResults.forEach(System.out::println);
+        Assertions.assertEquals(getExpectedImmutableEggValidationResults().toJavaList(), validationResults);
     }
 
     private static Validation<ValidationFailure, ImmutableEgg> validate1(Validation<ValidationFailure, ImmutableEgg> validatedEgg) {
@@ -72,23 +95,23 @@ public class RailwayEggValidation {
                 .getOrElse(() -> Validation.invalid(VALIDATION_FAILURE_2))
                 .flatMap(ignore -> validatedEgg);
     }
-   
-    private static Validation<ValidationFailure, ImmutableEgg> validateParent31(Validation<ValidationFailure, ImmutableEgg> validatedEgg) {
+
+    private static Validation<ValidationFailure, ImmutableEgg> validateParent3(Validation<ValidationFailure, ImmutableEgg> validatedEgg) {
         return validatedEgg
                 .map(Operations::throwableOperation3)
                 .flatMap(tryResult -> tryResult.toValidation(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
                 .filter(Boolean::booleanValue)
-                .getOrElse(() -> Validation.invalid(VALIDATION_FAILURE_31))
+                .getOrElse(() -> Validation.invalid(VALIDATION_FAILURE_PARENT_3))
                 .flatMap(ignore -> validatedEgg);
     }
 
-    private static Validation<ValidationFailure, ImmutableEgg> validate3(Validation<ValidationFailure, ImmutableEgg> validatedEgg) {
-        return validateParent31(validatedEgg)
+    private static Validation<ValidationFailure, ImmutableEgg> validateChild3(Validation<ValidationFailure, ImmutableEgg> validatedEgg) {
+        return validateParent3(validatedEgg)
                 .map(ImmutableEgg::getYolk)
-                .map(Operations::throwableAndNestedOperation31)
+                .map(Operations::throwableNestedOperation3)
                 .flatMap(tryResult -> tryResult.toValidation(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
                 .filter(Boolean::booleanValue)
-                .getOrElse(() -> Validation.invalid(VALIDATION_FAILURE_32))
+                .getOrElse(() -> Validation.invalid(VALIDATION_FAILURE_CHILD_3))
                 .flatMap(ignore -> validatedEgg);
     }
 
