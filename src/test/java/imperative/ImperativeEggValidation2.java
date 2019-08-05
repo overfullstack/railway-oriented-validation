@@ -22,6 +22,14 @@ import static imperative.Operations.throwableOperation3;
 
 /**
  * Validations are broken down to separate functions.
+ * Problems to solve:
+ *  ∙ Complexity
+ *  ∙ Mutation
+ *  ∙ Unit-Testability
+ *  ∙ Validation Jenga
+ * Extra Problems
+ *  ∙ Octopus Orchestration
+ *  ∙ Chaos
  */
 public class ImperativeEggValidation2 {
     @Test
@@ -79,21 +87,6 @@ public class ImperativeEggValidation2 {
         return true;
     }
 
-    private static boolean validateParent3(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggToBeValidated) {
-        try {
-            if (!throwableOperation3(eggToBeValidated)) {
-                iterator.remove();
-                badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_PARENT_3);
-                return false;
-            }
-        } catch (Exception e) {
-            iterator.remove();
-            badEggFailureBucketMap.put(eggIndex, ValidationFailure.withErrorMessage(e.getMessage()));
-            return false;
-        }
-        return true;
-    }
-
     private static boolean validateChild3(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggToBeValidated) {
         if (!validateParent3(badEggFailureBucketMap, eggIndex, iterator, eggToBeValidated)) {
             return false;
@@ -110,7 +103,22 @@ public class ImperativeEggValidation2 {
             badEggFailureBucketMap.put(eggIndex, ValidationFailure.withErrorMessage(e.getMessage()));
             return false;
         }
-        
+
+        return true;
+    }
+
+    private static boolean validateParent3(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggToBeValidated) {
+        try {
+            if (!throwableOperation3(eggToBeValidated)) {
+                iterator.remove();
+                badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_PARENT_3);
+                return false;
+            }
+        } catch (Exception e) {
+            iterator.remove();
+            badEggFailureBucketMap.put(eggIndex, ValidationFailure.withErrorMessage(e.getMessage()));
+            return false;
+        }
         return true;
     }
 

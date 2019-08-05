@@ -1,6 +1,7 @@
 package railwayoriented;
 
 import common.DataSet;
+import common.Utils;
 import domain.ImmutableEgg;
 import domain.validation.ValidationFailure;
 import io.vavr.collection.List;
@@ -8,7 +9,6 @@ import io.vavr.control.Validation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
@@ -20,13 +20,17 @@ import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_PA
 
 /**
  * This class contains validations as values.
+ * Problems solved:
+ *  ∙ Complexity - Minimum
+ *  ∙ Mutation to Transformation
+ *  ∙ Unit-Testability - 👍
+ *  ∙ Validation Jenga - 👍
+ *  ∙ Octopus Orchestration - 😵 dead
+ *  ∙ Chaos to Order
  */
 public class RailwayEggValidation2 {
-    public RailwayEggValidation2() {
-        super();
-    }
 
-    @Test
+    /*@Test
     void plainOldImperative() {
         var validationList = List.of(validate1, validate2, validateChild3);
         final var eggCarton = DataSet.getImmutableEggCarton();
@@ -42,15 +46,16 @@ public class RailwayEggValidation2 {
             System.out.println(validationResult);
         }
         Assertions.assertEquals(getExpectedImmutableEggValidationResults().toJavaList(), validationResults);
-    }
+    }*/
 
     @Test
     void railwayCode() {
-        final var validationResults = DataSet.getImmutableEggCarton()
+        final var validationResults = DataSet.getImmutableEggCarton().iterator()
                 .map(Validation::<ValidationFailure, ImmutableEgg>valid)
                 .map(validate1)
                 .map(validate2)
-                .map(validateChild3);
+                .map(validateChild3)
+                .toList();
         validationResults.forEach(System.out::println);
         Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
     }
@@ -58,10 +63,11 @@ public class RailwayEggValidation2 {
     @Test
     void railwayCodeElegant() {
         var validationList = List.of(validate1, validate2, validateChild3);
-        final var validationResults = DataSet.getImmutableEggCarton()
+        final var validationResults = DataSet.getImmutableEggCarton().iterator()
                 .map(Validation::<ValidationFailure, ImmutableEgg>valid)
                 .map(eggToBeValidated -> validationList
-                        .foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)));
+                        .foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
+                .toList();
         validationResults.forEach(System.out::println);
         Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
     }
@@ -69,11 +75,7 @@ public class RailwayEggValidation2 {
     @Test
     void railwayCodeElegantParallel() {
         var validationList = List.of(validate1, validate2, validateChild3);
-        final var immutableEggCarton = DataSet.getImmutableEggCarton();
-        var eggStream = immutableEggCarton.size() >= 10000
-                ? immutableEggCarton.toJavaStream()
-                : immutableEggCarton.toJavaParallelStream();
-        final var validationResults = eggStream
+        final var validationResults = Utils.getImmutableEggStream(DataSet.getImmutableEggCarton())
                 .map(Validation::<ValidationFailure, ImmutableEgg>valid)
                 .map(eggToBeValidated -> validationList
                         .foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))

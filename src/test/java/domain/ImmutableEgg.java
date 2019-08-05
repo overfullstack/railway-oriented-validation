@@ -12,5 +12,4 @@ import lombok.Value;
 public class ImmutableEgg {
     int daysToHatch;
     Yolk yolk;
-
 }

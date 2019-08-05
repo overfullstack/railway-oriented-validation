@@ -9,8 +9,8 @@ import lombok.experimental.UtilityClass;
 import static domain.Color.GOLD;
 import static domain.Color.YELLOW;
 import static domain.Condition.BAD;
-import static common.EggConstants.MAX_DAYS_TO_HATCH;
-import static common.EggConstants.MIN_DAYS_TO_HATCH;
+import static common.Utils.MAX_DAYS_TO_HATCH;
+import static common.Utils.MIN_DAYS_TO_HATCH;
 
 @UtilityClass
 class Operations {

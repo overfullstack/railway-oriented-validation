@@ -11,8 +11,12 @@ repositories {
     mavenCentral()
 }
 
+test {
+    useJUnitPlatform()
+}
+
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:+'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:+'
-    compile group: 'io.vavr', name: 'vavr', version: '0.10.1'
+    compile group: 'io.vavr', name: 'vavr', version: '+'
 }

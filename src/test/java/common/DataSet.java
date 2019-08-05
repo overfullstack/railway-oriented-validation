@@ -6,6 +6,7 @@ import domain.Yolk;
 import domain.validation.ValidationFailure;
 import io.vavr.collection.List;
 import io.vavr.control.Validation;
+import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,7 @@ import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_2;
 import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_CHILD_3;
 import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_PARENT_3;
 
+@UtilityClass
 public class DataSet {
     public static java.util.List<Egg> getEggCarton() {
         var eggCarton = new ArrayList<Egg>(); // Using arrayList because list prepared with List.of() throws exception when iterator.remove() is performed on them.

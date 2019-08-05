@@ -17,6 +17,13 @@ import static imperative.Operations.throwableNestedOperation3;
 import static imperative.Operations.throwableOperation2;
 import static imperative.Operations.throwableOperation3;
 
+/**
+ * Problems:
+ *  ∙ Complexity
+ *  ∙ Mutation
+ *  ∙ Unit-Testability
+ *  ∙ Validation Jenga
+ */
 public class ImperativeEggValidation {
     @Test
     void cyclomaticCode() {

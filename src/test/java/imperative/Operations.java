@@ -5,7 +5,7 @@ import domain.Yolk;
 import domain.validation.ValidationErrorMessages;
 import lombok.experimental.UtilityClass;
 
-import static common.EggConstants.MIN_DAYS_TO_HATCH;
+import static common.Utils.MIN_DAYS_TO_HATCH;
 import static domain.Color.GOLD;
 import static domain.Color.YELLOW;
 import static domain.Condition.BAD;

@@ -1,6 +1,7 @@
 package railwayoriented;
 
 import common.DataSet;
+import common.Utils;
 import domain.ImmutableEgg;
 import domain.validation.ValidationFailure;
 import io.vavr.collection.List;
@@ -20,6 +21,13 @@ import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_PA
 
 /**
  * This class contains validations as functions.
+ * Problems solved:
+ *  ∙ Complexity - Minimum
+ *  ∙ Mutation to Transformation
+ *  ∙ Unit-Testability - 👍
+ *  ∙ Validation Jenga - 👍
+ *  ∙ Octopus Orchestration - 😵 dead
+ *  ∙ Chaos to Order
  */
 public class RailwayEggValidation {
     @Test
@@ -43,7 +51,7 @@ public class RailwayEggValidation {
 
     @Test
     void railwayCode() {
-        final var validationResults = DataSet.getImmutableEggCarton()
+        final var validationResults = DataSet.getImmutableEggCarton().iterator()
                 .map(Validation::<ValidationFailure, ImmutableEgg>valid)
                 .map(RailwayEggValidation::validate1)
                 .map(RailwayEggValidation::validate2)
@@ -56,7 +64,7 @@ public class RailwayEggValidation {
     void railwayCodeElegant() {
         List<UnaryOperator<Validation<ValidationFailure, ImmutableEgg>>> validationList =
                 List.of(RailwayEggValidation::validate1, RailwayEggValidation::validate2, RailwayEggValidation::validateChild3);
-        final var validationResults = DataSet.getImmutableEggCarton()
+        final var validationResults = DataSet.getImmutableEggCarton().iterator()
                 .map(Validation::<ValidationFailure, ImmutableEgg>valid)
                 .map(eggToBeValidated -> validationList
                         .foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)));
@@ -68,11 +76,7 @@ public class RailwayEggValidation {
     void railwayCodeElegantParallel() {
         List<UnaryOperator<Validation<ValidationFailure, ImmutableEgg>>> validationList =
                 List.of(RailwayEggValidation::validate1, RailwayEggValidation::validate2, RailwayEggValidation::validateChild3);
-        final var immutableEggCarton = DataSet.getImmutableEggCarton();
-        var eggStream = immutableEggCarton.size() >= 10000
-                ? immutableEggCarton.toJavaStream()
-                : immutableEggCarton.toJavaParallelStream();
-        final var validationResults = eggStream
+        final var validationResults = Utils.getImmutableEggStream(DataSet.getImmutableEggCarton())
                 .map(Validation::<ValidationFailure, ImmutableEgg>valid)
                 .map(eggToBeValidated -> validationList
                         .foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
