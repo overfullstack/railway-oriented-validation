@@ -7,8 +7,10 @@ import domain.validation.ValidationFailure;
 import io.vavr.collection.List;
 import io.vavr.control.Validation;
 import lombok.experimental.UtilityClass;
+import railwayoriented.RailwayEggValidation;
 
 import java.util.ArrayList;
+import java.util.function.UnaryOperator;
 
 import static domain.Color.GOLD;
 import static domain.Color.ORANGE;
@@ -23,6 +25,9 @@ import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_1;
 import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_2;
 import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_CHILD_3;
 import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_PARENT_3;
+import static railwayoriented.RailwayEggValidation2.validate1;
+import static railwayoriented.RailwayEggValidation2.validate2;
+import static railwayoriented.RailwayEggValidation2.validateChild3;
 
 @UtilityClass
 public class DataSet {
@@ -91,4 +96,9 @@ public class DataSet {
         expectedResults.put(11, ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_31));
         return expectedResults;
     }
+
+    public static List<UnaryOperator<Validation<ValidationFailure, ImmutableEgg>>> VALIDATION_LIST =
+            List.of(RailwayEggValidation::validate1, RailwayEggValidation::validate2, RailwayEggValidation::validateChild3);
+
+    public static List<UnaryOperator<Validation<ValidationFailure, ImmutableEgg>>> VALIDATION_LIST_2 = List.of(validate1, validate2, validateChild3);
 }

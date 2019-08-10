@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
+import static common.DataSet.VALIDATION_LIST_2;
 import static common.DataSet.getExpectedImmutableEggValidationResults;
 import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_1;
 import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_2;
@@ -74,21 +75,20 @@ public class RailwayEggValidation2 {
 
     @Test
     void railwayCodeElegantParallel() {
-        var validationList = List.of(validate1, validate2, validateChild3);
         final var validationResults = Utils.getImmutableEggStream(DataSet.getImmutableEggCarton())
                 .map(Validation::<ValidationFailure, ImmutableEgg>valid)
-                .map(eggToBeValidated -> validationList
+                .map(eggToBeValidated -> VALIDATION_LIST_2
                         .foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
                 .collect(Collectors.toList());
         validationResults.forEach(System.out::println);
         Assertions.assertEquals(getExpectedImmutableEggValidationResults().toJavaList(), validationResults);
     }
 
-    private static UnaryOperator<Validation<ValidationFailure, ImmutableEgg>> validate1 = validatedEgg -> validatedEgg
+    public static UnaryOperator<Validation<ValidationFailure, ImmutableEgg>> validate1 = validatedEgg -> validatedEgg
             .filter(Operations::simpleOperation1)
             .getOrElse(() -> Validation.invalid(VALIDATION_FAILURE_1));
 
-    private static UnaryOperator<Validation<ValidationFailure, ImmutableEgg>> validate2 = validatedEgg -> validatedEgg
+    public static UnaryOperator<Validation<ValidationFailure, ImmutableEgg>> validate2 = validatedEgg -> validatedEgg
             .map(Operations::throwableOperation2)
             .flatMap(tryResult -> tryResult.toValidation(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
             .filter(Boolean::booleanValue)
@@ -102,7 +102,7 @@ public class RailwayEggValidation2 {
             .getOrElse(() -> Validation.invalid(VALIDATION_FAILURE_PARENT_3))
             .flatMap(ignore -> validatedEgg);
 
-    private static UnaryOperator<Validation<ValidationFailure, ImmutableEgg>> validateChild3 = validatedEgg ->
+    public static UnaryOperator<Validation<ValidationFailure, ImmutableEgg>> validateChild3 = validatedEgg ->
             validateParent3.apply(validatedEgg)
                     .map(ImmutableEgg::getYolk)
                     .map(Operations::throwableNestedOperation3)
