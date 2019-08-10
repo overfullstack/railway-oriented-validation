@@ -29,7 +29,6 @@ import static railwayoriented.RailwayEggValidation2.validate1;
 import static railwayoriented.RailwayEggValidation2.validate2;
 import static railwayoriented.RailwayEggValidation2.validateChild3;
 
-@UtilityClass
 public class DataSet {
     public static java.util.List<Egg> getEggCarton() {
         var eggCarton = new ArrayList<Egg>(); // Using arrayList because list prepared with List.of() throws exception when iterator.remove() is performed on them.
