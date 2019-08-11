@@ -22,32 +22,14 @@ import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_PA
 /**
  * This class contains validations as values.
  * Problems solved:
- *  ∙ Complexity - Minimum
  *  ∙ Mutation to Transformation
  *  ∙ Unit-Testability - 👍
- *  ∙ Validation Jenga - 👍
  *  ∙ Octopus Orchestration - 😵 dead
+ *  ∙ Validation Jenga - 👍
+ *  ∙ Complexity - Minimum
  *  ∙ Chaos to Order
  */
 public class RailwayEggValidation2 {
-
-    /*@Test
-    void plainOldImperative() {
-        var validationList = List.of(validate1, validate2, validateChild3);
-        final var eggCarton = DataSet.getImmutableEggCarton();
-        var validationResults = new ArrayList<Validation<ValidationFailure, ImmutableEgg>>();
-        for (ImmutableEgg egg : eggCarton) {
-            var validatedEgg = Validation.<ValidationFailure, ImmutableEgg>valid(egg);
-            for (UnaryOperator<Validation<ValidationFailure, ImmutableEgg>> validation : validationList) {
-                validatedEgg = validation.apply(validatedEgg);
-            }
-            validationResults.add(validatedEgg); // mutation
-        }
-        for (Validation<ValidationFailure, ImmutableEgg> validationResult : validationResults) {
-            System.out.println(validationResult);
-        }
-        Assertions.assertEquals(getExpectedImmutableEggValidationResults().toJavaList(), validationResults);
-    }*/
 
     @Test
     void railwayCode() {
@@ -63,10 +45,9 @@ public class RailwayEggValidation2 {
 
     @Test
     void railwayCodeElegant() {
-        var validationList = List.of(validate1, validate2, validateChild3);
         final var validationResults = DataSet.getImmutableEggCarton().iterator()
                 .map(Validation::<ValidationFailure, ImmutableEgg>valid)
-                .map(eggToBeValidated -> validationList
+                .map(eggToBeValidated -> VALIDATION_LIST_2
                         .foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
                 .toList();
         validationResults.forEach(System.out::println);

@@ -23,11 +23,11 @@ import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_PA
 /**
  * This class contains validations as functions.
  * Problems solved:
- *  ∙ Complexity - Minimum
  *  ∙ Mutation to Transformation
  *  ∙ Unit-Testability - 👍
- *  ∙ Validation Jenga - 👍
  *  ∙ Octopus Orchestration - 😵 dead
+ *  ∙ Validation Jenga - 👍
+ *  ∙ Complexity - Minimum
  *  ∙ Chaos to Order
  */
 public class RailwayEggValidation {
@@ -75,11 +75,9 @@ public class RailwayEggValidation {
 
     @Test
     void railwayCodeElegantParallel() {
-        List<UnaryOperator<Validation<ValidationFailure, ImmutableEgg>>> validationList =
-                List.of(RailwayEggValidation::validate1, RailwayEggValidation::validate2, RailwayEggValidation::validateChild3);
         final var validationResults = Utils.getImmutableEggStream(DataSet.getImmutableEggCarton())
                 .map(Validation::<ValidationFailure, ImmutableEgg>valid)
-                .map(eggToBeValidated -> validationList
+                .map(eggToBeValidated -> VALIDATION_LIST
                         .foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
                 .collect(Collectors.toList());
         validationResults.forEach(System.out::println);
@@ -101,7 +99,7 @@ public class RailwayEggValidation {
                 .flatMap(ignore -> validatedEgg);
     }
 
-    public static Validation<ValidationFailure, ImmutableEgg> validateParent3(Validation<ValidationFailure, ImmutableEgg> validatedEgg) {
+    private static Validation<ValidationFailure, ImmutableEgg> validateParent3(Validation<ValidationFailure, ImmutableEgg> validatedEgg) {
         return validatedEgg
                 .map(Operations::throwableOperation3)
                 .flatMap(tryResult -> tryResult.toValidation(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))

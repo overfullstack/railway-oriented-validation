@@ -23,12 +23,11 @@ import static imperative.Operations.throwableOperation3;
 /**
  * Validations are broken down to separate functions.
  * Problems to solve:
- *  ∙ Complexity
+ *  ∙ Octopus Orchestration
  *  ∙ Mutation
  *  ∙ Unit-Testability
  *  ∙ Validation Jenga
- * Extra Problems
- *  ∙ Octopus Orchestration
+ *  ∙ Complexity
  *  ∙ Chaos
  */
 public class ImperativeEggValidation2 {
@@ -36,15 +35,15 @@ public class ImperativeEggValidation2 {
         // This Octopus turns into a monster someday
     void octopusOrchestrator() {
         var eggList = DataSet.getEggCarton();
-
+        // R3 - Trying to be the owner of all state.
         var badEggFailureBucketMap = new HashMap<Integer, ValidationFailure>();
         var eggIndex = 0;
-        for (var iterator = eggList.iterator(); iterator.hasNext(); eggIndex++) {
+        for (var iterator = eggList.iterator(); iterator.hasNext(); eggIndex++) { // R-1: Iterate through eggs
             var eggToBeValidated = iterator.next();
 
             // Global state is dangerous. badEggFailureBucketMap and iterator being passed to each and every function, difficult to keep track of how they are being mutated during debugging.
             if (!validate1(badEggFailureBucketMap, eggIndex, iterator, eggToBeValidated)) {
-                continue;
+                continue; // R-2: Manage fail-fast
             }
 
             // Adding a new validation in-between requires you to understand all the validations above and below, which slows down development and makes it prone to bugs.
