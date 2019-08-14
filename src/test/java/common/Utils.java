@@ -11,10 +11,11 @@ public class Utils {
 
     public static final int MAX_DAYS_TO_HATCH = 21;
     public static final int MIN_DAYS_TO_HATCH = 15;
+    private static final int MAX_SIZE_FOR_PARALLEL = 10000;
 
     public static Stream<ImmutableEgg> getImmutableEggStream(List<ImmutableEgg> immutableEggCarton) {
-        return immutableEggCarton.size() >= 10000
-                    ? immutableEggCarton.toJavaStream()
-                    : immutableEggCarton.toJavaParallelStream();
+        return immutableEggCarton.size() >= MAX_SIZE_FOR_PARALLEL
+                    ? immutableEggCarton.toJavaParallelStream()
+                    : immutableEggCarton.toJavaStream();
     }
 }

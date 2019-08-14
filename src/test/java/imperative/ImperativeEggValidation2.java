@@ -26,14 +26,13 @@ import static imperative.Operations.throwableOperation3;
  *  ∙ Octopus Orchestration
  *  ∙ Mutation
  *  ∙ Unit-Testability
- *  ∙ Validation Jenga
+ *  ∙ Management of Validation Order
  *  ∙ Complexity
  *  ∙ Chaos
  */
 public class ImperativeEggValidation2 {
     @Test
-        // This Octopus turns into a monster someday
-    void octopusOrchestrator() {
+    void octopusOrchestrator() { // This Octopus turns into a monster someday.
         var eggList = DataSet.getEggCarton();
         // R3 - Trying to be the owner of all state.
         var badEggFailureBucketMap = new HashMap<Integer, ValidationFailure>();

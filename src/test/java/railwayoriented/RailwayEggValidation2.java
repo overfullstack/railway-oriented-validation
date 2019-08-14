@@ -22,10 +22,11 @@ import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_PA
 /**
  * This class contains validations as values.
  * Problems solved:
+ *  ∙ Octopus Orchestration - 😵 dead
  *  ∙ Mutation to Transformation
  *  ∙ Unit-Testability - 👍
- *  ∙ Octopus Orchestration - 😵 dead
- *  ∙ Validation Jenga - 👍
+ *  ::
+ *  ∙ Management of Validation order - 👍
  *  ∙ Complexity - Minimum
  *  ∙ Chaos to Order
  */

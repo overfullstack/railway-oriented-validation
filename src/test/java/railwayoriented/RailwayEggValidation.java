@@ -23,10 +23,11 @@ import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_PA
 /**
  * This class contains validations as functions.
  * Problems solved:
+ *  ∙ Octopus Orchestration - 😵 dead
  *  ∙ Mutation to Transformation
  *  ∙ Unit-Testability - 👍
- *  ∙ Octopus Orchestration - 😵 dead
- *  ∙ Validation Jenga - 👍
+ *  ::
+ *  ∙ Management of Validation Order - 👍
  *  ∙ Complexity - Minimum
  *  ∙ Chaos to Order
  */
@@ -35,6 +36,7 @@ public class RailwayEggValidation {
     void plainOldImperative() {
         List<UnaryOperator<Validation<ValidationFailure, ImmutableEgg>>> validationList =
                 List.of(RailwayEggValidation::validate1, RailwayEggValidation::validate2, RailwayEggValidation::validateChild3);
+        
         final var eggCarton = DataSet.getImmutableEggCarton();
         var validationResults = new ArrayList<Validation<ValidationFailure, ImmutableEgg>>();
         for (ImmutableEgg egg : eggCarton) {
@@ -54,7 +56,7 @@ public class RailwayEggValidation {
     void railwayCode() {
         final var validationResults = DataSet.getImmutableEggCarton().iterator()
                 .map(Validation::<ValidationFailure, ImmutableEgg>valid)
-                .map(RailwayEggValidation::validate1)
+                .map(RailwayEggValidation::validate1) // Method reference operator used to refer methods as values.
                 .map(RailwayEggValidation::validate2)
                 .map(RailwayEggValidation::validateChild3)
                 .toList();
