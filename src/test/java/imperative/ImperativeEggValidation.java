@@ -1,11 +1,15 @@
 package imperative;
 
 import common.DataSet;
+import domain.Egg;
 import domain.validation.ValidationFailure;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static common.DataSet.getExpectedEggValidationResults;
 import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_1;
@@ -27,10 +31,10 @@ import static imperative.Operations.throwableOperation3;
 public class ImperativeEggValidation {
     @Test
     void cyclomaticCode() {
-        var eggList = DataSet.getEggCarton();
-        var badEggFailureBucketMap = new HashMap<Integer, ValidationFailure>();
-        var eggIndex = 0;
-        for (var iterator = eggList.iterator(); iterator.hasNext(); eggIndex++) {
+        List<Egg> eggList = DataSet.getEggCarton();
+        HashMap<Integer, ValidationFailure> badEggFailureBucketMap = new HashMap<Integer, ValidationFailure>();
+        int eggIndex = 0;
+        for (Iterator<Egg> iterator = eggList.iterator(); iterator.hasNext(); eggIndex++) {
             var eggToBeValidated = iterator.next();
             if (!simpleOperation1(eggToBeValidated)) {
                 iterator.remove(); // Mutation
@@ -71,7 +75,7 @@ public class ImperativeEggValidation {
                 badEggFailureBucketMap.put(eggIndex, ValidationFailure.withErrorMessage(e.getMessage()));
             }
         }
-        for (var entry : badEggFailureBucketMap.entrySet()) {
+        for (Map.Entry<Integer, ValidationFailure> entry : badEggFailureBucketMap.entrySet()) {
             System.out.println(entry);
         }
         Assertions.assertEquals(getExpectedEggValidationResults(), badEggFailureBucketMap);

@@ -25,13 +25,17 @@ import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_PA
  *  ∙ Octopus Orchestration - 😵 dead
  *  ∙ Mutation to Transformation
  *  ∙ Unit-Testability - 👍
- *  ::
  *  ∙ Management of Validation order - 👍
+ *  ∙ Partial Failures
  *  ∙ Complexity - Minimum
  *  ∙ Chaos to Order
  */
 public class RailwayEggValidation2 {
 
+    /**
+     * ∙ Unidirectional Data flow
+     * ∙ Piped Validations like Lego ::
+     */
     @Test
     void railwayCode() {
         final var validationResults = DataSet.getImmutableEggCarton().iterator()
@@ -55,6 +59,12 @@ public class RailwayEggValidation2 {
         Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
     }
 
+    /**
+     * ∙ No need to comprehend every time like nested for-loop
+     * ∙ No need to unit tests
+     * ∙ Shared vocabulary
+     * ∙ Universal vocabulary
+     */
     @Test
     void railwayCodeElegantParallel() {
         final var validationResults = Utils.getImmutableEggStream(DataSet.getImmutableEggCarton())

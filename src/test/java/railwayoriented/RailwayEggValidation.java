@@ -52,6 +52,11 @@ public class RailwayEggValidation {
         Assertions.assertEquals(getExpectedImmutableEggValidationResults().toJavaList(), validationResults);
     }
 
+    /**
+     * ∙ Unidirectional Data flow
+     * ∙ Piped Validations like Lego 
+     * ::
+     */
     @Test
     void railwayCode() {
         final var validationResults = DataSet.getImmutableEggCarton().iterator()

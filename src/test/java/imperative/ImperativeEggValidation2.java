@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import static common.DataSet.getExpectedEggValidationResults;
@@ -27,17 +28,18 @@ import static imperative.Operations.throwableOperation3;
  *  ∙ Mutation
  *  ∙ Unit-Testability
  *  ∙ Management of Validation Order
+ *  ∙ Don't attempt to run in Parallel
  *  ∙ Complexity
  *  ∙ Chaos
  */
 public class ImperativeEggValidation2 {
     @Test
     void octopusOrchestrator() { // This Octopus turns into a monster someday.
-        var eggList = DataSet.getEggCarton();
+        List<Egg> eggList = DataSet.getEggCarton();
         // R3 - Trying to be the owner of all state.
-        var badEggFailureBucketMap = new HashMap<Integer, ValidationFailure>();
-        var eggIndex = 0;
-        for (var iterator = eggList.iterator(); iterator.hasNext(); eggIndex++) { // R-1: Iterate through eggs
+        HashMap<Integer, ValidationFailure> badEggFailureBucketMap = new HashMap<Integer, ValidationFailure>();
+        int eggIndex = 0;
+        for (Iterator<Egg> iterator = eggList.iterator(); iterator.hasNext(); eggIndex++) { // R-1: Iterate through eggs
             var eggToBeValidated = iterator.next();
 
             // Global state is dangerous. badEggFailureBucketMap and iterator being passed to each and every function, difficult to keep track of how they are being mutated during debugging.
@@ -53,7 +55,7 @@ public class ImperativeEggValidation2 {
             validateChild3(badEggFailureBucketMap, eggIndex, iterator, eggToBeValidated);
         }
 
-        for (var entry : badEggFailureBucketMap.entrySet()) {
+        for (Map.Entry<Integer, ValidationFailure> entry : badEggFailureBucketMap.entrySet()) {
             System.out.println(entry);
         }
 
