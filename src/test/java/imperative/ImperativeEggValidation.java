@@ -32,10 +32,10 @@ public class ImperativeEggValidation {
     @Test
     void cyclomaticCode() {
         List<Egg> eggList = DataSet.getEggCarton();
-        HashMap<Integer, ValidationFailure> badEggFailureBucketMap = new HashMap<Integer, ValidationFailure>();
+        HashMap<Integer, ValidationFailure> badEggFailureBucketMap = new HashMap<>();
         int eggIndex = 0;
         for (Iterator<Egg> iterator = eggList.iterator(); iterator.hasNext(); eggIndex++) {
-            var eggToBeValidated = iterator.next();
+            Egg eggToBeValidated = iterator.next();
             if (!simpleOperation1(eggToBeValidated)) {
                 iterator.remove(); // Mutation
                 // How can you cleanly map validation-failure to which validation-method failed?

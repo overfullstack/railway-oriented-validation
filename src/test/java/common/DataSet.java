@@ -6,10 +6,9 @@ import domain.Yolk;
 import domain.validation.ValidationFailure;
 import io.vavr.collection.List;
 import io.vavr.control.Validation;
-import lombok.experimental.UtilityClass;
-import railwayoriented.RailwayEggValidation;
 
 import java.util.ArrayList;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 import static domain.Color.GOLD;
@@ -27,7 +26,12 @@ import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_CH
 import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_PARENT_3;
 import static railwayoriented.RailwayEggValidation2.validate1;
 import static railwayoriented.RailwayEggValidation2.validate2;
-import static railwayoriented.RailwayEggValidation2.validateChild3;
+import static railwayoriented.RailwayEggValidation2.validateChild31;
+import static railwayoriented.RailwayEggValidation2.validateChild32;
+import static railwayoriented.RailwayEggValidation2.validateChild4;
+import static railwayoriented.RailwayEggValidation2.validateParent3;
+import static railwayoriented.RailwayEggValidation2.validateParent41;
+import static railwayoriented.RailwayEggValidation2.validateParent42;
 
 public class DataSet {
     public static java.util.List<Egg> getEggCarton() {
@@ -95,9 +99,32 @@ public class DataSet {
         expectedResults.put(11, ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_31));
         return expectedResults;
     }
+    
+    private static List<UnaryOperator<Validation<ValidationFailure, ImmutableEgg>>> PARENT_VALIDATIONS =
+            List.of(validate1, validate2, validateParent3);
+    
+    private static List<UnaryOperator<Validation<ValidationFailure, Yolk>>> CHILD_VALIDATIONS
+            = List.of(validateChild31, validateChild32);
 
-    public static List<UnaryOperator<Validation<ValidationFailure, ImmutableEgg>>> VALIDATION_LIST =
-            List.of(RailwayEggValidation::validate1, RailwayEggValidation::validate2, RailwayEggValidation::validateChild3);
+    public static List<UnaryOperator<Validation<ValidationFailure, ImmutableEgg>>> EGG_VALIDATION_CHAIN =
+                    PARENT_VALIDATIONS
+                    .appendAll(liftAllToParentValidationType(CHILD_VALIDATIONS, ImmutableEgg::getYolk))
+                    .appendAll(List.of(validateParent41, validateParent42, liftToParentValidationType(validateChild4, ImmutableEgg::getYolk)));
 
-    public static List<UnaryOperator<Validation<ValidationFailure, ImmutableEgg>>> VALIDATION_LIST_2 = List.of(validate1, validate2, validateChild3);
+    // Generic lift functions and these can be extended to support different kinds of Eggs.
+    private static <T, R> List<UnaryOperator<Validation<ValidationFailure, T>>> liftAllToParentValidationType(
+            List<UnaryOperator<Validation<ValidationFailure, R>>> childValidations,
+            Function<T, R> toChildMapper) {
+        return childValidations.map(childValidation -> // Currying
+                liftToParentValidationType(childValidation, toChildMapper));
+    }
+
+    private static <T, R> UnaryOperator<Validation<ValidationFailure, T>> liftToParentValidationType(
+            UnaryOperator<Validation<ValidationFailure, R>> childValidation,
+            Function<T, R> toChildMapper) {
+        return eggToBeValidated -> childValidation
+                .apply(eggToBeValidated.map(toChildMapper))
+                .flatMap(ignore -> eggToBeValidated);
+    }
+
 }

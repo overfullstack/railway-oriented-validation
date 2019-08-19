@@ -2,6 +2,7 @@ package imperative;
 
 import common.DataSet;
 import domain.Egg;
+import domain.Yolk;
 import domain.validation.ValidationFailure;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,14 +24,16 @@ import static imperative.Operations.throwableOperation3;
 
 /**
  * Validations are broken down to separate functions.
- * Problems to solve:
- *  ∙ Octopus Orchestration
- *  ∙ Mutation
- *  ∙ Unit-Testability
- *  ∙ Management of Validation Order
- *  ∙ Don't attempt to run in Parallel
- *  ∙ Complexity
- *  ∙ Chaos
+ * Problems:
+ * ∙ Octopus Orchestration
+ * ∙ Mutation
+ * ∙ Unit-Testability
+ * ∙ Don't attempt to run in Parallel
+ * Major Problems
+ * ∙ Management of Validation Order
+ * ∙ Complexity
+ * 
+ * ∙ Chaos
  */
 public class ImperativeEggValidation2 {
     @Test
@@ -52,7 +55,15 @@ public class ImperativeEggValidation2 {
                 continue;
             }
 
-            validateChild3(badEggFailureBucketMap, eggIndex, iterator, eggToBeValidated);
+            // Parent with multiple Child Validations
+            if (!validateParent3(badEggFailureBucketMap, eggIndex, iterator, eggToBeValidated)) {
+                continue;
+            }
+            
+            // Child with multiple Parent Validations
+            if (!validateChild4(badEggFailureBucketMap, eggIndex, iterator, eggToBeValidated)) {
+                continue;
+            }
         }
 
         for (Map.Entry<Integer, ValidationFailure> entry : badEggFailureBucketMap.entrySet()) {
@@ -87,8 +98,66 @@ public class ImperativeEggValidation2 {
         return true;
     }
 
-    private static boolean validateChild3(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggToBeValidated) {
-        if (!validateParent3(badEggFailureBucketMap, eggIndex, iterator, eggToBeValidated)) {
+    // Parent with multiple Child Validations
+    private static boolean validateParent3(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggToBeValidated) {
+        try {
+            if (throwableOperation3(eggToBeValidated)) {
+                var yolkTobeValidated = eggToBeValidated.getYolk();
+                if (!validateChild31(badEggFailureBucketMap, eggIndex, iterator, yolkTobeValidated)) {
+                    return false;
+                }
+                if (!validateChild32(badEggFailureBucketMap, eggIndex, iterator, yolkTobeValidated)) {
+                    return false;
+                }
+            } else {
+                iterator.remove();
+                badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_PARENT_3);
+                return false;
+            }
+        } catch (Exception e) {
+            iterator.remove();
+            badEggFailureBucketMap.put(eggIndex, ValidationFailure.withErrorMessage(e.getMessage()));
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean validateChild31(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Yolk yolkTobeValidated) {
+        try {
+            if (!throwableNestedOperation3(yolkTobeValidated)) {
+                iterator.remove();
+                badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_CHILD_3);
+                return false;
+            }
+        } catch (Exception e) {
+            iterator.remove();
+            badEggFailureBucketMap.put(eggIndex, ValidationFailure.withErrorMessage(e.getMessage()));
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean validateChild32(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Yolk yolkTobeValidated) {
+        try {
+            if (!throwableNestedOperation3(yolkTobeValidated)) {
+                iterator.remove();
+                badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_CHILD_3);
+                return false;
+            }
+        } catch (Exception e) {
+            iterator.remove();
+            badEggFailureBucketMap.put(eggIndex, ValidationFailure.withErrorMessage(e.getMessage()));
+            return false;
+        }
+        return true;
+    }
+
+    // Child with multiple Parent Validations
+    private static boolean validateChild4(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggToBeValidated) {
+        if (!validateParent41(badEggFailureBucketMap, eggIndex, iterator, eggToBeValidated)) {
+            return false;
+        }
+        if (!validateParent42(badEggFailureBucketMap, eggIndex, iterator, eggToBeValidated)) {
             return false;
         }
         var yolkTobeValidated = eggToBeValidated.getYolk();
@@ -107,7 +176,22 @@ public class ImperativeEggValidation2 {
         return true;
     }
 
-    private static boolean validateParent3(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggToBeValidated) {
+    private static boolean validateParent41(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggToBeValidated) {
+        try {
+            if (!throwableOperation3(eggToBeValidated)) {
+                iterator.remove();
+                badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_PARENT_3);
+                return false;
+            }
+        } catch (Exception e) {
+            iterator.remove();
+            badEggFailureBucketMap.put(eggIndex, ValidationFailure.withErrorMessage(e.getMessage()));
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean validateParent42(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggToBeValidated) {
         try {
             if (!throwableOperation3(eggToBeValidated)) {
                 iterator.remove();
