@@ -8,8 +8,6 @@ import io.vavr.collection.List;
 import io.vavr.control.Validation;
 
 import java.util.ArrayList;
-import java.util.function.Function;
-import java.util.function.UnaryOperator;
 
 import static domain.Color.GOLD;
 import static domain.Color.ORANGE;
@@ -24,14 +22,6 @@ import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_1;
 import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_2;
 import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_CHILD_3;
 import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_PARENT_3;
-import static railwayoriented.RailwayEggValidation2.validate1;
-import static railwayoriented.RailwayEggValidation2.validate2;
-import static railwayoriented.RailwayEggValidation2.validateChild31;
-import static railwayoriented.RailwayEggValidation2.validateChild32;
-import static railwayoriented.RailwayEggValidation2.validateChild4;
-import static railwayoriented.RailwayEggValidation2.validateParent3;
-import static railwayoriented.RailwayEggValidation2.validateParent41;
-import static railwayoriented.RailwayEggValidation2.validateParent42;
 
 public class DataSet {
     public static java.util.List<Egg> getEggCarton() {
@@ -51,7 +41,7 @@ public class DataSet {
         return eggCarton;
     }
 
-    public static List<ImmutableEgg> getImmutableEggCarton() {
+    public static java.util.List<ImmutableEgg> getImmutableEggCarton() {
         return List.of(
                 null, // No egg to validate
                 ImmutableEgg.of(1, new Yolk(GOOD, GOLD)), // About to hatch
@@ -65,11 +55,11 @@ public class DataSet {
                 ImmutableEgg.of(6, new Yolk(BAD, ORANGE)), // Yolk is bad
                 ImmutableEgg.of(12, new Yolk(GOOD, ORANGE)), // Yolk in wrong color
                 ImmutableEgg.of(6, null) // No Yolk to validate 
-        );
+        ).toJavaList();
     }
 
-    public static List<Validation<ValidationFailure, ImmutableEgg>> getExpectedImmutableEggValidationResults() {
-        return List.of(
+    public static java.util.List<Validation<ValidationFailure, ImmutableEgg>> getExpectedImmutableEggValidationResults() {
+        return java.util.List.of(
                 Validation.invalid(VALIDATION_FAILURE_1),
                 Validation.invalid(VALIDATION_FAILURE_PARENT_3),
                 Validation.invalid(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
@@ -98,33 +88,6 @@ public class DataSet {
         expectedResults.put(10, VALIDATION_FAILURE_CHILD_3);
         expectedResults.put(11, ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_31));
         return expectedResults;
-    }
-    
-    private static List<UnaryOperator<Validation<ValidationFailure, ImmutableEgg>>> PARENT_VALIDATIONS =
-            List.of(validate1, validate2, validateParent3);
-    
-    private static List<UnaryOperator<Validation<ValidationFailure, Yolk>>> CHILD_VALIDATIONS
-            = List.of(validateChild31, validateChild32);
-
-    public static List<UnaryOperator<Validation<ValidationFailure, ImmutableEgg>>> EGG_VALIDATION_CHAIN =
-                    PARENT_VALIDATIONS
-                    .appendAll(liftAllToParentValidationType(CHILD_VALIDATIONS, ImmutableEgg::getYolk))
-                    .appendAll(List.of(validateParent41, validateParent42, liftToParentValidationType(validateChild4, ImmutableEgg::getYolk)));
-
-    // Generic lift functions and these can be extended to support different kinds of Eggs.
-    private static <T, R> List<UnaryOperator<Validation<ValidationFailure, T>>> liftAllToParentValidationType(
-            List<UnaryOperator<Validation<ValidationFailure, R>>> childValidations,
-            Function<T, R> toChildMapper) {
-        return childValidations.map(childValidation -> // Currying
-                liftToParentValidationType(childValidation, toChildMapper));
-    }
-
-    private static <T, R> UnaryOperator<Validation<ValidationFailure, T>> liftToParentValidationType(
-            UnaryOperator<Validation<ValidationFailure, R>> childValidation,
-            Function<T, R> toChildMapper) {
-        return eggToBeValidated -> childValidation
-                .apply(eggToBeValidated.map(toChildMapper))
-                .flatMap(ignore -> eggToBeValidated);
     }
 
 }

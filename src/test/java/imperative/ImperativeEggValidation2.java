@@ -30,9 +30,8 @@ import static imperative.Operations.throwableOperation3;
  * ∙ Unit-Testability
  * ∙ Don't attempt to run in Parallel
  * Major Problems
- * ∙ Management of Validation Order
+ * ∙ Management of Validation Order - how-to-do
  * ∙ Complexity
- * 
  * ∙ Chaos
  */
 public class ImperativeEggValidation2 {
@@ -40,7 +39,7 @@ public class ImperativeEggValidation2 {
     void octopusOrchestrator() { // This Octopus turns into a monster someday.
         List<Egg> eggList = DataSet.getEggCarton();
         // R3 - Trying to be the owner of all state.
-        HashMap<Integer, ValidationFailure> badEggFailureBucketMap = new HashMap<Integer, ValidationFailure>();
+        var badEggFailureBucketMap = new HashMap<Integer, ValidationFailure>();
         int eggIndex = 0;
         for (Iterator<Egg> iterator = eggList.iterator(); iterator.hasNext(); eggIndex++) { // R-1: Iterate through eggs
             var eggToBeValidated = iterator.next();

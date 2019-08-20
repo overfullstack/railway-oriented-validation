@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.stream.Collectors;
 
-import static common.DataSet.EGG_VALIDATION_CHAIN;
+import static common.ValidationConfig.EGG_VALIDATION_CHAIN;
 import static common.DataSet.getExpectedImmutableEggValidationResults;
 import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_1;
 import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_2;
@@ -32,11 +32,12 @@ import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_PA
 public class RailwayEggValidation {
     @Test
     void declarativeOrchestration() {
-        final var validationResults = DataSet.getImmutableEggCarton().iterator()
+        final var validationResults = DataSet.getImmutableEggCarton().stream()
                 .map(Validation::<ValidationFailure, ImmutableEgg>valid)
-                .map(eggToBeValidated -> EGG_VALIDATION_CHAIN
-                        .foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
-                .toList();
+                .map(eggToBeValidated -> EGG_VALIDATION_CHAIN // this is vavr list
+    /*foldLeft from vavr list*/.foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
+                .collect(Collectors.toList());
+        
         validationResults.forEach(System.out::println);
         Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
     }
@@ -45,11 +46,12 @@ public class RailwayEggValidation {
     void declarativeOrchestrationParallel() {
         final var validationResults = Utils.getImmutableEggStream(DataSet.getImmutableEggCarton())
                 .map(Validation::<ValidationFailure, ImmutableEgg>valid)
-                .map(eggToBeValidated -> EGG_VALIDATION_CHAIN
-                        .foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
+                .map(eggToBeValidated -> EGG_VALIDATION_CHAIN // this is vavr list
+    /*foldLeft from vavr list*/.foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
                 .collect(Collectors.toList());
+        
         validationResults.forEach(System.out::println);
-        Assertions.assertEquals(getExpectedImmutableEggValidationResults().toJavaList(), validationResults);
+        Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
     }
 
     public static Validation<ValidationFailure, ImmutableEgg> validate1(Validation<ValidationFailure, ImmutableEgg> validatedEgg) {
