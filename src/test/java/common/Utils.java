@@ -2,7 +2,7 @@ package common;
 
 import domain.ImmutableEgg;
 import domain.validation.ValidationFailure;
-import io.vavr.control.Validation;
+import io.vavr.control.Either;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
@@ -24,15 +24,15 @@ public class Utils {
     }
 
     /*These lift functions are generic and these can be extended to support different kinds of Eggs.*/
-    static <T, R> io.vavr.collection.List<UnaryOperator<Validation<ValidationFailure, T>>> liftAllToParentValidationType(
-            io.vavr.collection.List<UnaryOperator<Validation<ValidationFailure, R>>> childValidations,
+    static <T, R> io.vavr.collection.List<UnaryOperator<Either<ValidationFailure, T>>> liftAllToParentValidationType(
+            io.vavr.collection.List<UnaryOperator<Either<ValidationFailure, R>>> childValidations,
             Function<T, R> toChildMapper) {
         return childValidations.map(childValidation -> // Function taking a function and returning a function, Higher-order function
                 liftToParentValidationType(childValidation, toChildMapper));
     }
 
-    static <T, R> UnaryOperator<Validation<ValidationFailure, T>> liftToParentValidationType(
-            UnaryOperator<Validation<ValidationFailure, R>> childValidation,
+    static <T, R> UnaryOperator<Either<ValidationFailure, T>> liftToParentValidationType(
+            UnaryOperator<Either<ValidationFailure, R>> childValidation,
             Function<T, R> toChildMapper) {
         return eggToBeValidated -> childValidation
                 .apply(eggToBeValidated.map(toChildMapper))

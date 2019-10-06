@@ -5,7 +5,7 @@ import domain.ImmutableEgg;
 import domain.Yolk;
 import domain.validation.ValidationFailure;
 import io.vavr.collection.List;
-import io.vavr.control.Validation;
+import io.vavr.control.Either;
 
 import java.util.ArrayList;
 
@@ -58,20 +58,20 @@ public class DataSet {
         ).toJavaList();
     }
 
-    public static java.util.List<Validation<ValidationFailure, ImmutableEgg>> getExpectedImmutableEggValidationResults() {
+    public static java.util.List<Either<ValidationFailure, ImmutableEgg>> getExpectedImmutableEggValidationResults() {
         return java.util.List.of(
-                Validation.invalid(VALIDATION_FAILURE_1),
-                Validation.invalid(VALIDATION_FAILURE_PARENT_3),
-                Validation.invalid(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
-                Validation.invalid(ValidationFailure.withErrorMessage(THROWABLE_OPERATION_2)),
-                Validation.valid(ImmutableEgg.of(5, new Yolk(GOOD, YELLOW))),
-                Validation.invalid(ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3)),
-                Validation.invalid(VALIDATION_FAILURE_2),
-                Validation.valid(ImmutableEgg.of(14, new Yolk(GOOD, GOLD))),
-                Validation.invalid(ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3)),
-                Validation.invalid(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
-                Validation.invalid(VALIDATION_FAILURE_CHILD_3),
-                Validation.invalid(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_31))
+                Either.left(VALIDATION_FAILURE_1),
+                Either.left(VALIDATION_FAILURE_PARENT_3),
+                Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
+                Either.left(ValidationFailure.withErrorMessage(THROWABLE_OPERATION_2)),
+                Either.right(ImmutableEgg.of(5, new Yolk(GOOD, YELLOW))),
+                Either.left(ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3)),
+                Either.left(VALIDATION_FAILURE_2),
+                Either.right(ImmutableEgg.of(14, new Yolk(GOOD, GOLD))),
+                Either.left(ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3)),
+                Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
+                Either.left(VALIDATION_FAILURE_CHILD_3),
+                Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_31))
         );
     }
 
