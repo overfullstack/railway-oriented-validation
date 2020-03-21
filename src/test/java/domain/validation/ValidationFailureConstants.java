@@ -7,10 +7,11 @@ import lombok.ToString;
 @AllArgsConstructor
 public enum ValidationFailureConstants implements ValidationFailure {
     NONE("NONE"),
-    VALIDATION_FAILURE_1("VF1: No egg to validate 🧐"),
-    VALIDATION_FAILURE_2("VF2: Too late to hatch ⏳"),
-    VALIDATION_FAILURE_PARENT_3("VF-Parent-3: About to hatch 🥚"),
-    VALIDATION_FAILURE_CHILD_3("VF-Child-3: Yolk is in wrong color ✴️"),
+    NO_PARENT_TO_VALIDATE_CHILD("Child-1: No parent to validate child 👨‍👦"),
+    NO_EGG_TO_VALIDATE_1("1: No egg to validate 🧐"),
+    TOO_LATE_TO_HATCH_2("2: Too late to hatch ⏳"),
+    ABOUT_TO_HATCH_P_3("Parent-3: About to hatch 🥚"),
+    YOLK_IS_IN_WRONG_COLOR_C_3("Child-3: Yolk is in wrong color ✴️"),
     ;
     private final String failureMessage;
 

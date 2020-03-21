@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'idea'
-    id "io.freefair.lombok" version "4.1.2"
+    id "io.freefair.lombok" version "5.0.0-rc6"
 }
 
 group 'com.gakshintala.fp'
@@ -16,6 +16,8 @@ test {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:+'
-    compile 'io.vavr:vavr:+'
+    implementation 'io.vavr:vavr:+'
+    testImplementation('org.junit.jupiter:junit-jupiter:+') {
+        exclude group: 'junit', module: 'junit'
+    }
 }

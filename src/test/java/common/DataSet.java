@@ -14,14 +14,14 @@ import static domain.Color.ORANGE;
 import static domain.Color.YELLOW;
 import static domain.Condition.BAD;
 import static domain.Condition.GOOD;
-import static domain.validation.ValidationErrorMessages.THROWABLE_NESTED_OPERATION_31;
-import static domain.validation.ValidationErrorMessages.THROWABLE_NESTED_OPERATION_32;
-import static domain.validation.ValidationErrorMessages.THROWABLE_OPERATION_2;
-import static domain.validation.ValidationErrorMessages.THROWABLE_VALIDATION_3;
-import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_1;
-import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_2;
-import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_CHILD_3;
-import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_PARENT_3;
+import static domain.validation.ThrowableMessages.THROWABLE_NESTED_OPERATION_31;
+import static domain.validation.ThrowableMessages.THROWABLE_NESTED_OPERATION_32;
+import static domain.validation.ThrowableMessages.THROWABLE_OPERATION_2;
+import static domain.validation.ThrowableMessages.THROWABLE_VALIDATION_3;
+import static domain.validation.ValidationFailureConstants.ABOUT_TO_HATCH_P_3;
+import static domain.validation.ValidationFailureConstants.NO_EGG_TO_VALIDATE_1;
+import static domain.validation.ValidationFailureConstants.TOO_LATE_TO_HATCH_2;
+import static domain.validation.ValidationFailureConstants.YOLK_IS_IN_WRONG_COLOR_C_3;
 
 public class DataSet {
     public static java.util.List<Egg> getEggCarton() {
@@ -60,32 +60,32 @@ public class DataSet {
 
     public static java.util.List<Either<ValidationFailure, ImmutableEgg>> getExpectedImmutableEggValidationResults() {
         return java.util.List.of(
-                Either.left(VALIDATION_FAILURE_1),
-                Either.left(VALIDATION_FAILURE_PARENT_3),
+                Either.left(NO_EGG_TO_VALIDATE_1),
+                Either.left(ABOUT_TO_HATCH_P_3),
                 Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
                 Either.left(ValidationFailure.withErrorMessage(THROWABLE_OPERATION_2)),
                 Either.right(ImmutableEgg.of(5, new Yolk(GOOD, YELLOW))),
                 Either.left(ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3)),
-                Either.left(VALIDATION_FAILURE_2),
+                Either.left(TOO_LATE_TO_HATCH_2),
                 Either.right(ImmutableEgg.of(14, new Yolk(GOOD, GOLD))),
                 Either.left(ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3)),
                 Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
-                Either.left(VALIDATION_FAILURE_CHILD_3),
+                Either.left(YOLK_IS_IN_WRONG_COLOR_C_3),
                 Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_31))
         );
     }
 
     public static java.util.Map<Integer, ValidationFailure> getExpectedEggValidationResults() {
         var expectedResults = new java.util.HashMap<Integer, ValidationFailure>();
-        expectedResults.put(0, VALIDATION_FAILURE_1);
-        expectedResults.put(1, VALIDATION_FAILURE_PARENT_3);
+        expectedResults.put(0, NO_EGG_TO_VALIDATE_1);
+        expectedResults.put(1, ABOUT_TO_HATCH_P_3);
         expectedResults.put(2, ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32));
         expectedResults.put(3, ValidationFailure.withErrorMessage(THROWABLE_OPERATION_2));
         expectedResults.put(5, ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3));
-        expectedResults.put(6, VALIDATION_FAILURE_2);
+        expectedResults.put(6, TOO_LATE_TO_HATCH_2);
         expectedResults.put(8, ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3));
         expectedResults.put(9, ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32));
-        expectedResults.put(10, VALIDATION_FAILURE_CHILD_3);
+        expectedResults.put(10, YOLK_IS_IN_WRONG_COLOR_C_3);
         expectedResults.put(11, ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_31));
         return expectedResults;
     }

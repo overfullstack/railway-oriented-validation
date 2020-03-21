@@ -12,7 +12,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Egg {
-    public static final int MAX_DAYS_TO_HATCH = 21;
     int daysToHatch;
     Yolk yolk;
 }

@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 import static common.DataSet.getExpectedEggValidationResults;
-import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_1;
-import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_2;
-import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_CHILD_3;
-import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_PARENT_3;
+import static domain.validation.ValidationFailureConstants.ABOUT_TO_HATCH_P_3;
+import static domain.validation.ValidationFailureConstants.NO_EGG_TO_VALIDATE_1;
+import static domain.validation.ValidationFailureConstants.TOO_LATE_TO_HATCH_2;
+import static domain.validation.ValidationFailureConstants.YOLK_IS_IN_WRONG_COLOR_C_3;
 import static imperative.Operations.simpleOperation1;
 import static imperative.Operations.throwableNestedOperation3;
 import static imperative.Operations.throwableOperation2;
@@ -23,10 +23,10 @@ import static imperative.Operations.throwableOperation3;
 
 /**
  * Problems:
- *  ∙ Complexity
- *  ∙ Mutation
- *  ∙ Unit-Testability
- *  ∙ Validation Jenga
+ * ∙ Complexity
+ * ∙ Mutation
+ * ∙ Unit-Testability
+ * ∙ Validation Jenga
  */
 public class ImperativeEggValidation {
     @Test
@@ -39,13 +39,13 @@ public class ImperativeEggValidation {
             if (!simpleOperation1(eggToBeValidated)) {
                 iterator.remove(); // Mutation
                 // How can you cleanly map validation-failure to which validation-method failed?
-                badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_1);
+                badEggFailureBucketMap.put(eggIndex, NO_EGG_TO_VALIDATE_1);
                 continue;
             }
             try {
                 if (!throwableOperation2(eggToBeValidated)) {
                     iterator.remove();
-                    badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_2);
+                    badEggFailureBucketMap.put(eggIndex, TOO_LATE_TO_HATCH_2);
                     continue;
                 }
             } catch (Exception e) { // Repetition of same logic for exception handling
@@ -59,7 +59,7 @@ public class ImperativeEggValidation {
                     try {
                         if (!throwableNestedOperation3(yolkTobeValidated)) {
                             iterator.remove();
-                            badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_CHILD_3);
+                            badEggFailureBucketMap.put(eggIndex, YOLK_IS_IN_WRONG_COLOR_C_3);
                         }
                     } catch (Exception e) {
                         iterator.remove();
@@ -67,7 +67,7 @@ public class ImperativeEggValidation {
                     }
                 } else {
                     iterator.remove();
-                    badEggFailureBucketMap.put(eggIndex, VALIDATION_FAILURE_PARENT_3);
+                    badEggFailureBucketMap.put(eggIndex, ABOUT_TO_HATCH_P_3);
                     continue;
                 }
             } catch (Exception e) {

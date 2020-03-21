@@ -1,7 +1,7 @@
 package railwayoriented;
 
 import common.DataSet;
-import common.Utils;
+import common.ValidationUtils;
 import domain.ImmutableEgg;
 import domain.Yolk;
 import domain.validation.ValidationFailure;
@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 
 import static common.DataSet.getExpectedImmutableEggValidationResults;
 import static common.ValidationConfig.EGG_VALIDATION_CHAIN;
-import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_1;
-import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_2;
-import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_CHILD_3;
-import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_PARENT_3;
+import static domain.validation.ValidationFailureConstants.ABOUT_TO_HATCH_P_3;
+import static domain.validation.ValidationFailureConstants.NO_EGG_TO_VALIDATE_1;
+import static domain.validation.ValidationFailureConstants.TOO_LATE_TO_HATCH_2;
+import static domain.validation.ValidationFailureConstants.YOLK_IS_IN_WRONG_COLOR_C_3;
 
 /**
  * This class contains validations as functions.
@@ -30,34 +30,10 @@ import static domain.validation.ValidationFailureConstants.VALIDATION_FAILURE_PA
  * ∙ Chaos to Order
  */
 public class RailwayEggValidation {
-    @Test
-    void declarativeOrchestration() {
-        final var validationResults = DataSet.getImmutableEggCarton().stream()
-                .map(Either::<ValidationFailure, ImmutableEgg>right)
-                .map(eggToBeValidated -> EGG_VALIDATION_CHAIN // this is vavr list
-    /*foldLeft from vavr list*/.foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
-                .collect(Collectors.toList());
-        
-        validationResults.forEach(System.out::println);
-        Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
-    }
-
-    @Test
-    void declarativeOrchestrationParallel() {
-        final var validationResults = Utils.getImmutableEggStream(DataSet.getImmutableEggCarton())
-                .map(Either::<ValidationFailure, ImmutableEgg>right)
-                .map(eggToBeValidated -> EGG_VALIDATION_CHAIN // this is vavr list
-    /*foldLeft from vavr list*/.foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
-                .collect(Collectors.toList());
-        
-        validationResults.forEach(System.out::println);
-        Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
-    }
-
     public static Either<ValidationFailure, ImmutableEgg> validate1(Either<ValidationFailure, ImmutableEgg> validatedEgg) {
         return validatedEgg
                 .filter(Operations::simpleOperation1)
-                .getOrElse(() -> Either.left(VALIDATION_FAILURE_1));
+                .getOrElse(() -> Either.left(NO_EGG_TO_VALIDATE_1));
     }
 
     public static Either<ValidationFailure, ImmutableEgg> validate2(Either<ValidationFailure, ImmutableEgg> validatedEgg) {
@@ -65,7 +41,7 @@ public class RailwayEggValidation {
                 .map(Operations::throwableOperation2)
                 .flatMap(tryResult -> tryResult.toEither().mapLeft(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
                 .filter(Boolean::booleanValue)
-                .getOrElse(() -> Either.left(VALIDATION_FAILURE_2))
+                .getOrElse(() -> Either.left(TOO_LATE_TO_HATCH_2))
                 .flatMap(ignore -> validatedEgg);
     }
 
@@ -74,7 +50,7 @@ public class RailwayEggValidation {
                 .map(Operations::throwableOperation3)
                 .flatMap(tryResult -> tryResult.toEither().mapLeft(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
                 .filter(Boolean::booleanValue)
-                .getOrElse(() -> Either.left(VALIDATION_FAILURE_PARENT_3))
+                .getOrElse(() -> Either.left(ABOUT_TO_HATCH_P_3))
                 .flatMap(ignore -> validatedEgg);
     }
 
@@ -83,7 +59,7 @@ public class RailwayEggValidation {
                 .map(Operations::throwableNestedOperation3)
                 .flatMap(tryResult -> tryResult.toEither().mapLeft(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
                 .filter(Boolean::booleanValue)
-                .getOrElse(() -> Either.left(VALIDATION_FAILURE_CHILD_3))
+                .getOrElse(() -> Either.left(YOLK_IS_IN_WRONG_COLOR_C_3))
                 .flatMap(ignore -> validatedYolk);
     }
 
@@ -92,7 +68,7 @@ public class RailwayEggValidation {
                 .map(Operations::throwableNestedOperation3)
                 .flatMap(tryResult -> tryResult.toEither().mapLeft(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
                 .filter(Boolean::booleanValue)
-                .getOrElse(() -> Either.left(VALIDATION_FAILURE_CHILD_3))
+                .getOrElse(() -> Either.left(YOLK_IS_IN_WRONG_COLOR_C_3))
                 .flatMap(ignore -> validatedYolk);
     }
 
@@ -101,7 +77,7 @@ public class RailwayEggValidation {
                 .map(Operations::throwableOperation3)
                 .flatMap(tryResult -> tryResult.toEither().mapLeft(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
                 .filter(Boolean::booleanValue)
-                .getOrElse(() -> Either.left(VALIDATION_FAILURE_PARENT_3))
+                .getOrElse(() -> Either.left(ABOUT_TO_HATCH_P_3))
                 .flatMap(ignore -> validatedEgg);
     }
 
@@ -110,7 +86,7 @@ public class RailwayEggValidation {
                 .map(Operations::throwableOperation3)
                 .flatMap(tryResult -> tryResult.toEither().mapLeft(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
                 .filter(Boolean::booleanValue)
-                .getOrElse(() -> Either.left(VALIDATION_FAILURE_PARENT_3))
+                .getOrElse(() -> Either.left(ABOUT_TO_HATCH_P_3))
                 .flatMap(ignore -> validatedEgg);
     }
 
@@ -119,8 +95,32 @@ public class RailwayEggValidation {
                 .map(Operations::throwableNestedOperation3)
                 .flatMap(tryResult -> tryResult.toEither().mapLeft(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
                 .filter(Boolean::booleanValue)
-                .getOrElse(() -> Either.left(VALIDATION_FAILURE_CHILD_3))
+                .getOrElse(() -> Either.left(YOLK_IS_IN_WRONG_COLOR_C_3))
                 .flatMap(ignore -> validatedYolk);
+    }
+
+    @Test
+    void declarativeOrchestration() {
+        final var validationResults = DataSet.getImmutableEggCarton().stream()
+                .map(Either::<ValidationFailure, ImmutableEgg>right)
+                .map(eggToBeValidated -> EGG_VALIDATION_CHAIN // this is vavr list
+                        /*foldLeft from vavr list*/.foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
+                .collect(Collectors.toList());
+
+        validationResults.forEach(System.out::println);
+        Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
+    }
+
+    @Test
+    void declarativeOrchestrationParallel() {
+        final var validationResults = ValidationUtils.getImmutableEggStream(DataSet.getImmutableEggCarton())
+                .map(Either::<ValidationFailure, ImmutableEgg>right)
+                .map(eggToBeValidated -> EGG_VALIDATION_CHAIN // this is vavr list
+                        /*foldLeft from vavr list*/.foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
+                .collect(Collectors.toList());
+
+        validationResults.forEach(System.out::println);
+        Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
     }
 
 }
