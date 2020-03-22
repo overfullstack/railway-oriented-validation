@@ -23,6 +23,7 @@ import static imperative.Operations.throwableOperation2;
 import static imperative.Operations.throwableOperation3;
 
 /**
+ * <pre>
  * Validations are broken down to separate functions.
  * Problems:
  * ∙ Octopus Orchestration
@@ -33,6 +34,7 @@ import static imperative.Operations.throwableOperation3;
  * ∙ Management of Validation Order - how-to-do
  * ∙ Complexity
  * ∙ Chaos
+ * </pre>
  */
 public class ImperativeEggValidation2 {
     // Can't ensure the uniformity of signature among validations, which can increase the complexity. 

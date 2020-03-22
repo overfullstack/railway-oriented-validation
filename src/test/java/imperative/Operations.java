@@ -11,6 +11,9 @@ import static domain.Color.GOLD;
 import static domain.Color.YELLOW;
 import static domain.Condition.BAD;
 
+/**
+ * Operations used by Imperative Validations.
+ */
 @UtilityClass
 class Operations {
 

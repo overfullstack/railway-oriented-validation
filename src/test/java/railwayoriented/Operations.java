@@ -12,6 +12,9 @@ import static domain.Color.GOLD;
 import static domain.Color.YELLOW;
 import static domain.Condition.BAD;
 
+/**
+ * Operations used by Functional Validations.
+ */
 @UtilityClass
 class Operations {
 

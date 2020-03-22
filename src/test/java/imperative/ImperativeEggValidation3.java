@@ -75,8 +75,10 @@ public class ImperativeEggValidation3 {
         return NONE;
     }
 
+    /**
+     * This Octopus turns into a monster someday
+     */
     @Test
-        // This Octopus turns into a monster someday
     void octopusOrchestrator() {
         var eggList = DataSet.getEggCarton();
 

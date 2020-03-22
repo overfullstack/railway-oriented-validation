@@ -19,15 +19,19 @@ import static domain.validation.ValidationFailureConstants.TOO_LATE_TO_HATCH_2;
 import static domain.validation.ValidationFailureConstants.YOLK_IS_IN_WRONG_COLOR_C_3;
 
 /**
+ * <pre>
  * This class contains validations as functions.
+ * 
  * Requirements
  * ∙ Partial Failures
+ * 
  * Problems solved:
  * ∙ Octopus Orchestrator - 😵 dead
  * ∙ Mutation to Transformation
  * ∙ Unit-Testability - 👍
  * ∙ Complexity - Minimum
  * ∙ Chaos to Order
+ * </pre>
  */
 public class RailwayEggValidation {
     public static Either<ValidationFailure, ImmutableEgg> validate1(Either<ValidationFailure, ImmutableEgg> validatedEgg) {

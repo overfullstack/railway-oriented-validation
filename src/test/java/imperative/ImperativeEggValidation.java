@@ -22,11 +22,13 @@ import static imperative.Operations.throwableOperation2;
 import static imperative.Operations.throwableOperation3;
 
 /**
+ * <pre>
  * Problems:
  * ∙ Complexity
  * ∙ Mutation
  * ∙ Unit-Testability
  * ∙ Validation Jenga
+ * </pre>
  */
 public class ImperativeEggValidation {
     @Test
