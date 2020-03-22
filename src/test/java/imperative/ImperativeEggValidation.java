@@ -26,6 +26,7 @@ import static imperative.Operations.throwableOperation3;
  * Problems:
  * ∙ Complexity
  * ∙ Mutation
+ * . Non-sharable
  * ∙ Unit-Testability
  * ∙ Validation Jenga
  * </pre>

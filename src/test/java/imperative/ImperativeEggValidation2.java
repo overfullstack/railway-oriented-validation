@@ -25,11 +25,14 @@ import static imperative.Operations.throwableOperation3;
 /**
  * <pre>
  * Validations are broken down to separate functions.
+ * 
  * Problems:
  * ∙ Octopus Orchestration
  * ∙ Mutation
  * ∙ Unit-Testability
+ * . Non-sharable
  * ∙ Don't attempt to run in Parallel
+ * 
  * Major Problems
  * ∙ Management of Validation Order - how-to-do
  * ∙ Complexity

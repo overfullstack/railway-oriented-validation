@@ -8,6 +8,7 @@ import io.vavr.control.Either;
 
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
 
 import static domain.validation.ValidationFailureConstants.NO_PARENT_TO_VALIDATE_CHILD;
 import static railwayoriented.RailwayEggValidation2.validate1Simple;
@@ -34,11 +35,11 @@ public class ValidationConfig {
             = List.of(validateChild31, validateChild32);
     public static final List<UnaryOperator<Either<ValidationFailure, ImmutableEgg>>> EGG_VALIDATION_CHAIN =
             PARENT_VALIDATION_CHAIN
-                    .appendAll(liftAllToParentValidationType(CHILD_VALIDATION_CHAIN, ImmutableEgg::getYolk, NO_PARENT_TO_VALIDATE_CHILD))
+                    .appendAll(ValidationUtils.liftAllToParentValidationType(CHILD_VALIDATION_CHAIN, ImmutableEgg::getYolk, NO_PARENT_TO_VALIDATE_CHILD))
                     .appendAll(List.of(
                             validateParent41,
                             validateParent42,
-                            liftToParentValidationType(validateChild4, ImmutableEgg::getYolk, NO_PARENT_TO_VALIDATE_CHILD))
+                            ValidationUtils.liftToParentValidationType(validateChild4, ImmutableEgg::getYolk, NO_PARENT_TO_VALIDATE_CHILD))
                     );
 
     /**
@@ -49,23 +50,11 @@ public class ValidationConfig {
     private static final Function<Either<ValidationFailure, Yolk>, Either<ValidationFailure, Yolk>>
             CHILD_VALIDATION_COMPOSITION = validateChild31.andThen(validateChild32);
 
-    private static <ParentT, ChildT, FailureT> io.vavr.collection.List<UnaryOperator<Either<FailureT, ParentT>>> liftAllToParentValidationType(
-            io.vavr.collection.List<UnaryOperator<Either<FailureT, ChildT>>> childValidations,
-            Function<ParentT, ChildT> toChildMapper, FailureT invalidParent) {
-        return childValidations.map(childValidation -> // Function taking a function and returning a function, Higher-order function
-                liftToParentValidationType(childValidation, toChildMapper, invalidParent));
+    public static Stream<ImmutableEgg> getImmutableEggStream(java.util.List<ImmutableEgg> immutableEggCarton) {
+        return immutableEggCarton.size() >= MAX_SIZE_FOR_PARALLEL
+                ? immutableEggCarton.parallelStream()
+                : immutableEggCarton.stream();
     }
 
-    private static <ParentT, ChildT, FailureT> UnaryOperator<Either<FailureT, ParentT>> liftToParentValidationType(
-            UnaryOperator<Either<FailureT, ChildT>> childValidation,
-            Function<ParentT, ChildT> toChildMapper, FailureT invalidParent) {
-        return validatedParent -> {
-            final var child = validatedParent
-                    .flatMap(parent -> parent == null ? Either.left(invalidParent) : Either.right(parent))
-                    .map(toChildMapper);
-            return childValidation.apply(child)
-                    .flatMap(ignore -> validatedParent);
-        };
-    }
 }
 

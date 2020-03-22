@@ -1,7 +1,7 @@
 package railwayoriented;
 
 import common.DataSet;
-import common.ValidationUtils;
+import common.ValidationConfig;
 import domain.ImmutableEgg;
 import domain.Yolk;
 import domain.validation.ValidationFailure;
@@ -117,7 +117,7 @@ public class RailwayEggValidation {
 
     @Test
     void declarativeOrchestrationParallel() {
-        final var validationResults = ValidationUtils.getImmutableEggStream(DataSet.getImmutableEggCarton())
+        final var validationResults = ValidationConfig.getImmutableEggStream(DataSet.getImmutableEggCarton())
                 .map(Either::<ValidationFailure, ImmutableEgg>right)
                 .map(eggToBeValidated -> EGG_VALIDATION_CHAIN // this is vavr list
                         /*foldLeft from vavr list*/.foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
