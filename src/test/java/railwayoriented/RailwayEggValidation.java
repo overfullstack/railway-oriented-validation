@@ -105,7 +105,7 @@ public class RailwayEggValidation {
 
     @Test
     void declarativeOrchestration() {
-        final var validationResults = DataSet.getImmutableEggCarton().stream()
+        final var validationResults = DataSet.getImmutableEggCarton().iterator()
                 .map(Either::<ValidationFailure, ImmutableEgg>right)
                 .map(eggToBeValidated -> EGG_VALIDATION_CHAIN // this is vavr list
                         /*foldLeft from vavr list*/.foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))

@@ -4,6 +4,7 @@ import io.vavr.collection.List;
 import io.vavr.control.Either;
 import lombok.experimental.UtilityClass;
 
+import java.util.ArrayList;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
@@ -12,6 +13,22 @@ import java.util.function.UnaryOperator;
  */
 @UtilityClass
 public class ValidationUtils {
+
+    public static <FailureT, ToBeValidatedT> java.util.List<Either<FailureT, ToBeValidatedT>> runAllValidationsFailFastImperative(
+            List<ToBeValidatedT> toBeValidatedList, List<UnaryOperator<Either<FailureT, ToBeValidatedT>>> validations) {
+        var validationResults = new ArrayList<Either<FailureT, ToBeValidatedT>>();
+        for (var toBeValidated : toBeValidatedList) {
+            Either<FailureT, ToBeValidatedT> toBeValidatedRight = Either.right(toBeValidated);
+            for (var validation : validations) {
+                toBeValidatedRight = validation.apply(toBeValidatedRight);
+                if (toBeValidatedRight.isLeft()) {
+                    break;
+                }
+            }
+            validationResults.add(toBeValidatedRight); // mutation
+        }
+        return validationResults;
+    }
 
     public static <FailureT, ToBeValidatedT> Function<ToBeValidatedT, Either<FailureT, ToBeValidatedT>> runAllValidationsFailFast(
             List<UnaryOperator<Either<FailureT, ToBeValidatedT>>> validations) {

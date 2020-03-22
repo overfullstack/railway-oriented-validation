@@ -50,10 +50,10 @@ public class ValidationConfig {
     private static final Function<Either<ValidationFailure, Yolk>, Either<ValidationFailure, Yolk>>
             CHILD_VALIDATION_COMPOSITION = validateChild31.andThen(validateChild32);
 
-    public static Stream<ImmutableEgg> getImmutableEggStream(java.util.List<ImmutableEgg> immutableEggCarton) {
+    public static Stream<ImmutableEgg> getImmutableEggStream(List<ImmutableEgg> immutableEggCarton) {
         return immutableEggCarton.size() >= MAX_SIZE_FOR_PARALLEL
-                ? immutableEggCarton.parallelStream()
-                : immutableEggCarton.stream();
+                ? immutableEggCarton.toJavaParallelStream()
+                : immutableEggCarton.toJavaStream();
     }
 
 }

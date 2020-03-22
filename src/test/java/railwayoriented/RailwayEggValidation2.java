@@ -9,7 +9,6 @@ import io.vavr.control.Either;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
@@ -17,6 +16,7 @@ import static common.DataSet.getExpectedImmutableEggValidationResults;
 import static common.ValidationConfig.EGG_VALIDATION_CHAIN;
 import static common.ValidationUtils.runAllValidationsErrorAccumulation;
 import static common.ValidationUtils.runAllValidationsFailFast;
+import static common.ValidationUtils.runAllValidationsFailFastImperative;
 import static domain.validation.ValidationFailureConstants.ABOUT_TO_HATCH_P_3;
 import static domain.validation.ValidationFailureConstants.NO_EGG_TO_VALIDATE_1;
 import static domain.validation.ValidationFailureConstants.TOO_LATE_TO_HATCH_2;
@@ -101,21 +101,7 @@ public class RailwayEggValidation2 {
     @Test
     void plainOldImperativeOrchestration() {
         final var eggCarton = DataSet.getImmutableEggCarton();
-        var validationResults = new ArrayList<Either<ValidationFailure, ImmutableEgg>>();
-        for (ImmutableEgg egg : eggCarton) {
-            Either<ValidationFailure, ImmutableEgg> validatedEgg = Either.right(egg);
-            for (UnaryOperator<Either<ValidationFailure, ImmutableEgg>> validation : EGG_VALIDATION_CHAIN) {
-                validatedEgg = validation.apply(validatedEgg);
-                if (validatedEgg.isLeft()) {
-                    break;
-                }
-            }
-            validationResults.add(validatedEgg); // mutation
-        }
-
-        for (Either<ValidationFailure, ImmutableEgg> validationResult : validationResults) {
-            System.out.println(validationResult);
-        }
+        var validationResults = runAllValidationsFailFastImperative(eggCarton, EGG_VALIDATION_CHAIN);
         Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
     }
 
@@ -129,7 +115,7 @@ public class RailwayEggValidation2 {
      */
     @Test
     void declarativeOrchestrationFailFast() {
-        final var validationResults = DataSet.getImmutableEggCarton().stream()
+        final var validationResults = DataSet.getImmutableEggCarton().iterator()
                 .map(runAllValidationsFailFast(EGG_VALIDATION_CHAIN))
                 .collect(Collectors.toList());
         validationResults.forEach(System.out::println);
@@ -138,7 +124,7 @@ public class RailwayEggValidation2 {
 
     @Test
     void declarativeOrchestrationErrorAccumulation() {
-        final var validationResultsAccumulated = DataSet.getImmutableEggCarton().stream()
+        final var validationResultsAccumulated = DataSet.getImmutableEggCarton().iterator()
                 .map(runAllValidationsErrorAccumulation(EGG_VALIDATION_CHAIN))
                 .collect(Collectors.toList());
         validationResultsAccumulated.forEach(System.out::println);

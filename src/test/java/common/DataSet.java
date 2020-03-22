@@ -4,10 +4,11 @@ import domain.Egg;
 import domain.ImmutableEgg;
 import domain.Yolk;
 import domain.validation.ValidationFailure;
-import io.vavr.collection.List;
 import io.vavr.control.Either;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static domain.Color.GOLD;
 import static domain.Color.ORANGE;
@@ -20,11 +21,12 @@ import static domain.validation.ThrowableMessages.THROWABLE_OPERATION_2;
 import static domain.validation.ThrowableMessages.THROWABLE_VALIDATION_3;
 import static domain.validation.ValidationFailureConstants.ABOUT_TO_HATCH_P_3;
 import static domain.validation.ValidationFailureConstants.NO_EGG_TO_VALIDATE_1;
+import static domain.validation.ValidationFailureConstants.NO_PARENT_TO_VALIDATE_CHILD;
 import static domain.validation.ValidationFailureConstants.TOO_LATE_TO_HATCH_2;
 import static domain.validation.ValidationFailureConstants.YOLK_IS_IN_WRONG_COLOR_C_3;
 
 public class DataSet {
-    public static java.util.List<Egg> getEggCarton() {
+    public static List<Egg> getEggCarton() {
         var eggCarton = new ArrayList<Egg>(); // Using arrayList because list prepared with List.of() throws exception when iterator.remove() is performed on them.
         eggCarton.add(null); // No egg to validate
         eggCarton.add(new Egg(1, new Yolk(GOOD, GOLD))); // About to hatch
@@ -41,8 +43,8 @@ public class DataSet {
         return eggCarton;
     }
 
-    public static java.util.List<ImmutableEgg> getImmutableEggCarton() {
-        return List.of(
+    public static io.vavr.collection.List<ImmutableEgg> getImmutableEggCarton() {
+        return io.vavr.collection.List.of( // Using vavr list as `java.util.List` doesn't allow `null` in `List.of()`
                 null, // No egg to validate
                 ImmutableEgg.of(1, new Yolk(GOOD, GOLD)), // About to hatch
                 ImmutableEgg.of(8, new Yolk(BAD, ORANGE)), // Yolk is bad
@@ -55,11 +57,11 @@ public class DataSet {
                 ImmutableEgg.of(6, new Yolk(BAD, ORANGE)), // Yolk is bad
                 ImmutableEgg.of(12, new Yolk(GOOD, ORANGE)), // Yolk in wrong color
                 ImmutableEgg.of(6, null) // No Yolk to validate 
-        ).toJavaList();
+        );
     }
 
-    public static java.util.List<Either<ValidationFailure, ImmutableEgg>> getExpectedImmutableEggValidationResults() {
-        return java.util.List.of(
+    public static List<Either<ValidationFailure, ImmutableEgg>> getExpectedImmutableEggValidationResults() {
+        return List.of(
                 Either.left(NO_EGG_TO_VALIDATE_1),
                 Either.left(ABOUT_TO_HATCH_P_3),
                 Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
@@ -75,7 +77,7 @@ public class DataSet {
         );
     }
 
-    public static java.util.Map<Integer, ValidationFailure> getExpectedEggValidationResults() {
+    public static Map<Integer, ValidationFailure> getExpectedEggValidationResults() {
         var expectedResults = new java.util.HashMap<Integer, ValidationFailure>();
         expectedResults.put(0, NO_EGG_TO_VALIDATE_1);
         expectedResults.put(1, ABOUT_TO_HATCH_P_3);
