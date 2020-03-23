@@ -92,4 +92,19 @@ public class DataSet {
         return expectedResults;
     }
 
+    public static List<List<Either<ValidationFailure, ImmutableEgg>>> getExpectedImmutableEggAccumulatedValidationResults() {
+        return List.of(
+                List.of(
+                        Either.left(NO_EGG_TO_VALIDATE_1),
+                        Either.left(ValidationFailure.withErrorMessage("null")),
+                        Either.left(ValidationFailure.withErrorMessage("null")),
+                        Either.left(NO_PARENT_TO_VALIDATE_CHILD),
+                        Either.left(NO_PARENT_TO_VALIDATE_CHILD),
+                        Either.left(ValidationFailure.withErrorMessage("null")),
+                        Either.left(ValidationFailure.withErrorMessage("null")),
+                        Either.left(NO_PARENT_TO_VALIDATE_CHILD)
+                )
+        );
+    }
+
 }

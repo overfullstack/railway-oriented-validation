@@ -1,18 +1,10 @@
 package railwayoriented;
 
-import common.DataSet;
-import common.ValidationConfig;
 import domain.ImmutableEgg;
 import domain.Yolk;
 import domain.validation.ValidationFailure;
 import io.vavr.control.Either;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
-import java.util.stream.Collectors;
-
-import static common.DataSet.getExpectedImmutableEggValidationResults;
-import static common.ValidationConfig.EGG_VALIDATION_CHAIN;
 import static domain.validation.ValidationFailureConstants.ABOUT_TO_HATCH_P_3;
 import static domain.validation.ValidationFailureConstants.NO_EGG_TO_VALIDATE_1;
 import static domain.validation.ValidationFailureConstants.TOO_LATE_TO_HATCH_2;
@@ -101,30 +93,6 @@ public class RailwayEggValidation {
                 .filter(Boolean::booleanValue)
                 .getOrElse(() -> Either.left(YOLK_IS_IN_WRONG_COLOR_C_3))
                 .flatMap(ignore -> validatedYolk);
-    }
-
-    @Test
-    void declarativeOrchestration() {
-        final var validationResults = DataSet.getImmutableEggCarton().iterator()
-                .map(Either::<ValidationFailure, ImmutableEgg>right)
-                .map(eggToBeValidated -> EGG_VALIDATION_CHAIN // this is vavr list
-                        /*foldLeft from vavr list*/.foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
-                .collect(Collectors.toList());
-
-        validationResults.forEach(System.out::println);
-        Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
-    }
-
-    @Test
-    void declarativeOrchestrationParallel() {
-        final var validationResults = ValidationConfig.getImmutableEggStream(DataSet.getImmutableEggCarton())
-                .map(Either::<ValidationFailure, ImmutableEgg>right)
-                .map(eggToBeValidated -> EGG_VALIDATION_CHAIN // this is vavr list
-                        /*foldLeft from vavr list*/.foldLeft(eggToBeValidated, (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
-                .collect(Collectors.toList());
-
-        validationResults.forEach(System.out::println);
-        Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
     }
 
 }

@@ -1,7 +1,5 @@
 package railwayoriented;
 
-import common.DataSet;
-import common.ValidationConfig;
 import domain.ImmutableEgg;
 import domain.Yolk;
 import domain.validation.ValidationFailure;
@@ -13,9 +11,11 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 import static common.DataSet.getExpectedImmutableEggValidationResults;
+import static common.DataSet.getImmutableEggCarton;
 import static common.ValidationConfig.EGG_VALIDATION_CHAIN;
-import static common.ValidationUtils.runAllValidationsErrorAccumulation;
-import static common.ValidationUtils.runAllValidationsFailFast;
+import static common.ValidationConfig.getStreamBySize;
+import static common.ValidationUtils.getErrorAccumulationStrategy;
+import static common.ValidationUtils.getFailFastStrategy;
 import static common.ValidationUtils.runAllValidationsFailFastImperative;
 import static domain.validation.ValidationFailureConstants.ABOUT_TO_HATCH_P_3;
 import static domain.validation.ValidationFailureConstants.NO_EGG_TO_VALIDATE_1;
@@ -100,7 +100,7 @@ public class RailwayEggValidation2 {
      */
     @Test
     void plainOldImperativeOrchestration() {
-        final var eggCarton = DataSet.getImmutableEggCarton();
+        final var eggCarton = getImmutableEggCarton();
         var validationResults = runAllValidationsFailFastImperative(eggCarton, EGG_VALIDATION_CHAIN);
         Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
     }
@@ -115,8 +115,8 @@ public class RailwayEggValidation2 {
      */
     @Test
     void declarativeOrchestrationFailFast() {
-        final var validationResults = DataSet.getImmutableEggCarton().iterator()
-                .map(runAllValidationsFailFast(EGG_VALIDATION_CHAIN))
+        final var validationResults = getImmutableEggCarton().iterator()
+                .map(getFailFastStrategy(EGG_VALIDATION_CHAIN))
                 .collect(Collectors.toList());
         validationResults.forEach(System.out::println);
         Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
@@ -124,19 +124,20 @@ public class RailwayEggValidation2 {
 
     @Test
     void declarativeOrchestrationErrorAccumulation() {
-        final var validationResultsAccumulated = DataSet.getImmutableEggCarton().iterator()
-                .map(runAllValidationsErrorAccumulation(EGG_VALIDATION_CHAIN))
+        final var validationResultsAccumulated = getImmutableEggCarton().iterator()
+                .map(getErrorAccumulationStrategy(EGG_VALIDATION_CHAIN))
                 .collect(Collectors.toList());
         validationResultsAccumulated.forEach(System.out::println);
     }
 
+    /**
+     * Will switch to Parallel mode if EggCarton size is above `MAX_SIZE_FOR_PARALLEL`.
+     */
     @Test
     void declarativeOrchestrationParallel() {
-        final var validationResults = ValidationConfig.getImmutableEggStream(DataSet.getImmutableEggCarton())
-                .map(egg -> EGG_VALIDATION_CHAIN.foldLeft(Either.<ValidationFailure, ImmutableEgg>right(egg),
-                        (validatedEgg, currentValidation) -> currentValidation.apply(validatedEgg)))
+        final var validationResults = getStreamBySize(getImmutableEggCarton())
+                .map(getFailFastStrategy(EGG_VALIDATION_CHAIN))
                 .collect(Collectors.toList());
-
         validationResults.forEach(System.out::println);
         Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
     }
