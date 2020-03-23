@@ -20,7 +20,7 @@ import static railwayoriented.RailwayEggValidation2.validateParent3;
 import static railwayoriented.RailwayEggValidation2.validateParent41;
 import static railwayoriented.RailwayEggValidation2.validateParent42;
 
-public class ValidationConfig {
+public class Config {
     public static final int MAX_DAYS_TO_HATCH = 21;
     public static final int MIN_DAYS_TO_HATCH = 15;
     static final int MAX_SIZE_FOR_PARALLEL = 10000;
@@ -35,11 +35,11 @@ public class ValidationConfig {
             = List.of(validateChild31, validateChild32);
     public static final List<UnaryOperator<Either<ValidationFailure, ImmutableEgg>>> EGG_VALIDATION_CHAIN =
             PARENT_VALIDATION_CHAIN
-                    .appendAll(ValidationUtils.liftAllToParentValidationType(CHILD_VALIDATION_CHAIN, ImmutableEgg::getYolk, NO_PARENT_TO_VALIDATE_CHILD))
+                    .appendAll(ConfigUtils.liftAllToParentValidationType(CHILD_VALIDATION_CHAIN, ImmutableEgg::getYolk, NO_PARENT_TO_VALIDATE_CHILD))
                     .appendAll(List.of(
                             validateParent41,
                             validateParent42,
-                            ValidationUtils.liftToParentValidationType(validateChild4, ImmutableEgg::getYolk, NO_PARENT_TO_VALIDATE_CHILD))
+                            ConfigUtils.liftToParentValidationType(validateChild4, ImmutableEgg::getYolk, NO_PARENT_TO_VALIDATE_CHILD))
                     );
 
     /**

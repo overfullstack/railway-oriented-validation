@@ -5,8 +5,8 @@ import domain.Yolk;
 import domain.validation.ThrowableMessages;
 import lombok.experimental.UtilityClass;
 
-import static common.ValidationConfig.MAX_DAYS_TO_HATCH;
-import static common.ValidationConfig.MIN_DAYS_TO_HATCH;
+import static common.Config.MAX_DAYS_TO_HATCH;
+import static common.Config.MIN_DAYS_TO_HATCH;
 import static domain.Color.GOLD;
 import static domain.Color.YELLOW;
 import static domain.Condition.BAD;

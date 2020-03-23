@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 
 import static common.DataSet.getExpectedImmutableEggValidationResults;
 import static common.DataSet.getImmutableEggCarton;
-import static common.ValidationConfig.EGG_VALIDATION_CHAIN;
-import static common.ValidationConfig.getStreamBySize;
-import static common.ValidationUtils.getErrorAccumulationStrategy;
-import static common.ValidationUtils.getFailFastStrategy;
-import static common.ValidationUtils.runAllValidationsFailFastImperative;
+import static common.Config.EGG_VALIDATION_CHAIN;
+import static common.Config.getStreamBySize;
+import static common.ValidationStrategies.getErrorAccumulationStrategy;
+import static common.ValidationStrategies.getFailFastStrategy;
+import static common.ValidationStrategies.runAllValidationsFailFastImperative;
 import static domain.validation.ValidationFailureConstants.ABOUT_TO_HATCH_P_3;
 import static domain.validation.ValidationFailureConstants.NO_EGG_TO_VALIDATE_1;
 import static domain.validation.ValidationFailureConstants.TOO_LATE_TO_HATCH_2;
