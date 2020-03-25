@@ -1,4 +1,4 @@
-package railwayoriented;
+package declarative;
 
 import domain.ImmutableEgg;
 import domain.Yolk;
@@ -13,10 +13,10 @@ import static domain.validation.ValidationFailureConstants.YOLK_IS_IN_WRONG_COLO
 /**
  * <pre>
  * This class contains validations as functions.
- * 
+ *
  * Requirements
  * ∙ Partial Failures
- * 
+ *
  * Problems solved:
  * ∙ Octopus Orchestrator - 😵 dead
  * ∙ Mutation to Transformation
@@ -25,7 +25,7 @@ import static domain.validation.ValidationFailureConstants.YOLK_IS_IN_WRONG_COLO
  * ∙ Chaos to Order
  * </pre>
  */
-public class RailwayEggValidation {
+public class RailwayValidation {
     public static Either<ValidationFailure, ImmutableEgg> validate1(Either<ValidationFailure, ImmutableEgg> validatedEgg) {
         return validatedEgg
                 .filter(Operations::simpleOperation1)

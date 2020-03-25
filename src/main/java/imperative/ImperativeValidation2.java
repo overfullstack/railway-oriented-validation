@@ -4,15 +4,13 @@ import common.DataSet;
 import domain.Egg;
 import domain.Yolk;
 import domain.validation.ValidationFailure;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import lombok.experimental.UtilityClass;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static common.DataSet.getExpectedEggValidationResults;
 import static domain.validation.ValidationFailureConstants.ABOUT_TO_HATCH_P_3;
 import static domain.validation.ValidationFailureConstants.NO_EGG_TO_VALIDATE_1;
 import static domain.validation.ValidationFailureConstants.TOO_LATE_TO_HATCH_2;
@@ -25,21 +23,22 @@ import static imperative.Operations.throwableOperation3;
 /**
  * <pre>
  * Validations are broken down to separate functions.
- * 
+ *
  * Problems:
  * ∙ Octopus Orchestration
  * ∙ Mutation
  * ∙ Unit-Testability
  * . Non-sharable
  * ∙ Don't attempt to run in Parallel
- * 
+ *
  * Major Problems
  * ∙ Management of Validation Order - how-to-do
  * ∙ Complexity
  * ∙ Chaos
  * </pre>
  */
-public class ImperativeEggValidation2 {
+@UtilityClass
+public class ImperativeValidation2 {
     // Can't ensure the uniformity of signature among validations, which can increase the complexity. 
     private static boolean validate1(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggToBeValidated) {
         if (!simpleOperation1(eggToBeValidated)) {
@@ -173,8 +172,10 @@ public class ImperativeEggValidation2 {
         return true;
     }
 
-    @Test
-    void octopusOrchestrator() { // This Octopus turns into a monster someday.
+    /**
+     * This Octopus turns into a monster someday
+     */
+    static HashMap<Integer, ValidationFailure> validateEggCartonImperatively() {
         List<Egg> eggList = DataSet.getEggCarton();
         // R3 - Trying to be the owner of all state.
         var badEggFailureBucketMap = new HashMap<Integer, ValidationFailure>();
@@ -206,8 +207,7 @@ public class ImperativeEggValidation2 {
         for (Map.Entry<Integer, ValidationFailure> entry : badEggFailureBucketMap.entrySet()) {
             System.out.println(entry);
         }
-
-        Assertions.assertEquals(getExpectedEggValidationResults(), badEggFailureBucketMap);
+        return badEggFailureBucketMap;
     }
 
 }

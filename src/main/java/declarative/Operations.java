@@ -1,4 +1,4 @@
-package railwayoriented;
+package declarative;
 
 import domain.ImmutableEgg;
 import domain.Yolk;

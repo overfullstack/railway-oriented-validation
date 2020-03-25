@@ -47,3 +47,4 @@ out/production/resources/
 /.idea/libraries/*
 /.idea/sonarlint/*
 out/test/classes/generated_tests/
+*.iml

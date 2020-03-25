@@ -3,14 +3,11 @@ package imperative;
 import common.DataSet;
 import domain.Egg;
 import domain.validation.ValidationFailure;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import static common.DataSet.getExpectedEggValidationResults;
 import static domain.validation.ValidationFailureConstants.ABOUT_TO_HATCH_P_3;
 import static domain.validation.ValidationFailureConstants.NONE;
 import static domain.validation.ValidationFailureConstants.NO_EGG_TO_VALIDATE_1;
@@ -24,7 +21,7 @@ import static imperative.Operations.throwableOperation3;
 /**
  * Validations are broken down to separate functions.
  */
-public class ImperativeEggValidation3 {
+public class ImperativeValidation3 {
     private static void updateFailureForEgg(Iterator<Egg> iterator, int eggIndex, Map<Integer, ValidationFailure> badEggFailureBucketMap, ValidationFailure ValidationFailure) {
         iterator.remove();
         badEggFailureBucketMap.put(eggIndex, ValidationFailure);
@@ -78,8 +75,7 @@ public class ImperativeEggValidation3 {
     /**
      * This Octopus turns into a monster someday
      */
-    @Test
-    void octopusOrchestrator() {
+    static HashMap<Integer, ValidationFailure> validateEggCartonImperatively() {
         var eggList = DataSet.getEggCarton();
 
         var badEggFailureBucketMap = new HashMap<Integer, ValidationFailure>();
@@ -111,7 +107,7 @@ public class ImperativeEggValidation3 {
         for (var entry : badEggFailureBucketMap.entrySet()) {
             System.out.println(entry);
         }
-        Assertions.assertEquals(getExpectedEggValidationResults(), badEggFailureBucketMap);
+        return badEggFailureBucketMap;
     }
 
 }

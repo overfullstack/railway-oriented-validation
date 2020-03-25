@@ -1,4 +1,4 @@
-package common;
+package declarative;
 
 import io.vavr.collection.List;
 import io.vavr.control.Either;
@@ -77,5 +77,5 @@ public class ValidationStrategies {
             return validations.map(validation -> validation.apply(toBeValidatedRight));
         };
     }
-    
+
 }
