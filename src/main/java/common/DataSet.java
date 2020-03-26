@@ -5,6 +5,7 @@ import domain.ImmutableEgg;
 import domain.Yolk;
 import domain.validation.ValidationFailure;
 import io.vavr.control.Either;
+import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ import static domain.validation.ValidationFailureConstants.NO_PARENT_TO_VALIDATE
 import static domain.validation.ValidationFailureConstants.TOO_LATE_TO_HATCH_2;
 import static domain.validation.ValidationFailureConstants.YOLK_IS_IN_WRONG_COLOR_C_3;
 
+@UtilityClass
 public class DataSet {
     public static List<Egg> getEggCarton() {
         var eggCarton = new ArrayList<Egg>(); // Using arrayList because list prepared with List.of() throws exception when iterator.remove() is performed on them.

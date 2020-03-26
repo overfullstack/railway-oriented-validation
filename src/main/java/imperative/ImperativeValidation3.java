@@ -3,6 +3,8 @@ package imperative;
 import common.DataSet;
 import domain.Egg;
 import domain.validation.ValidationFailure;
+import lombok.experimental.UtilityClass;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,6 +23,8 @@ import static imperative.Operations.throwableOperation3;
 /**
  * Validations are broken down to separate functions.
  */
+@Log4j2
+@UtilityClass
 public class ImperativeValidation3 {
     private static void updateFailureForEgg(Iterator<Egg> iterator, int eggIndex, Map<Integer, ValidationFailure> badEggFailureBucketMap, ValidationFailure ValidationFailure) {
         iterator.remove();
@@ -105,7 +109,7 @@ public class ImperativeValidation3 {
         }
 
         for (var entry : badEggFailureBucketMap.entrySet()) {
-            System.out.println(entry);
+            log.info(entry);
         }
         return badEggFailureBucketMap;
     }

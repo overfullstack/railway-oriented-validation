@@ -4,6 +4,7 @@ import domain.ImmutableEgg;
 import domain.Yolk;
 import domain.validation.ValidationFailure;
 import io.vavr.control.Either;
+import lombok.experimental.UtilityClass;
 
 import java.util.function.UnaryOperator;
 
@@ -29,6 +30,7 @@ import static domain.validation.ValidationFailureConstants.YOLK_IS_IN_WRONG_COLO
  * ∙ Chaos to Order
  * </pre>
  */
+@UtilityClass
 public class RailwayValidation2 {
 
     public static final UnaryOperator<Either<ValidationFailure, ImmutableEgg>> validate1Simple = validatedEgg -> validatedEgg

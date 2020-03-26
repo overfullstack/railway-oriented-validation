@@ -5,6 +5,7 @@ import domain.Egg;
 import domain.validation.ValidationFailure;
 import domain.validation.ValidationFailureConstants;
 import lombok.experimental.UtilityClass;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,6 +15,7 @@ import java.util.Map;
 /**
  * gakshintala created on 3/26/20.
  */
+@Log4j2
 @UtilityClass
 public class ImperativeValidation {
     static Map<Integer, ValidationFailure> validateEggCartonImperatively() {
@@ -62,8 +64,9 @@ public class ImperativeValidation {
             }
         }
         for (Map.Entry<Integer, ValidationFailure> entry : badEggFailureBucketMap.entrySet()) {
-            System.out.println(entry);
+            log.info(entry);
         }
+        log.info(badEggFailureBucketMap);
         return badEggFailureBucketMap;
     }
 }

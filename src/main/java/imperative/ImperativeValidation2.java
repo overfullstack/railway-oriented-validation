@@ -5,6 +5,7 @@ import domain.Egg;
 import domain.Yolk;
 import domain.validation.ValidationFailure;
 import lombok.experimental.UtilityClass;
+import lombok.extern.log4j.Log4j2;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -37,6 +38,7 @@ import static imperative.Operations.throwableOperation3;
  * ∙ Chaos
  * </pre>
  */
+@Log4j2
 @UtilityClass
 public class ImperativeValidation2 {
     // Can't ensure the uniformity of signature among validations, which can increase the complexity. 
@@ -205,7 +207,7 @@ public class ImperativeValidation2 {
         }
 
         for (Map.Entry<Integer, ValidationFailure> entry : badEggFailureBucketMap.entrySet()) {
-            System.out.println(entry);
+            log.info(entry);
         }
         return badEggFailureBucketMap;
     }

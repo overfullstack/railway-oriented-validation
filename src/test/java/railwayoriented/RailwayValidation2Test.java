@@ -1,5 +1,6 @@
 package railwayoriented;
 
+import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -30,6 +31,7 @@ import static declarative.ValidationStrategies.runAllValidationsFailFastImperati
  * ∙ Chaos to Order
  * </pre>
  */
+@Log4j2
 public class RailwayValidation2Test {
     /**
      * Again mixing How-to-do from What-to-do.
@@ -54,7 +56,7 @@ public class RailwayValidation2Test {
         final var validationResults = getImmutableEggCarton().iterator()
                 .map(getFailFastStrategy(EGG_VALIDATION_CHAIN))
                 .collect(Collectors.toList());
-        validationResults.forEach(System.out::println);
+        validationResults.forEach(log::info);
         Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
     }
 
@@ -63,7 +65,7 @@ public class RailwayValidation2Test {
         final var validationResultsAccumulated = getImmutableEggCarton().iterator()
                 .map(getErrorAccumulationStrategy(EGG_VALIDATION_CHAIN))
                 .collect(Collectors.toList());
-        validationResultsAccumulated.forEach(System.out::println);
+        validationResultsAccumulated.forEach(log::info);
     }
 
     /**
@@ -74,7 +76,7 @@ public class RailwayValidation2Test {
         final var validationResults = getStreamBySize(getImmutableEggCarton())
                 .map(getFailFastStrategy(EGG_VALIDATION_CHAIN))
                 .collect(Collectors.toList());
-        validationResults.forEach(System.out::println);
+        validationResults.forEach(log::info);
         Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
     }
 

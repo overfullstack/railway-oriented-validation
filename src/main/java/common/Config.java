@@ -6,13 +6,14 @@ import domain.Yolk;
 import domain.validation.ValidationFailure;
 import io.vavr.collection.List;
 import io.vavr.control.Either;
+import lombok.experimental.UtilityClass;
 
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import static domain.validation.ValidationFailureConstants.NO_PARENT_TO_VALIDATE_CHILD;
-
+@UtilityClass
 public class Config {
     public static final int MAX_DAYS_TO_HATCH = 21;
     public static final int MIN_DAYS_TO_HATCH = 15;

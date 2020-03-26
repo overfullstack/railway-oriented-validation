@@ -30,7 +30,6 @@ public class ImperativeValidation2Test {
     @Test
     void octopusOrchestrator() {
         HashMap<Integer, ValidationFailure> badEggFailureBucketMap = ImperativeValidation2.validateEggCartonImperatively();
-
         Assertions.assertEquals(getExpectedEggValidationResults(), badEggFailureBucketMap);
     }
 

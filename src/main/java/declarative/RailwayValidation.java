@@ -4,6 +4,7 @@ import domain.ImmutableEgg;
 import domain.Yolk;
 import domain.validation.ValidationFailure;
 import io.vavr.control.Either;
+import lombok.experimental.UtilityClass;
 
 import static domain.validation.ValidationFailureConstants.ABOUT_TO_HATCH_P_3;
 import static domain.validation.ValidationFailureConstants.NO_EGG_TO_VALIDATE_1;
@@ -25,6 +26,7 @@ import static domain.validation.ValidationFailureConstants.YOLK_IS_IN_WRONG_COLO
  * ∙ Chaos to Order
  * </pre>
  */
+@UtilityClass
 public class RailwayValidation {
     public static Either<ValidationFailure, ImmutableEgg> validate1(Either<ValidationFailure, ImmutableEgg> validatedEgg) {
         return validatedEgg

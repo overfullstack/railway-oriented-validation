@@ -17,6 +17,8 @@ test {
 
 dependencies {
     implementation 'io.vavr:vavr:+'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '+'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '+'
     testImplementation('org.junit.jupiter:junit-jupiter:+') {
         exclude group: 'junit', module: 'junit'
     }
