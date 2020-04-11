@@ -14,11 +14,11 @@ import java.util.function.UnaryOperator;
 @UtilityClass
 public class ValidationStrategies {
 
-    public static <FailureT, ToBeValidatedT> java.util.List<Either<FailureT, ToBeValidatedT>> runAllValidationsFailFastImperative(
-            List<ToBeValidatedT> toBeValidatedList, List<UnaryOperator<Either<FailureT, ToBeValidatedT>>> validations) {
-        var validationResults = new ArrayList<Either<FailureT, ToBeValidatedT>>();
+    public static <FailureT, ValidatableT> java.util.List<Either<FailureT, ValidatableT>> runAllValidationsFailFastImperative(
+            List<ValidatableT> toBeValidatedList, List<UnaryOperator<Either<FailureT, ValidatableT>>> validations) {
+        var validationResults = new ArrayList<Either<FailureT, ValidatableT>>();
         for (var toBeValidated : toBeValidatedList) {
-            Either<FailureT, ToBeValidatedT> toBeValidatedRight = Either.right(toBeValidated);
+            Either<FailureT, ValidatableT> toBeValidatedRight = Either.right(toBeValidated);
             for (var validation : validations) {
                 toBeValidatedRight = validation.apply(toBeValidatedRight);
                 if (toBeValidatedRight.isLeft()) {
@@ -32,22 +32,17 @@ public class ValidationStrategies {
 
     /* ---------------------------FAIL FAST--------------------------- */
 
-    public static <FailureT, ToBeValidatedT> Function<ToBeValidatedT, Either<FailureT, ToBeValidatedT>> getFailFastStrategy(
-            List<UnaryOperator<Either<FailureT, ToBeValidatedT>>> validations) {
-        return runAllValidationsFailFast(validations);
-    }
-
-    private static <FailureT, ToBeValidatedT> Function<ToBeValidatedT, Either<FailureT, ToBeValidatedT>> runAllValidationsFailFast(
-            List<UnaryOperator<Either<FailureT, ToBeValidatedT>>> validations) {
-        return toBeValidated -> validations.foldLeft(Either.<FailureT, ToBeValidatedT>right(toBeValidated),
+    public static <FailureT, ValidatableT> Function<ValidatableT, Either<FailureT, ValidatableT>> getFailFastStrategy(
+            List<UnaryOperator<Either<FailureT, ValidatableT>>> validations) {
+        return toBeValidated -> validations.foldLeft(Either.<FailureT, ValidatableT>right(toBeValidated),
                 (validated, currentValidation) -> validated.isRight() ? currentValidation.apply(validated) : validated
         );
     }
 
-    private static <FailureT, ToBeValidatedT> Function<ToBeValidatedT, Either<FailureT, ToBeValidatedT>> runAllValidationsFailFast2(
-            List<UnaryOperator<Either<FailureT, ToBeValidatedT>>> validations) {
+    private static <FailureT, ValidatableT> Function<ValidatableT, Either<FailureT, ValidatableT>> getFailFastStrategy2(
+            List<UnaryOperator<Either<FailureT, ValidatableT>>> validations) {
         return toBeValidated -> {
-            Either<FailureT, ToBeValidatedT> toBeValidatedRight = Either.right(toBeValidated);
+            Either<FailureT, ValidatableT> toBeValidatedRight = Either.right(toBeValidated);
             return validations.iterator()
                     .map(validation -> validation.apply(toBeValidatedRight))
                     .filter(Either::isLeft)
@@ -57,23 +52,18 @@ public class ValidationStrategies {
 
     /* ---------------------------ERROR ACCUMULATION--------------------------- */
 
-    public static <FailureT, ToBeValidatedT> Function<ToBeValidatedT, List<Either<FailureT, ToBeValidatedT>>> getErrorAccumulationStrategy(
-            List<UnaryOperator<Either<FailureT, ToBeValidatedT>>> validations) {
-        return runAllValidationsErrorAccumulation(validations);
-    }
-
-    private static <FailureT, ToBeValidatedT> Function<ToBeValidatedT, List<Either<FailureT, ToBeValidatedT>>> runAllValidationsErrorAccumulation(
-            List<UnaryOperator<Either<FailureT, ToBeValidatedT>>> validations) {
+    public static <FailureT, ValidatableT> Function<ValidatableT, List<Either<FailureT, ValidatableT>>> getErrorAccumulationStrategy(
+            List<UnaryOperator<Either<FailureT, ValidatableT>>> validations) {
         return toBeValidated ->
-                validations.foldLeft(List.<Either<FailureT, ToBeValidatedT>>empty(),
+                validations.foldLeft(List.<Either<FailureT, ValidatableT>>empty(),
                         (allValidationResults, currentValidation) -> allValidationResults.append(currentValidation.apply(Either.right(toBeValidated)))
                 );
     }
 
-    private static <FailureT, ToBeValidatedT> Function<ToBeValidatedT, List<Either<FailureT, ToBeValidatedT>>> runAllValidationsErrorAccumulation2(
-            List<UnaryOperator<Either<FailureT, ToBeValidatedT>>> validations) {
+    private static <FailureT, ValidatableT> Function<ValidatableT, List<Either<FailureT, ValidatableT>>> getErrorAccumulationStrategy2(
+            List<UnaryOperator<Either<FailureT, ValidatableT>>> validations) {
         return toBeValidated -> {
-            Either<FailureT, ToBeValidatedT> toBeValidatedRight = Either.right(toBeValidated);
+            Either<FailureT, ValidatableT> toBeValidatedRight = Either.right(toBeValidated);
             return validations.map(validation -> validation.apply(toBeValidatedRight));
         };
     }

@@ -12,10 +12,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static domain.validation.ValidationFailureConstants.ABOUT_TO_HATCH_P_3;
-import static domain.validation.ValidationFailureConstants.NO_EGG_TO_VALIDATE_1;
-import static domain.validation.ValidationFailureConstants.TOO_LATE_TO_HATCH_2;
-import static domain.validation.ValidationFailureConstants.YOLK_IS_IN_WRONG_COLOR_C_3;
+import static domain.validation.ValidationFailures.ABOUT_TO_HATCH_P_3;
+import static domain.validation.ValidationFailures.NO_EGG_TO_VALIDATE_1;
+import static domain.validation.ValidationFailures.TOO_LATE_TO_HATCH_2;
+import static domain.validation.ValidationFailures.YOLK_IS_IN_WRONG_COLOR_C_3;
 import static imperative.Operations.simpleOperation1;
 import static imperative.Operations.throwableNestedOperation3;
 import static imperative.Operations.throwableOperation2;

@@ -3,7 +3,7 @@ package imperative;
 import common.DataSet;
 import domain.Egg;
 import domain.validation.ValidationFailure;
-import domain.validation.ValidationFailureConstants;
+import domain.validation.ValidationFailures;
 import lombok.experimental.UtilityClass;
 import lombok.extern.log4j.Log4j2;
 
@@ -27,13 +27,13 @@ public class ImperativeValidation {
             if (!Operations.simpleOperation1(eggToBeValidated)) {
                 iterator.remove(); // Mutation
                 // How can you cleanly map validation-failure to which validation-method failed?
-                badEggFailureBucketMap.put(eggIndex, ValidationFailureConstants.NO_EGG_TO_VALIDATE_1);
+                badEggFailureBucketMap.put(eggIndex, ValidationFailures.NO_EGG_TO_VALIDATE_1);
                 continue;
             }
             try {
                 if (!Operations.throwableOperation2(eggToBeValidated)) {
                     iterator.remove();
-                    badEggFailureBucketMap.put(eggIndex, ValidationFailureConstants.TOO_LATE_TO_HATCH_2);
+                    badEggFailureBucketMap.put(eggIndex, ValidationFailures.TOO_LATE_TO_HATCH_2);
                     continue;
                 }
             } catch (Exception e) { // Repetition of same logic for exception handling
@@ -47,7 +47,7 @@ public class ImperativeValidation {
                     try {
                         if (!Operations.throwableNestedOperation3(yolkTobeValidated)) {
                             iterator.remove();
-                            badEggFailureBucketMap.put(eggIndex, ValidationFailureConstants.YOLK_IS_IN_WRONG_COLOR_C_3);
+                            badEggFailureBucketMap.put(eggIndex, ValidationFailures.YOLK_IS_IN_WRONG_COLOR_C_3);
                         }
                     } catch (Exception e) {
                         iterator.remove();
@@ -55,7 +55,7 @@ public class ImperativeValidation {
                     }
                 } else {
                     iterator.remove();
-                    badEggFailureBucketMap.put(eggIndex, ValidationFailureConstants.ABOUT_TO_HATCH_P_3);
+                    badEggFailureBucketMap.put(eggIndex, ValidationFailures.ABOUT_TO_HATCH_P_3);
                     continue;
                 }
             } catch (Exception e) {

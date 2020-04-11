@@ -6,10 +6,10 @@ import domain.validation.ValidationFailure;
 import io.vavr.control.Either;
 import lombok.experimental.UtilityClass;
 
-import static domain.validation.ValidationFailureConstants.ABOUT_TO_HATCH_P_3;
-import static domain.validation.ValidationFailureConstants.NO_EGG_TO_VALIDATE_1;
-import static domain.validation.ValidationFailureConstants.TOO_LATE_TO_HATCH_2;
-import static domain.validation.ValidationFailureConstants.YOLK_IS_IN_WRONG_COLOR_C_3;
+import static domain.validation.ValidationFailures.ABOUT_TO_HATCH_P_3;
+import static domain.validation.ValidationFailures.NO_EGG_TO_VALIDATE_1;
+import static domain.validation.ValidationFailures.TOO_LATE_TO_HATCH_2;
+import static domain.validation.ValidationFailures.YOLK_IS_IN_WRONG_COLOR_C_3;
 
 /**
  * <pre>

@@ -12,11 +12,17 @@ import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
-import static domain.validation.ValidationFailureConstants.NO_PARENT_TO_VALIDATE_CHILD;
+import static domain.validation.ValidationFailures.NO_PARENT_TO_VALIDATE_CHILD;
+
+/**
+ * Config to prepare various instances and constants.
+ * gakshintala created on 3/23/20.
+ */
 @UtilityClass
 public class Config {
-    public static final int MAX_DAYS_TO_HATCH = 21;
     public static final int MIN_DAYS_TO_HATCH = 15;
+    public static final int MAX_DAYS_TO_HATCH = 21;
+    public static final int MAX_DAYS_TO_SHIP = 5;
     static final int MAX_SIZE_FOR_PARALLEL = 10000;
 
     /**

@@ -5,7 +5,7 @@ import lombok.ToString;
 
 @ToString
 @AllArgsConstructor
-public enum ValidationFailureConstants implements ValidationFailure {
+public enum ValidationFailures implements ValidationFailure {
     NONE("NONE"),
     NO_PARENT_TO_VALIDATE_CHILD("Child-1: No parent to validate child 👨‍👦"),
     NO_EGG_TO_VALIDATE_1("1: No egg to validate 🧐"),

@@ -16,15 +16,15 @@ import static domain.Color.ORANGE;
 import static domain.Color.YELLOW;
 import static domain.Condition.BAD;
 import static domain.Condition.GOOD;
-import static domain.validation.ThrowableMessages.THROWABLE_NESTED_OPERATION_31;
-import static domain.validation.ThrowableMessages.THROWABLE_NESTED_OPERATION_32;
-import static domain.validation.ThrowableMessages.THROWABLE_OPERATION_2;
-import static domain.validation.ThrowableMessages.THROWABLE_VALIDATION_3;
-import static domain.validation.ValidationFailureConstants.ABOUT_TO_HATCH_P_3;
-import static domain.validation.ValidationFailureConstants.NO_EGG_TO_VALIDATE_1;
-import static domain.validation.ValidationFailureConstants.NO_PARENT_TO_VALIDATE_CHILD;
-import static domain.validation.ValidationFailureConstants.TOO_LATE_TO_HATCH_2;
-import static domain.validation.ValidationFailureConstants.YOLK_IS_IN_WRONG_COLOR_C_3;
+import static domain.validation.ThrowableMsgs.THROWABLE_NESTED_OPERATION_31;
+import static domain.validation.ThrowableMsgs.THROWABLE_NESTED_OPERATION_32;
+import static domain.validation.ThrowableMsgs.THROWABLE_OPERATION_2;
+import static domain.validation.ThrowableMsgs.THROWABLE_VALIDATION_3;
+import static domain.validation.ValidationFailures.ABOUT_TO_HATCH_P_3;
+import static domain.validation.ValidationFailures.NO_EGG_TO_VALIDATE_1;
+import static domain.validation.ValidationFailures.NO_PARENT_TO_VALIDATE_CHILD;
+import static domain.validation.ValidationFailures.TOO_LATE_TO_HATCH_2;
+import static domain.validation.ValidationFailures.YOLK_IS_IN_WRONG_COLOR_C_3;
 
 @UtilityClass
 public class DataSet {
