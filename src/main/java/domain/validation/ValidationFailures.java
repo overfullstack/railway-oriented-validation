@@ -7,7 +7,8 @@ import lombok.ToString;
 @AllArgsConstructor
 public enum ValidationFailures implements ValidationFailure {
     NONE("NONE"),
-    NO_PARENT_TO_VALIDATE_CHILD("Child-1: No parent to validate child 👨‍👦"),
+    NO_PARENT_TO_VALIDATE_CHILD("Child-1: No parent to validate the child 👨‍👦"),
+    NO_CHILD_TO_VALIDATE("Parent: No child to validate 👦"),
     NO_EGG_TO_VALIDATE_1("1: No egg to validate 🧐"),
     TOO_LATE_TO_HATCH_2("2: Too late to hatch ⏳"),
     ABOUT_TO_HATCH_P_3("Parent-3: About to hatch 🥚"),

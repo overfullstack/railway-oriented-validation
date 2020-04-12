@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import static common.Config.EGG_VALIDATION_CHAIN;
 import static common.Config.getStreamBySize;
-import static common.DataSet.getExpectedImmutableEggValidationResults;
+import static common.DataSet.getExpectedDeclarativeValidationResults;
 import static common.DataSet.getImmutableEggCarton;
 import static declarative.ValidationStrategies.getErrorAccumulationStrategy;
 import static declarative.ValidationStrategies.getFailFastStrategy;
@@ -40,7 +40,7 @@ public class RailwayValidation2Test {
     void plainOldImperativeOrchestration() {
         final var eggCarton = getImmutableEggCarton();
         var validationResults = runAllValidationsFailFastImperative(eggCarton, EGG_VALIDATION_CHAIN);
-        Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
+        Assertions.assertEquals(getExpectedDeclarativeValidationResults(), validationResults);
     }
 
     /**
@@ -57,7 +57,7 @@ public class RailwayValidation2Test {
                 .map(getFailFastStrategy(EGG_VALIDATION_CHAIN))
                 .collect(Collectors.toList());
         validationResults.forEach(log::info);
-        Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
+        Assertions.assertEquals(getExpectedDeclarativeValidationResults(), validationResults);
     }
 
     @Test
@@ -77,7 +77,7 @@ public class RailwayValidation2Test {
                 .map(getFailFastStrategy(EGG_VALIDATION_CHAIN))
                 .collect(Collectors.toList());
         validationResults.forEach(log::info);
-        Assertions.assertEquals(getExpectedImmutableEggValidationResults(), validationResults);
+        Assertions.assertEquals(getExpectedDeclarativeValidationResults(), validationResults);
     }
 
 }

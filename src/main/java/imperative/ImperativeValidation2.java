@@ -140,7 +140,6 @@ public class ImperativeValidation2 {
             badEggFailureBucketMap.put(eggIndex, ValidationFailure.withErrorMessage(e.getMessage()));
             return false;
         }
-
         return true;
     }
 

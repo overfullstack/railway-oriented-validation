@@ -34,7 +34,7 @@ public class ValidationStrategies {
 
     public static <FailureT, ValidatableT> Function<ValidatableT, Either<FailureT, ValidatableT>> getFailFastStrategy(
             List<UnaryOperator<Either<FailureT, ValidatableT>>> validations) {
-        return toBeValidated -> validations.foldLeft(Either.<FailureT, ValidatableT>right(toBeValidated),
+        return toBeValidated -> validations.foldLeft(Either.right(toBeValidated),
                 (validated, currentValidation) -> validated.isRight() ? currentValidation.apply(validated) : validated
         );
     }

@@ -21,6 +21,7 @@ import static domain.validation.ThrowableMsgs.THROWABLE_NESTED_OPERATION_32;
 import static domain.validation.ThrowableMsgs.THROWABLE_OPERATION_2;
 import static domain.validation.ThrowableMsgs.THROWABLE_VALIDATION_3;
 import static domain.validation.ValidationFailures.ABOUT_TO_HATCH_P_3;
+import static domain.validation.ValidationFailures.NO_CHILD_TO_VALIDATE;
 import static domain.validation.ValidationFailures.NO_EGG_TO_VALIDATE_1;
 import static domain.validation.ValidationFailures.NO_PARENT_TO_VALIDATE_CHILD;
 import static domain.validation.ValidationFailures.TOO_LATE_TO_HATCH_2;
@@ -41,7 +42,7 @@ public class DataSet {
         eggCarton.add(new Egg(0, new Yolk(BAD, YELLOW))); // Chicken might already be out
         eggCarton.add(new Egg(6, new Yolk(BAD, ORANGE))); // Yolk is bad
         eggCarton.add(new Egg(12, new Yolk(GOOD, ORANGE))); // Yolk in wrong color
-        eggCarton.add(new Egg(6, null)); // No Yolk to validate 
+        eggCarton.add(new Egg(6, null)); // No Child to validate 
         return eggCarton;
     }
 
@@ -58,28 +59,11 @@ public class DataSet {
                 ImmutableEgg.of(0, new Yolk(BAD, YELLOW)), // Chicken might already be out
                 ImmutableEgg.of(6, new Yolk(BAD, ORANGE)), // Yolk is bad
                 ImmutableEgg.of(12, new Yolk(GOOD, ORANGE)), // Yolk in wrong color
-                ImmutableEgg.of(6, null) // No Yolk to validate 
+                ImmutableEgg.of(6, null) // No Child to validate 
         );
     }
 
-    public static List<Either<ValidationFailure, ImmutableEgg>> getExpectedImmutableEggValidationResults() {
-        return List.of(
-                Either.left(NO_EGG_TO_VALIDATE_1),
-                Either.left(ABOUT_TO_HATCH_P_3),
-                Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
-                Either.left(ValidationFailure.withErrorMessage(THROWABLE_OPERATION_2)),
-                Either.right(ImmutableEgg.of(5, new Yolk(GOOD, YELLOW))),
-                Either.left(ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3)),
-                Either.left(TOO_LATE_TO_HATCH_2),
-                Either.right(ImmutableEgg.of(14, new Yolk(GOOD, GOLD))),
-                Either.left(ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3)),
-                Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
-                Either.left(YOLK_IS_IN_WRONG_COLOR_C_3),
-                Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_31))
-        );
-    }
-
-    public static Map<Integer, ValidationFailure> getExpectedEggValidationResults() {
+    public static Map<Integer, ValidationFailure> getExpectedImperativeValidationResults() {
         var expectedResults = new java.util.HashMap<Integer, ValidationFailure>();
         expectedResults.put(0, NO_EGG_TO_VALIDATE_1);
         expectedResults.put(1, ABOUT_TO_HATCH_P_3);
@@ -92,6 +76,23 @@ public class DataSet {
         expectedResults.put(10, YOLK_IS_IN_WRONG_COLOR_C_3);
         expectedResults.put(11, ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_31));
         return expectedResults;
+    }
+
+    public static List<Either<ValidationFailure, ImmutableEgg>> getExpectedDeclarativeValidationResults() {
+        return List.of(
+                Either.left(NO_EGG_TO_VALIDATE_1),
+                Either.left(ABOUT_TO_HATCH_P_3),
+                Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
+                Either.left(ValidationFailure.withErrorMessage(THROWABLE_OPERATION_2)),
+                Either.right(ImmutableEgg.of(5, new Yolk(GOOD, YELLOW))),
+                Either.left(ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3)),
+                Either.left(TOO_LATE_TO_HATCH_2),
+                Either.right(ImmutableEgg.of(14, new Yolk(GOOD, GOLD))),
+                Either.left(ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3)),
+                Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
+                Either.left(YOLK_IS_IN_WRONG_COLOR_C_3),
+                Either.left(NO_CHILD_TO_VALIDATE)
+        );
     }
 
     public static List<List<Either<ValidationFailure, ImmutableEgg>>> getExpectedImmutableEggAccumulatedValidationResults() {

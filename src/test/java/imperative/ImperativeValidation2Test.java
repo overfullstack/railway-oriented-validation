@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
-import static common.DataSet.getExpectedEggValidationResults;
+import static common.DataSet.getExpectedImperativeValidationResults;
 
 /**
  * <pre>
@@ -30,7 +30,7 @@ public class ImperativeValidation2Test {
     @Test
     void octopusOrchestrator() {
         HashMap<Integer, ValidationFailure> badEggFailureBucketMap = ImperativeValidation2.validateEggCartonImperatively();
-        Assertions.assertEquals(getExpectedEggValidationResults(), badEggFailureBucketMap);
+        Assertions.assertEquals(getExpectedImperativeValidationResults(), badEggFailureBucketMap);
     }
 
 }

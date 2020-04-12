@@ -12,6 +12,9 @@ import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
+import static common.ConfigUtils.liftAllToParentValidationType;
+import static common.ConfigUtils.liftToParentValidationType;
+import static domain.validation.ValidationFailures.NO_CHILD_TO_VALIDATE;
 import static domain.validation.ValidationFailures.NO_PARENT_TO_VALIDATE_CHILD;
 
 /**
@@ -35,11 +38,11 @@ public class Config {
             = List.of(RailwayValidation2.validateChild31, RailwayValidation2.validateChild32);
     public static final List<UnaryOperator<Either<ValidationFailure, ImmutableEgg>>> EGG_VALIDATION_CHAIN =
             PARENT_VALIDATION_CHAIN
-                    .appendAll(ConfigUtils.liftAllToParentValidationType(CHILD_VALIDATION_CHAIN, ImmutableEgg::getYolk, NO_PARENT_TO_VALIDATE_CHILD))
+                    .appendAll(liftAllToParentValidationType(CHILD_VALIDATION_CHAIN, ImmutableEgg::getYolk, NO_PARENT_TO_VALIDATE_CHILD, NO_CHILD_TO_VALIDATE))
                     .appendAll(List.of(
                             RailwayValidation2.validateParent41,
                             RailwayValidation2.validateParent42,
-                            ConfigUtils.liftToParentValidationType(RailwayValidation2.validateChild4, ImmutableEgg::getYolk, NO_PARENT_TO_VALIDATE_CHILD))
+                            liftToParentValidationType(RailwayValidation2.validateChild4, ImmutableEgg::getYolk, NO_PARENT_TO_VALIDATE_CHILD, NO_CHILD_TO_VALIDATE))
                     );
 
     /**
