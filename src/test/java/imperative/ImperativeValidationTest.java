@@ -3,7 +3,8 @@ package imperative;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static common.DataSet.getExpectedImperativeValidationResults;
+import static common.DataSet.EXPECTED_IMPERATIVE_VALIDATION_RESULTS;
+
 
 /**
  * <pre>
@@ -19,7 +20,7 @@ public class ImperativeValidationTest {
     @Test
     void cyclomaticCode() {
         var badEggFailureBucketMap = ImperativeValidation.validateEggCartonImperatively();
-        Assertions.assertEquals(getExpectedImperativeValidationResults(), badEggFailureBucketMap);
+        Assertions.assertEquals(EXPECTED_IMPERATIVE_VALIDATION_RESULTS, badEggFailureBucketMap);
     }
 
 }

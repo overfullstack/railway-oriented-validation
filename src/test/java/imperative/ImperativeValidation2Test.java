@@ -1,12 +1,10 @@
 package imperative;
 
-import domain.validation.ValidationFailure;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
+import static common.DataSet.EXPECTED_IMPERATIVE_VALIDATION_RESULTS;
 
-import static common.DataSet.getExpectedImperativeValidationResults;
 
 /**
  * <pre>
@@ -29,8 +27,8 @@ public class ImperativeValidation2Test {
     
     @Test
     void octopusOrchestrator() {
-        HashMap<Integer, ValidationFailure> badEggFailureBucketMap = ImperativeValidation2.validateEggCartonImperatively();
-        Assertions.assertEquals(getExpectedImperativeValidationResults(), badEggFailureBucketMap);
+        var badEggFailureBucketMap = ImperativeValidation2.validateEggCartonImperatively();
+        Assertions.assertEquals(EXPECTED_IMPERATIVE_VALIDATION_RESULTS, badEggFailureBucketMap);
     }
 
 }

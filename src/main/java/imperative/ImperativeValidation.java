@@ -19,7 +19,7 @@ import java.util.Map;
 @UtilityClass
 public class ImperativeValidation {
     static Map<Integer, ValidationFailure> validateEggCartonImperatively() {
-        List<Egg> eggList = DataSet.getEggCarton();
+        List<Egg> eggList = DataSet.EGG_CARTON;
         HashMap<Integer, ValidationFailure> badEggFailureBucketMap = new HashMap<>();
         int eggIndex = 0;
         for (Iterator<Egg> iterator = eggList.iterator(); iterator.hasNext(); eggIndex++) {

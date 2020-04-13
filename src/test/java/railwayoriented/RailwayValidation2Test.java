@@ -8,11 +8,12 @@ import java.util.stream.Collectors;
 
 import static common.Config.EGG_VALIDATION_CHAIN;
 import static common.Config.getStreamBySize;
-import static common.DataSet.getExpectedDeclarativeValidationResults;
-import static common.DataSet.getImmutableEggCarton;
+import static common.DataSet.EXPECTED_DECLARATIVE_VALIDATION_RESULTS;
+import static common.DataSet.IMMUTABLE_EGG_CARTON;
 import static declarative.ValidationStrategies.getErrorAccumulationStrategy;
 import static declarative.ValidationStrategies.getFailFastStrategy;
 import static declarative.ValidationStrategies.runAllValidationsFailFastImperative;
+import static domain.validation.ValidationFailures.NOTHING_TO_VALIDATE;
 
 /**
  * <pre>
@@ -38,9 +39,9 @@ public class RailwayValidation2Test {
      */
     @Test
     void plainOldImperativeOrchestration() {
-        final var eggCarton = getImmutableEggCarton();
-        var validationResults = runAllValidationsFailFastImperative(eggCarton, EGG_VALIDATION_CHAIN);
-        Assertions.assertEquals(getExpectedDeclarativeValidationResults(), validationResults);
+        final var eggCarton = IMMUTABLE_EGG_CARTON;
+        var validationResults = runAllValidationsFailFastImperative(eggCarton, EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE);
+        Assertions.assertEquals(EXPECTED_DECLARATIVE_VALIDATION_RESULTS, validationResults);
     }
 
     /**
@@ -53,17 +54,17 @@ public class RailwayValidation2Test {
      */
     @Test
     void declarativeOrchestrationFailFast() {
-        final var validationResults = getImmutableEggCarton().iterator()
-                .map(getFailFastStrategy(EGG_VALIDATION_CHAIN))
+        final var validationResults = IMMUTABLE_EGG_CARTON.iterator()
+                .map(getFailFastStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE))
                 .collect(Collectors.toList());
         validationResults.forEach(log::info);
-        Assertions.assertEquals(getExpectedDeclarativeValidationResults(), validationResults);
+        Assertions.assertEquals(EXPECTED_DECLARATIVE_VALIDATION_RESULTS, validationResults);
     }
 
     @Test
     void declarativeOrchestrationErrorAccumulation() {
-        final var validationResultsAccumulated = getImmutableEggCarton().iterator()
-                .map(getErrorAccumulationStrategy(EGG_VALIDATION_CHAIN))
+        final var validationResultsAccumulated = IMMUTABLE_EGG_CARTON.iterator()
+                .map(getErrorAccumulationStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE))
                 .collect(Collectors.toList());
         validationResultsAccumulated.forEach(log::info);
     }
@@ -73,11 +74,11 @@ public class RailwayValidation2Test {
      */
     @Test
     void declarativeOrchestrationParallel() {
-        final var validationResults = getStreamBySize(getImmutableEggCarton())
-                .map(getFailFastStrategy(EGG_VALIDATION_CHAIN))
+        final var validationResults = getStreamBySize(IMMUTABLE_EGG_CARTON)
+                .map(getFailFastStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE))
                 .collect(Collectors.toList());
         validationResults.forEach(log::info);
-        Assertions.assertEquals(getExpectedDeclarativeValidationResults(), validationResults);
+        Assertions.assertEquals(EXPECTED_DECLARATIVE_VALIDATION_RESULTS, validationResults);
     }
 
 }

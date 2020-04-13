@@ -3,7 +3,8 @@ package imperative;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static common.DataSet.getExpectedImperativeValidationResults;
+import static common.DataSet.EXPECTED_IMPERATIVE_VALIDATION_RESULTS;
+
 
 /**
  * Validations are broken down to separate functions.
@@ -15,7 +16,7 @@ public class ImperativeValidation3Test {
     @Test
     void octopusOrchestrator() {
         var badEggFailureBucketMap = ImperativeValidation3.validateEggCartonImperatively();
-        Assertions.assertEquals(getExpectedImperativeValidationResults(), badEggFailureBucketMap);
+        Assertions.assertEquals(EXPECTED_IMPERATIVE_VALIDATION_RESULTS, badEggFailureBucketMap);
     }
 
 }

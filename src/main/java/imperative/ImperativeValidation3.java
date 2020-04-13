@@ -80,7 +80,7 @@ public class ImperativeValidation3 {
      * This Octopus turns into a monster someday
      */
     static HashMap<Integer, ValidationFailure> validateEggCartonImperatively() {
-        var eggList = DataSet.getEggCarton();
+        var eggList = DataSet.EGG_CARTON;
 
         var badEggFailureBucketMap = new HashMap<Integer, ValidationFailure>();
         var eggIndex = 0;
