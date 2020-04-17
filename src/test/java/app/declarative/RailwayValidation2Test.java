@@ -1,12 +1,5 @@
 package app.declarative;
 
-import algebra.Dsl;
-import app.domain.Color;
-import app.domain.Condition;
-import app.domain.ImmutableEgg;
-import app.domain.Yolk;
-import app.domain.validation.ValidationFailure;
-import io.vavr.collection.List;
 import lombok.extern.log4j.Log4j2;
 import lombok.val;
 import org.junit.jupiter.api.Assertions;
@@ -21,8 +14,6 @@ import static app.common.DataSet.EXPECTED_DECLARATIVE_VALIDATION_RESULTS;
 import static app.common.DataSet.IMMUTABLE_EGG_CARTON;
 import static app.declarative.Config.EGG_VALIDATION_CHAIN;
 import static app.declarative.Config.getStreamBySize;
-import static app.declarative.RailwayValidation2.validateThrowable;
-import static app.domain.validation.ValidationFailures.NONE;
 import static app.domain.validation.ValidationFailures.NOTHING_TO_VALIDATE;
 
 /**
@@ -74,14 +65,6 @@ public class RailwayValidation2Test {
     void declarativeOrchestrationFailFastNonBulk() {
         val validationResult =
                 failFastStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE).apply(IMMUTABLE_EGG_CARTON.get());
-        log.info(validationResult);
-    }
-
-    @Test
-    void declarativeOrchestrationFailFastNonBulkSingleValidation2() {
-        final var validator = Dsl.liftThrowable(validateThrowable, NONE, ValidationFailure::withThrowable);
-        val validationResult = failFastStrategy(List.of(validator), NOTHING_TO_VALIDATE)
-                .apply(ImmutableEgg.of(20, Yolk.of(Condition.BAD, Color.GOLD)));
         log.info(validationResult);
     }
     

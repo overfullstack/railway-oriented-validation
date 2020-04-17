@@ -37,8 +37,10 @@ public class Config {
      */
     private static final List<Validator<ImmutableEgg, ValidationFailure>> PARENT_VALIDATION_CHAIN =
             List.of(validate1Simple, validate2Throwable, validateParent3);
+    
     private static final List<Validator<Yolk, ValidationFailure>> CHILD_VALIDATION_CHAIN
             = List.of(validateChild31, validateChild32);
+    
     public static final List<Validator<ImmutableEgg, ValidationFailure>> EGG_VALIDATION_CHAIN =
             PARENT_VALIDATION_CHAIN
                     .appendAll(liftAllToParentValidationType(CHILD_VALIDATION_CHAIN, ImmutableEgg::getYolk, NO_PARENT_TO_VALIDATE_CHILD, NO_CHILD_TO_VALIDATE))

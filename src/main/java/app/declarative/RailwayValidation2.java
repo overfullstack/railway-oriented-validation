@@ -8,6 +8,8 @@ import io.vavr.CheckedFunction1;
 import io.vavr.control.Either;
 import lombok.experimental.UtilityClass;
 
+import java.util.function.Function;
+
 import static app.domain.validation.ValidationFailures.ABOUT_TO_HATCH_P_3;
 import static app.domain.validation.ValidationFailures.NO_EGG_TO_VALIDATE_1;
 import static app.domain.validation.ValidationFailures.TOO_LATE_TO_HATCH_2;
@@ -37,9 +39,6 @@ public class RailwayValidation2 {
     public static final Validator<ImmutableEgg, ValidationFailure> validate1Simple = validatedEgg -> validatedEgg
             .filter(Operations::simpleOperation1)
             .getOrElse(() -> Either.left(NO_EGG_TO_VALIDATE_1));
-
-    public static final CheckedFunction1<ImmutableEgg, ValidationFailure> validateThrowable = validatedEgg -> { 
-        throw new IllegalArgumentException("illegal"); };
 
     public static final Validator<ImmutableEgg, ValidationFailure> validate2Throwable = validatedEgg -> validatedEgg
             .map(egg -> liftTry(Operations::throwableOperation2).apply(egg))
@@ -90,5 +89,10 @@ public class RailwayValidation2 {
             .filter(Boolean::booleanValue)
             .getOrElse(() -> Either.left(YOLK_IS_IN_WRONG_COLOR_C_3))
             .flatMap(ignore -> validatedYolk);
+
+    public static final Function<ImmutableEgg, ValidationFailure> validate = egg -> TOO_LATE_TO_HATCH_2;
+
+    public static final CheckedFunction1<ImmutableEgg, ValidationFailure> validateThrowable = validatedEgg -> {
+        throw new IllegalArgumentException("illegal"); };
 
 }

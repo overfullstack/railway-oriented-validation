@@ -41,10 +41,15 @@ public class Strategies {
 
     public <FailureT, ValidatableT> FailFastStrategy<ValidatableT, FailureT> failFastStrategy(
             List<Validator<ValidatableT, FailureT>> validations, FailureT invalidValidatable) {
-        return toBeValidated -> toBeValidated == null ? Either.left(invalidValidatable)
-                : validations.foldLeft(Either.right(toBeValidated),
-                (validated, currentValidation) -> validated.isRight() ? currentValidation.apply(validated) : validated
-        );
+        return toBeValidated -> {
+            if (toBeValidated == null) {
+                return Either.left(invalidValidatable);
+            } else {
+                Either<FailureT, ValidatableT> toBeValidatedRight = Either.right(toBeValidated);
+                return validations.foldLeft(toBeValidatedRight,
+                        (validated, currentValidation) -> validated.isRight() ? currentValidation.apply(toBeValidatedRight) : validated);
+            }
+        };
     }
 
     private <FailureT, ValidatableT> FailFastStrategy<ValidatableT, FailureT> failFastStrategy2(
