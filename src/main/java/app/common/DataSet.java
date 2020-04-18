@@ -63,7 +63,7 @@ public class DataSet {
             );
 
     public static final Map<Integer, ValidationFailure> EXPECTED_IMPERATIVE_VALIDATION_RESULTS = Map.of(
-            0, NOTHING_TO_VALIDATE,
+            0, NO_EGG_TO_VALIDATE_1,
             1, ABOUT_TO_HATCH_P_3,
             2, ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32),
             3, ValidationFailure.withErrorMessage(THROWABLE_OPERATION_2),

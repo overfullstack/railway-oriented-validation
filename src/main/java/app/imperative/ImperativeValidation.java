@@ -1,6 +1,5 @@
 package app.imperative;
 
-import app.common.DataSet;
 import app.domain.Egg;
 import app.domain.validation.ValidationFailure;
 import app.domain.validation.ValidationFailures;
@@ -26,8 +25,7 @@ import java.util.Map;
 @Log4j2
 @UtilityClass
 public class ImperativeValidation {
-    static Map<Integer, ValidationFailure> validateEggCartonImperatively() {
-        List<Egg> eggList = DataSet.EGG_CARTON;
+    static Map<Integer, ValidationFailure> validateEggCartonImperatively(List<Egg> eggList) {
         HashMap<Integer, ValidationFailure> badEggFailureBucketMap = new HashMap<>();
         int eggIndex = 0;
         for (Iterator<Egg> iterator = eggList.iterator(); iterator.hasNext(); eggIndex++) {

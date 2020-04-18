@@ -1,6 +1,5 @@
 package app.imperative;
 
-import app.common.DataSet;
 import app.domain.Egg;
 import app.domain.validation.ValidationFailure;
 import lombok.experimental.UtilityClass;
@@ -9,6 +8,7 @@ import lombok.val;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import static app.domain.validation.ValidationFailures.ABOUT_TO_HATCH_P_3;
@@ -80,9 +80,7 @@ public class ImperativeValidation3 {
     /**
      * This Octopus turns into a monster someday
      */
-    static HashMap<Integer, ValidationFailure> validateEggCartonImperatively() {
-        var eggList = DataSet.EGG_CARTON;
-
+    static HashMap<Integer, ValidationFailure> validateEggCartonImperatively(List<Egg> eggList) {
         var badEggFailureBucketMap = new HashMap<Integer, ValidationFailure>();
         var eggIndex = 0;
         for (var iterator = eggList.iterator(); iterator.hasNext(); eggIndex++) {

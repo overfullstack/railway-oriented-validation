@@ -1,6 +1,5 @@
 package app.imperative;
 
-import app.common.DataSet;
 import app.domain.Egg;
 import app.domain.Yolk;
 import app.domain.validation.ValidationFailure;
@@ -176,8 +175,7 @@ public class ImperativeValidation2 {
     /**
      * This Octopus turns into a monster someday
      */
-    static HashMap<Integer, ValidationFailure> validateEggCartonImperatively() {
-        List<Egg> eggList = DataSet.EGG_CARTON;
+    static HashMap<Integer, ValidationFailure> validateEggCartonImperatively(List<Egg> eggList) {
         // R3 - Trying to be the owner of all state.
         var badEggFailureBucketMap = new HashMap<Integer, ValidationFailure>();
         int eggIndex = 0;
