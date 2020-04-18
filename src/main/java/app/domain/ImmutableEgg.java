@@ -6,10 +6,5 @@
 
 package app.domain;
 
-import lombok.Value;
-
-@Value(staticConstructor = "of")
-public class ImmutableEgg {
-    int daysToHatch;
-    Yolk yolk;
+public record ImmutableEgg(int daysToHatch, Yolk yolk) {
 }

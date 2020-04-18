@@ -25,10 +25,10 @@ class DslTest {
         final var simplesFirst = simples.appendAll(throwables);
         final var throwablesFirst = throwables.appendAll(simples);
         val validationResult1 = failFastStrategy(simplesFirst, NOTHING_TO_VALIDATE)
-                .apply(ImmutableEgg.of(20, Yolk.of(Condition.BAD, Color.GOLD)));
+                .apply(new ImmutableEgg(20, new Yolk(Condition.BAD, Color.GOLD)));
         log.info(validationResult1);
         val validationResult2 = failFastStrategy(throwablesFirst, NOTHING_TO_VALIDATE)
-                .apply(ImmutableEgg.of(20, Yolk.of(Condition.BAD, Color.GOLD)));
+                .apply(new ImmutableEgg(20, new Yolk(Condition.BAD, Color.GOLD)));
         log.info(validationResult2);
     }
 }

@@ -15,3 +15,4 @@ public class Egg {
     int daysToHatch;
     Yolk yolk;
 }
+

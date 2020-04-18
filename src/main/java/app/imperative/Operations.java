@@ -46,10 +46,10 @@ class Operations {
     static boolean throwableNestedOperation3(Yolk yolkTobeValidated) {
         if (yolkTobeValidated == null) {
             throw new IllegalArgumentException(ThrowableMsgs.THROWABLE_NESTED_OPERATION_31);
-        } else if (yolkTobeValidated.getCondition() == BAD) {
+        } else if (yolkTobeValidated.condition() == BAD) {
             throw new IllegalArgumentException(ThrowableMsgs.THROWABLE_NESTED_OPERATION_32);
         } else {
-            return yolkTobeValidated.getColor() == GOLD || yolkTobeValidated.getColor() == YELLOW;
+            return yolkTobeValidated.color() == GOLD || yolkTobeValidated.color() == YELLOW;
         }
     }
 }

@@ -33,33 +33,33 @@ import static app.domain.validation.ValidationFailures.YOLK_IS_IN_WRONG_COLOR_C_
 public class DataSet {
     public static final List<Egg> EGG_CARTON = new ArrayList<>(Arrays.asList(
             null, // No egg to validate
-            new Egg(1, Yolk.of(GOOD, GOLD)), // About to hatch
-            new Egg(8, Yolk.of(BAD, ORANGE)), // Yolk is bad
-            new Egg(25, Yolk.of(GOOD, ORANGE)), // Might never hatch
-            new Egg(5, Yolk.of(GOOD, YELLOW)), // Valid ✅
-            new Egg(-1, Yolk.of(BAD, GOLD)), // Chicken might already be out
-            new Egg(16, Yolk.of(GOOD, GOLD)), // Too late to hatch 
-            new Egg(14, Yolk.of(GOOD, GOLD)), // Valid ✅
-            new Egg(0, Yolk.of(BAD, YELLOW)), // Chicken might already be out
-            new Egg(6, Yolk.of(BAD, ORANGE)), // Yolk is bad
-            new Egg(12, Yolk.of(GOOD, ORANGE)), // Yolk in wrong color
+            new Egg(1, new Yolk(GOOD, GOLD)), // About to hatch
+            new Egg(8, new Yolk(BAD, ORANGE)), // Yolk is bad
+            new Egg(25, new Yolk(GOOD, ORANGE)), // Might never hatch
+            new Egg(5, new Yolk(GOOD, YELLOW)), // Valid ✅
+            new Egg(-1, new Yolk(BAD, GOLD)), // Chicken might already be out
+            new Egg(16, new Yolk(GOOD, GOLD)), // Too late to hatch 
+            new Egg(14, new Yolk(GOOD, GOLD)), // Valid ✅
+            new Egg(0, new Yolk(BAD, YELLOW)), // Chicken might already be out
+            new Egg(6, new Yolk(BAD, ORANGE)), // Yolk is bad
+            new Egg(12, new Yolk(GOOD, ORANGE)), // Yolk in wrong color
             new Egg(6, null) // No Child to validate   
     ));
 
     public static final io.vavr.collection.List<ImmutableEgg> IMMUTABLE_EGG_CARTON =
             io.vavr.collection.List.of( // Using vavr list as `java.util.List` doesn't allow `null` in `List.of()`
                     null, // No egg to validate
-                    ImmutableEgg.of(1, Yolk.of(GOOD, GOLD)), // About to hatch
-                    ImmutableEgg.of(8, Yolk.of(BAD, ORANGE)), // Yolk is bad
-                    ImmutableEgg.of(25, Yolk.of(GOOD, ORANGE)), // Might never hatch
-                    ImmutableEgg.of(5, Yolk.of(GOOD, YELLOW)), // Valid ✅
-                    ImmutableEgg.of(-1, Yolk.of(BAD, GOLD)), // Chicken might already be out
-                    ImmutableEgg.of(16, Yolk.of(GOOD, GOLD)), // Too late to hatch 
-                    ImmutableEgg.of(14, Yolk.of(GOOD, GOLD)), // Valid ✅
-                    ImmutableEgg.of(0, Yolk.of(BAD, YELLOW)), // Chicken might already be out
-                    ImmutableEgg.of(6, Yolk.of(BAD, ORANGE)), // Yolk is bad
-                    ImmutableEgg.of(12, Yolk.of(GOOD, ORANGE)), // Yolk in wrong color
-                    ImmutableEgg.of(6, null) // No Child to validate 
+                    new ImmutableEgg(1, new Yolk(GOOD, GOLD)), // About to hatch
+                    new ImmutableEgg(8, new Yolk(BAD, ORANGE)), // Yolk is bad
+                    new ImmutableEgg(25, new Yolk(GOOD, ORANGE)), // Might never hatch
+                    new ImmutableEgg(5, new Yolk(GOOD, YELLOW)), // Valid ✅
+                    new ImmutableEgg(-1, new Yolk(BAD, GOLD)), // Chicken might already be out
+                    new ImmutableEgg(16, new Yolk(GOOD, GOLD)), // Too late to hatch 
+                    new ImmutableEgg(14, new Yolk(GOOD, GOLD)), // Valid ✅
+                    new ImmutableEgg(0, new Yolk(BAD, YELLOW)), // Chicken might already be out
+                    new ImmutableEgg(6, new Yolk(BAD, ORANGE)), // Yolk is bad
+                    new ImmutableEgg(12, new Yolk(GOOD, ORANGE)), // Yolk in wrong color
+                    new ImmutableEgg(6, null) // No Child to validate 
             );
 
     public static final Map<Integer, ValidationFailure> EXPECTED_IMPERATIVE_VALIDATION_RESULTS = Map.of(
@@ -80,10 +80,10 @@ public class DataSet {
             Either.left(ABOUT_TO_HATCH_P_3),
             Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
             Either.left(ValidationFailure.withErrorMessage(THROWABLE_OPERATION_2)),
-            Either.right(ImmutableEgg.of(5, Yolk.of(GOOD, YELLOW))),
+            Either.right(new ImmutableEgg(5, new Yolk(GOOD, YELLOW))),
             Either.left(ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3)),
             Either.left(TOO_LATE_TO_HATCH_2),
-            Either.right(ImmutableEgg.of(14, Yolk.of(GOOD, GOLD))),
+            Either.right(new ImmutableEgg(14, new Yolk(GOOD, GOLD))),
             Either.left(ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3)),
             Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
             Either.left(YOLK_IS_IN_WRONG_COLOR_C_3),
