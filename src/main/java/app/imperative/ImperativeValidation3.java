@@ -3,7 +3,7 @@ package app.imperative;
 import app.domain.Egg;
 import app.domain.validation.ValidationFailure;
 import lombok.experimental.UtilityClass;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 import java.util.HashMap;
@@ -24,7 +24,7 @@ import static app.imperative.Operations.throwableOperation3;
 /**
  * Validations are broken down to separate functions.
  */
-@Log4j2
+@Slf4j
 @UtilityClass
 public class ImperativeValidation3 {
     private static void updateFailureForEgg(Iterator<Egg> iterator, int eggIndex, Map<Integer, ValidationFailure> badEggFailureBucketMap, ValidationFailure ValidationFailure) {
@@ -108,7 +108,7 @@ public class ImperativeValidation3 {
         }
 
         for (var entry : badEggFailureBucketMap.entrySet()) {
-            log.info(entry);
+            log.info(entry.toString());
         }
         return badEggFailureBucketMap;
     }

@@ -1,13 +1,13 @@
 package algebra;
 
 import algebra.types.Validator;
+import io.vavr.Function1;
 import io.vavr.collection.List;
 import io.vavr.control.Either;
 import lombok.experimental.UtilityClass;
 import lombok.val;
 
 import java.util.Objects;
-import java.util.function.Function;
 
 /**
  * Utility methods to be used by config.
@@ -17,14 +17,14 @@ import java.util.function.Function;
 public class ConfigDsl {
     public static <ParentT, ChildT, FailureT> List<Validator<ParentT, FailureT>> liftAllToParentValidationType(
             List<Validator<ChildT, FailureT>> childValidations,
-            Function<ParentT, ChildT> toChildMapper, FailureT invalidParent, FailureT invalidChild) {
+            Function1<ParentT, ChildT> toChildMapper, FailureT invalidParent, FailureT invalidChild) {
         return childValidations.map(childValidation -> // Function taking a function and returning a function, Higher-order function
                 liftToParentValidationType(childValidation, toChildMapper, invalidParent, invalidChild));
     }
 
     public static <ParentT, ChildT, FailureT> Validator<ParentT, FailureT> liftToParentValidationType(
             Validator<ChildT, FailureT> childValidation,
-            Function<ParentT, ChildT> toChildMapper, FailureT invalidParent, FailureT invalidChild) {
+            Function1<ParentT, ChildT> toChildMapper, FailureT invalidParent, FailureT invalidChild) {
         return validatedParent -> {
             val child = validatedParent
                     .flatMap(parent -> parent == null ? Either.left(invalidParent) : Either.right(parent))
@@ -36,5 +36,5 @@ public class ConfigDsl {
                     .flatMap(ignore -> validatedParent);
         };
     }
-    
+
 }

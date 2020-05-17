@@ -26,7 +26,7 @@ class Operations {
     //-----------------------|5----------------|15-------------------|21-------------------
     //----About to hatch----|------Valid-------|--Might never hatch--|--Too late to hatch--|
 
-    static Boolean throwableOperation2(ImmutableEgg eggToBeValidated) {
+    static boolean throwableOperation2(ImmutableEgg eggToBeValidated) {
         if (eggToBeValidated.daysToHatch() >= MAX_DAYS_TO_HATCH) { // Might never hatch
             throw new IllegalArgumentException(ThrowableMsgs.THROWABLE_OPERATION_2);
         } else {
@@ -34,7 +34,7 @@ class Operations {
         }
     }
 
-    static Boolean throwableOperation3(ImmutableEgg eggToBeValidated) {
+    static boolean throwableOperation3(ImmutableEgg eggToBeValidated) {
         if (eggToBeValidated.daysToHatch() <= 0) {
             throw new IllegalArgumentException(ThrowableMsgs.THROWABLE_VALIDATION_3);
         } else {
@@ -43,7 +43,7 @@ class Operations {
     }
 
 
-    static Boolean throwableNestedOperation3(Yolk yolkTobeValidated) {
+    static boolean throwableNestedOperation3(Yolk yolkTobeValidated) {
         if (yolkTobeValidated == null) {
             throw new IllegalArgumentException(ThrowableMsgs.THROWABLE_NESTED_OPERATION_31);
         } else if (yolkTobeValidated.condition() == BAD) {

@@ -4,7 +4,7 @@ import app.domain.Egg;
 import app.domain.validation.ValidationFailure;
 import app.domain.validation.ValidationFailures;
 import lombok.experimental.UtilityClass;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,7 +22,7 @@ import java.util.Map;
  * ∙ Validation Jenga
  * </pre>
  */
-@Log4j2
+@Slf4j
 @UtilityClass
 public class ImperativeValidation {
     static Map<Integer, ValidationFailure> validateEggCartonImperatively(List<Egg> eggList) {
@@ -70,9 +70,9 @@ public class ImperativeValidation {
             }
         }
         for (Map.Entry<Integer, ValidationFailure> entry : badEggFailureBucketMap.entrySet()) {
-            log.info(entry);
+            log.info(entry.toString());
         }
-        log.info(badEggFailureBucketMap);
+        log.info(badEggFailureBucketMap.toString());
         return badEggFailureBucketMap;
     }
 }

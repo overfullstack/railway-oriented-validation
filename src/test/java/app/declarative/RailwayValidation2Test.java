@@ -1,6 +1,7 @@
 package app.declarative;
 
-import lombok.extern.log4j.Log4j2;
+import io.vavr.collection.List;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,7 +34,7 @@ import static app.domain.validation.ValidationFailures.NOTHING_TO_VALIDATE;
  * ∙ Chaos to Order
  * </pre>
  */
-@Log4j2
+@Slf4j
 public class RailwayValidation2Test {
     /**
      * Again mixing How-to-do from What-to-do.
@@ -53,38 +54,45 @@ public class RailwayValidation2Test {
      * </pre>
      */
     @Test
-    void declarativeOrchestrationFailFast() {
+    void failFast() {
         val validationResults = IMMUTABLE_EGG_CARTON.iterator()
                 .map(failFastStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE))
                 .collect(Collectors.toList());
-        validationResults.forEach(log::info);
+        validationResults.forEach(result -> log.info(result.toString()));
         Assertions.assertEquals(EXPECTED_DECLARATIVE_VALIDATION_RESULTS, validationResults);
     }
 
     @Test
-    void declarativeOrchestrationFailFastNonBulk() {
+    void failFastNonBulk() {
         val validationResult =
                 failFastStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE).apply(IMMUTABLE_EGG_CARTON.get());
-        log.info(validationResult);
+        log.info(validationResult.toString());
     }
-    
+
     @Test
-    void declarativeOrchestrationErrorAccumulation() {
+    void noValidations() {
+        val validationResult =
+                failFastStrategy(List.empty(), NOTHING_TO_VALIDATE).apply(IMMUTABLE_EGG_CARTON);
+        log.info(validationResult.toString());
+    }
+
+    @Test
+    void errorAccumulation() {
         val validationResultsAccumulated = IMMUTABLE_EGG_CARTON.iterator()
                 .map(accumulationStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE))
                 .collect(Collectors.toList());
-        validationResultsAccumulated.forEach(log::info);
+        validationResultsAccumulated.forEach(result -> log.info(result.toString()));
     }
 
     /**
      * Will switch to Parallel mode if EggCarton size is above `MAX_SIZE_FOR_PARALLEL`.
      */
     @Test
-    void declarativeOrchestrationParallel() {
+    void parallel() {
         val validationResults = getStreamBySize(IMMUTABLE_EGG_CARTON)
                 .map(failFastStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE))
                 .collect(Collectors.toList());
-        validationResults.forEach(log::info);
+        validationResults.forEach(result -> log.info(result.toString()));
         Assertions.assertEquals(EXPECTED_DECLARATIVE_VALIDATION_RESULTS, validationResults);
     }
 

@@ -27,7 +27,7 @@ import static app.common.DataSet.EXPECTED_IMPERATIVE_VALIDATION_RESULTS;
  * </pre>
  */
 public class ImperativeValidation2Test {
-    
+
     @Test
     void octopusOrchestrator() {
         var badEggFailureBucketMap = ImperativeValidation2.validateEggCartonImperatively(new ArrayList<>(EGG_CARTON)); // Sending a copy to use different iterator

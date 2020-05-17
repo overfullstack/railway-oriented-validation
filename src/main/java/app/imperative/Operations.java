@@ -21,11 +21,11 @@ class Operations {
     static boolean simpleOperation1(Egg eggToBeValidated) {
         return eggToBeValidated != null;
     }
-    
+
     // These check positive cases, true = success ; false = ValidationFailure
     //-----------------------|5----------------|15-------------------|21-------------------
     //----About to hatch----|------Valid-------|--Might never hatch--|--Too late to hatch--|
-    
+
     static boolean throwableOperation2(Egg eggToBeValidated) {
         if (eggToBeValidated.getDaysToHatch() >= MAX_DAYS_TO_HATCH) {
             // Unchecked Exception. Caller would have no clue of this.

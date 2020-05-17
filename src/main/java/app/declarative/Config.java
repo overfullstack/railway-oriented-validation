@@ -5,15 +5,16 @@ import app.common.Constants;
 import app.domain.ImmutableEgg;
 import app.domain.Yolk;
 import app.domain.validation.ValidationFailure;
+import io.vavr.Function1;
 import io.vavr.collection.List;
 import io.vavr.control.Either;
 import lombok.experimental.UtilityClass;
 
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static algebra.ConfigDsl.liftAllToParentValidationType;
 import static algebra.ConfigDsl.liftToParentValidationType;
+import static algebra.Dsl.liftThrowable;
 import static app.declarative.RailwayValidation2.validate1Simple;
 import static app.declarative.RailwayValidation2.validate2Throwable;
 import static app.declarative.RailwayValidation2.validateChild31;
@@ -36,11 +37,11 @@ public class Config {
      * If these parent-child dependencies are complex, we can make use of some graph algorithm to create a linear dependency graph of all validations.
      */
     private static final List<Validator<ImmutableEgg, ValidationFailure>> PARENT_VALIDATION_CHAIN =
-            List.of(validate1Simple, validate2Throwable, validateParent3);
-    
+            List.of(validate1Simple, liftThrowable(validate2Throwable, ValidationFailure::withThrowable), validateParent3);
+
     private static final List<Validator<Yolk, ValidationFailure>> CHILD_VALIDATION_CHAIN
             = List.of(validateChild31, validateChild32);
-    
+
     public static final List<Validator<ImmutableEgg, ValidationFailure>> EGG_VALIDATION_CHAIN =
             PARENT_VALIDATION_CHAIN
                     .appendAll(liftAllToParentValidationType(CHILD_VALIDATION_CHAIN, ImmutableEgg::yolk, NO_PARENT_TO_VALIDATE_CHILD, NO_CHILD_TO_VALIDATE))
@@ -53,9 +54,11 @@ public class Config {
     /**
      * The above chain can also be achieved this way using `andThen.
      */
-    private static final Function<Either<ValidationFailure, ImmutableEgg>, Either<ValidationFailure, ImmutableEgg>>
-            PARENT_VALIDATION_COMPOSITION = validate1Simple.andThen(validate2Throwable).andThen(validateParent3);
-    private static final Function<Either<ValidationFailure, Yolk>, Either<ValidationFailure, Yolk>>
+    private static final Function1<Either<ValidationFailure, ImmutableEgg>, Either<ValidationFailure, ImmutableEgg>>
+            PARENT_VALIDATION_COMPOSITION = validate1Simple
+            .andThen(liftThrowable(validate2Throwable, ValidationFailure::withThrowable))
+            .andThen(validateParent3);
+    private static final Function1<Either<ValidationFailure, Yolk>, Either<ValidationFailure, Yolk>>
             CHILD_VALIDATION_COMPOSITION = validateChild31.andThen(validateChild32);
 
     public <E> Stream<E> getStreamBySize(List<E> list) {
