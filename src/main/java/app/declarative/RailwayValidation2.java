@@ -46,45 +46,38 @@ public class RailwayValidation2 {
     public static final Validator<ImmutableEgg, ValidationFailure> validateParent3 = validatedEgg -> validatedEgg
             .map(egg -> liftTry(Operations::throwableOperation3).apply(egg))
             .flatMap(tryResult -> tryResult.toEither().mapLeft(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
-            
-            .filter(Boolean::booleanValue)
-            .getOrElse(() -> Either.left(ABOUT_TO_HATCH_P_3))
-            .flatMap(ignore -> validatedEgg);
+            .filterOrElse(result -> result, ignore -> ABOUT_TO_HATCH_P_3)
+            .flatMap(ignore -> validatedEgg); // 😓 This is done due to lack of declaration-site variance in Java.
 
     public static final Validator<Yolk, ValidationFailure> validateChild31 = validatedYolk -> validatedYolk
             .map(yolk -> liftTry(Operations::throwableNestedOperation3).apply(yolk))
             .flatMap(tryResult -> tryResult.toEither().mapLeft(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
-            .filter(Boolean::booleanValue)
-            .getOrElse(() -> Either.left(YOLK_IS_IN_WRONG_COLOR_C_3))
-            .flatMap(ignore -> validatedYolk);
+            .filterOrElse(result -> result, ignore -> YOLK_IS_IN_WRONG_COLOR_C_3)
+            .flatMap(ignore -> validatedYolk); // 😓 This is done due to lack of declaration-site variance in Java.
 
     public static final Validator<Yolk, ValidationFailure> validateChild32 = validatedYolk -> validatedYolk
             .map(yolk -> liftTry(Operations::throwableNestedOperation3).apply(yolk))
             .flatMap(tryResult -> tryResult.toEither().mapLeft(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
-            .filter(Boolean::booleanValue)
-            .getOrElse(() -> Either.left(YOLK_IS_IN_WRONG_COLOR_C_3))
-            .flatMap(ignore -> validatedYolk);
+            .filterOrElse(result -> result, ignore -> YOLK_IS_IN_WRONG_COLOR_C_3)
+            .flatMap(ignore -> validatedYolk); // 😓 This is done due to lack of declaration-site variance in Java.
 
     public static final Validator<ImmutableEgg, ValidationFailure> validateParent41 = validatedEgg -> validatedEgg
             .map(egg -> liftTry(Operations::throwableOperation3).apply(egg))
             .flatMap(tryResult -> tryResult.toEither().mapLeft(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
-            .filter(Boolean::booleanValue)
-            .getOrElse(() -> Either.left(ABOUT_TO_HATCH_P_3))
-            .flatMap(ignore -> validatedEgg);
+            .filterOrElse(result -> result, ignore -> ABOUT_TO_HATCH_P_3)
+            .flatMap(ignore -> validatedEgg); // 😓 This is done due to lack of declaration-site variance in Java.
 
     public static final Validator<ImmutableEgg, ValidationFailure> validateParent42 = validatedEgg -> validatedEgg
             .map(egg -> liftTry(Operations::throwableOperation3).apply(egg))
             .flatMap(tryResult -> tryResult.toEither().mapLeft(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
-            .filter(Boolean::booleanValue)
-            .getOrElse(() -> Either.left(ABOUT_TO_HATCH_P_3))
-            .flatMap(ignore -> validatedEgg);
+            .filterOrElse(result -> result, ignore -> TOO_LATE_TO_HATCH_2)
+            .flatMap(ignore -> validatedEgg); // 😓 This is done due to lack of declaration-site variance in Java.
 
     // Child with multiple Parent Validations
     public static final Validator<Yolk, ValidationFailure> validateChild4 = validatedYolk -> validatedYolk
             .map(yolk -> liftTry(Operations::throwableNestedOperation3).apply(yolk))
             .flatMap(tryResult -> tryResult.toEither().mapLeft(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
-            .filter(Boolean::booleanValue)
-            .getOrElse(() -> Either.left(YOLK_IS_IN_WRONG_COLOR_C_3))
-            .flatMap(ignore -> validatedYolk);
+            .filterOrElse(result -> result, ignore -> YOLK_IS_IN_WRONG_COLOR_C_3)
+            .flatMap(ignore -> validatedYolk); // 😓 This is done due to lack of declaration-site variance in Java.
 
 }
