@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 import static algebra.ConfigDsl.liftAllToParentValidationType;
 import static algebra.ConfigDsl.liftToParentValidationType;
-import static algebra.Dsl.liftThrowable;
+import static algebra.ConfigDsl.liftThrowable;
 import static app.declarative.RailwayValidation2.validate1Simple;
 import static app.declarative.RailwayValidation2.validate2Throwable;
 import static app.declarative.RailwayValidation2.validateChild31;
@@ -40,7 +40,7 @@ public class Config {
             List.of(validate1Simple, liftThrowable(validate2Throwable, ValidationFailure::withThrowable), validateParent3);
 
     private static final List<Validator<Yolk, ValidationFailure>> CHILD_VALIDATION_CHAIN
-            = List.of(validateChild31, validateChild32);
+            = List.of(liftThrowable(validateChild31, ValidationFailure::withThrowable), validateChild32);
 
     public static final List<Validator<ImmutableEgg, ValidationFailure>> EGG_VALIDATION_CHAIN =
             PARENT_VALIDATION_CHAIN
@@ -59,7 +59,7 @@ public class Config {
             .andThen(liftThrowable(validate2Throwable, ValidationFailure::withThrowable))
             .andThen(validateParent3);
     private static final Function1<Either<ValidationFailure, Yolk>, Either<ValidationFailure, Yolk>>
-            CHILD_VALIDATION_COMPOSITION = validateChild31.andThen(validateChild32);
+            CHILD_VALIDATION_COMPOSITION = liftThrowable(validateChild31, ValidationFailure::withThrowable).andThen(validateChild32);
 
     public <E> Stream<E> getStreamBySize(List<E> list) {
         return list.size() >= Constants.MAX_SIZE_FOR_PARALLEL

@@ -40,8 +40,8 @@ import static app.imperative.Operations.throwableOperation3;
 @Slf4j
 @UtilityClass
 public class ImperativeValidation2 {
-    // Can't ensure the uniformity of signature among validations, which can increase the complexity. 
-    private static boolean validate1(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggToBeValidated) {
+    // Can't ensure the uniformity of signature among validations, which can increase the complexity.
+    private static boolean validate1Simple(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggToBeValidated) {
         if (!simpleOperation1(eggToBeValidated)) {
             iterator.remove();
             badEggFailureBucketMap.put(eggIndex, NO_EGG_TO_VALIDATE_1);
@@ -50,7 +50,7 @@ public class ImperativeValidation2 {
         return true;
     }
 
-    private static boolean validate2(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggToBeValidated) {
+    private static boolean validate2Throwable(Map<Integer, ValidationFailure> badEggFailureBucketMap, int eggIndex, Iterator<Egg> iterator, Egg eggToBeValidated) {
         try {
             if (!throwableOperation2(eggToBeValidated)) {
                 iterator.remove();
@@ -183,12 +183,12 @@ public class ImperativeValidation2 {
             var eggToBeValidated = iterator.next();
 
             // Global state is dangerous. badEggFailureBucketMap and iterator being passed to each and every function, difficult to keep track of how they are being mutated during debugging.
-            if (!validate1(badEggFailureBucketMap, eggIndex, iterator, eggToBeValidated)) {
+            if (!validate1Simple(badEggFailureBucketMap, eggIndex, iterator, eggToBeValidated)) {
                 continue; // R-2: Manage fail-fast
             }
 
             // Adding a new validation in-between requires you to understand all the validations above and below, which slows down development and makes it prone to bugs.
-            if (!validate2(badEggFailureBucketMap, eggIndex, iterator, eggToBeValidated)) {
+            if (!validate2Throwable(badEggFailureBucketMap, eggIndex, iterator, eggToBeValidated)) {
                 continue;
             }
 

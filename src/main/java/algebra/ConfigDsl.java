@@ -1,5 +1,6 @@
 package algebra;
 
+import algebra.types.ThrowableValidator;
 import algebra.types.Validator;
 import io.vavr.Function1;
 import io.vavr.collection.List;
@@ -9,12 +10,17 @@ import lombok.val;
 
 import java.util.Objects;
 
+import static io.vavr.CheckedFunction1.liftTry;
+import static io.vavr.Function1.identity;
+
 /**
  * Utility methods to be used by config.
  * gakshintala created on 3/23/20.
  */
 @UtilityClass
 public class ConfigDsl {
+    /** ------------------------------------------- PARENT-CHILD ------------------------------------------- **/
+    
     public static <ParentT, ChildT, FailureT> List<Validator<ParentT, FailureT>> liftAllToParentValidationType(
             List<Validator<ChildT, FailureT>> childValidations,
             Function1<ParentT, ChildT> toChildMapper, FailureT invalidParent, FailureT invalidChild) {
@@ -36,5 +42,19 @@ public class ConfigDsl {
                     .flatMap(ignore -> validatedParent);
         };
     }
+    
+    /** ------------------------------------------- THROWABLE ------------------------------------------- **/
 
+    public static <FailureT, ValidatableT> Validator<ValidatableT, FailureT> liftThrowable(
+            ThrowableValidator<ValidatableT, FailureT> toBeLifted, Function1<Throwable, FailureT> throwableMapper) {
+        return validatable -> {
+            val result = liftTry(toBeLifted).apply(validatable).toEither();
+            return result.fold(throwable -> Either.left(throwableMapper.apply(throwable)), identity());
+        };
+    }
+
+    public static <FailureT, ValidatableT> List<Validator<ValidatableT, FailureT>> liftAllThrowable(
+            List<ThrowableValidator<ValidatableT, FailureT>> toBeLiftedFns, Function1<Throwable, FailureT> throwableMapper) {
+        return toBeLiftedFns.map(toBeLifted -> liftThrowable(toBeLifted, throwableMapper));
+    }
 }
