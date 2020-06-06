@@ -13,7 +13,8 @@ import static app.domain.Color.YELLOW;
 import static app.domain.Condition.BAD;
 
 /**
- * Operations used by Functional Validations.
+ * Operations used by Functional Validations. 
+ * Imagine these are out of our hands, like DB calls. 
  */
 @UtilityClass
 class Operations {

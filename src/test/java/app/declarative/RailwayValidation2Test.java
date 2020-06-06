@@ -41,8 +41,8 @@ public class RailwayValidation2Test {
      */
     @Test
     void plainOldImperativeOrchestration() {
-        var validationResults = runAllValidationsFailFastImperative(IMMUTABLE_EGG_CARTON, EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE);
-        Assertions.assertEquals(EXPECTED_DECLARATIVE_VALIDATION_RESULTS, validationResults);
+        val validationResults = runAllValidationsFailFastImperative(IMMUTABLE_EGG_CARTON, EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE);
+        Assertions.assertEquals(EXPECTED_DECLARATIVE_VALIDATION_RESULTS.toJavaList(), validationResults);
     }
 
     /**
@@ -57,7 +57,7 @@ public class RailwayValidation2Test {
     void failFast() {
         val validationResults = IMMUTABLE_EGG_CARTON.iterator()
                 .map(failFastStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE))
-                .collect(Collectors.toList());
+                .toList();
         validationResults.forEach(result -> log.info(result.toString()));
         Assertions.assertEquals(EXPECTED_DECLARATIVE_VALIDATION_RESULTS, validationResults);
     }
@@ -80,7 +80,7 @@ public class RailwayValidation2Test {
     void errorAccumulation() {
         val validationResultsAccumulated = IMMUTABLE_EGG_CARTON.iterator()
                 .map(accumulationStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE))
-                .collect(Collectors.toList());
+                .toList();
         validationResultsAccumulated.forEach(result -> log.info(result.toString()));
     }
 
@@ -93,7 +93,7 @@ public class RailwayValidation2Test {
                 .map(failFastStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE))
                 .collect(Collectors.toList());
         validationResults.forEach(result -> log.info(result.toString()));
-        Assertions.assertEquals(EXPECTED_DECLARATIVE_VALIDATION_RESULTS, validationResults);
+        Assertions.assertEquals(EXPECTED_DECLARATIVE_VALIDATION_RESULTS.toJavaList(), validationResults);
     }
 
 }

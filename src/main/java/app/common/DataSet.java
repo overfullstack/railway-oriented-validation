@@ -4,12 +4,10 @@ import app.domain.Egg;
 import app.domain.ImmutableEgg;
 import app.domain.Yolk;
 import app.domain.validation.ValidationFailure;
+import io.vavr.collection.List;
 import io.vavr.control.Either;
 import lombok.experimental.UtilityClass;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import static app.domain.Color.GOLD;
@@ -31,7 +29,7 @@ import static app.domain.validation.ValidationFailures.YOLK_IS_IN_WRONG_COLOR_C_
 
 @UtilityClass
 public class DataSet {
-    public static final List<Egg> EGG_CARTON = new ArrayList<>(Arrays.asList(
+    public static final List<Egg> EGG_CARTON = List.of(
             null, // No egg to validate
             new Egg(1, new Yolk(GOOD, GOLD)), // About to hatch
             new Egg(8, new Yolk(BAD, ORANGE)), // Yolk is bad
@@ -44,9 +42,9 @@ public class DataSet {
             new Egg(6, new Yolk(BAD, ORANGE)), // Yolk is bad
             new Egg(12, new Yolk(GOOD, ORANGE)), // Yolk in wrong color
             new Egg(6, null) // No Child to validate   
-    ));
+    );
 
-    public static final io.vavr.collection.List<ImmutableEgg> IMMUTABLE_EGG_CARTON =
+    public static final List<ImmutableEgg> IMMUTABLE_EGG_CARTON =
             io.vavr.collection.List.of( // Using vavr list as `java.util.List` doesn't allow `null` in `List.of()`
                     null, // No egg to validate
                     new ImmutableEgg(1, new Yolk(GOOD, GOLD)), // About to hatch

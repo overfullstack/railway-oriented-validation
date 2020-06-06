@@ -5,16 +5,14 @@ import app.common.Constants;
 import app.domain.ImmutableEgg;
 import app.domain.Yolk;
 import app.domain.validation.ValidationFailure;
-import io.vavr.Function1;
 import io.vavr.collection.List;
-import io.vavr.control.Either;
 import lombok.experimental.UtilityClass;
 
 import java.util.stream.Stream;
 
 import static algebra.ConfigDsl.liftAllToParentValidationType;
-import static algebra.ConfigDsl.liftToParentValidationType;
 import static algebra.ConfigDsl.liftThrowable;
+import static algebra.ConfigDsl.liftToParentValidationType;
 import static app.declarative.RailwayValidation2.validate1Simple;
 import static app.declarative.RailwayValidation2.validate2Throwable;
 import static app.declarative.RailwayValidation2.validateChild31;
@@ -54,14 +52,14 @@ public class Config {
     /**
      * The above chain can also be achieved this way using `andThen.
      */
-    private static final Function1<Either<ValidationFailure, ImmutableEgg>, Either<ValidationFailure, ImmutableEgg>>
+    /*private static final Function1<Either<ValidationFailure, ImmutableEgg>, Either<ValidationFailure, ?>>
             PARENT_VALIDATION_COMPOSITION = validate1Simple
             .andThen(liftThrowable(validate2Throwable, ValidationFailure::withThrowable))
             .andThen(validateParent3);
-    private static final Function1<Either<ValidationFailure, Yolk>, Either<ValidationFailure, Yolk>>
-            CHILD_VALIDATION_COMPOSITION = liftThrowable(validateChild31, ValidationFailure::withThrowable).andThen(validateChild32);
+    private static final Function1<Either<ValidationFailure, Yolk>, Either<ValidationFailure, ?>>
+            CHILD_VALIDATION_COMPOSITION = liftThrowable(validateChild31, ValidationFailure::withThrowable).andThen(validateChild32);*/
 
-    public <E> Stream<E> getStreamBySize(List<E> list) {
+    public static <E> Stream<E> getStreamBySize(List<E> list) {
         return list.size() >= Constants.MAX_SIZE_FOR_PARALLEL
                 ? list.toJavaParallelStream()
                 : list.toJavaStream();

@@ -14,6 +14,7 @@ import static app.domain.Condition.BAD;
 
 /**
  * Operations used by Imperative Validations.
+ * Imagine these are out of our hands, like DB calls.
  */
 @UtilityClass
 class Operations {
