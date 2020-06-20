@@ -12,7 +12,6 @@ import static app.domain.validation.ValidationFailures.ABOUT_TO_HATCH_P_3;
 import static app.domain.validation.ValidationFailures.NO_EGG_TO_VALIDATE_1;
 import static app.domain.validation.ValidationFailures.TOO_LATE_TO_HATCH_2;
 import static app.domain.validation.ValidationFailures.YOLK_IS_IN_WRONG_COLOR_C_3;
-import static io.vavr.CheckedFunction1.liftTry;
 
 /**
  * <pre>
@@ -39,38 +38,34 @@ public class RailwayValidation2 {
             .getOrElse(() -> Either.left(NO_EGG_TO_VALIDATE_1));
 
     public static final ThrowableValidator<ImmutableEgg, ValidationFailure> validate2Throwable = validatedEgg -> validatedEgg
-            .map(Operations::throwableOperation2)
-            .filterOrElse(result -> result, ignore -> TOO_LATE_TO_HATCH_2);
+            .filter(Operations::throwableOperation2)
+            .getOrElse(() -> Either.left(TOO_LATE_TO_HATCH_2));
 
-    public static final Validator<ImmutableEgg, ValidationFailure> validateParent3 = validatedEgg -> validatedEgg
-            .map(egg -> liftTry(Operations::throwableOperation3).apply(egg))
-            .flatMap(tryResult -> tryResult.toEither().mapLeft(cause -> ValidationFailure.withErrorMessage(cause.getMessage())));
+    public static final ThrowableValidator<ImmutableEgg, ValidationFailure> validateParent3 = validatedEgg -> validatedEgg
+            .filter(Operations::throwableOperation3)
+            .getOrElse(() -> Either.left(ABOUT_TO_HATCH_P_3));
 
     public static final ThrowableValidator<Yolk, ValidationFailure> validateChild31 = validatedYolk -> validatedYolk
-            .map(Operations::throwableNestedOperation3)
-            .filterOrElse(result -> result, ignore -> YOLK_IS_IN_WRONG_COLOR_C_3);
+            .filter(Operations::throwableNestedOperation3)
+            .getOrElse(() -> Either.left(YOLK_IS_IN_WRONG_COLOR_C_3));
 
     /** ----------------------------------- JUST DUPLICATE PLACE-HOLDERS ----------------------------------- **/
 
-    public static final Validator<Yolk, ValidationFailure> validateChild32 = validatedYolk -> validatedYolk
-            .map(yolk -> liftTry(Operations::throwableNestedOperation3).apply(yolk))
-            .flatMap(tryResult -> tryResult.toEither().mapLeft(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
-            .filterOrElse(result -> result, ignore -> YOLK_IS_IN_WRONG_COLOR_C_3);
+    public static final ThrowableValidator<Yolk, ValidationFailure> validateChild32 = validatedYolk -> validatedYolk
+            .filter(Operations::throwableNestedOperation3)
+            .getOrElse(() -> Either.left(YOLK_IS_IN_WRONG_COLOR_C_3));
 
-    public static final Validator<ImmutableEgg, ValidationFailure> validateParent41 = validatedEgg -> validatedEgg
-            .map(egg -> liftTry(Operations::throwableOperation3).apply(egg))
-            .flatMap(tryResult -> tryResult.toEither().mapLeft(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
-            .filterOrElse(result -> result, ignore -> ABOUT_TO_HATCH_P_3);
+    public static final ThrowableValidator<ImmutableEgg, ValidationFailure> validateParent41 = validatedEgg -> validatedEgg
+            .filter(Operations::throwableOperation3)
+            .getOrElse(() -> Either.left(ABOUT_TO_HATCH_P_3));
 
-    public static final Validator<ImmutableEgg, ValidationFailure> validateParent42 = validatedEgg -> validatedEgg
-            .map(egg -> liftTry(Operations::throwableOperation3).apply(egg))
-            .flatMap(tryResult -> tryResult.toEither().mapLeft(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
-            .filterOrElse(result -> result, ignore -> TOO_LATE_TO_HATCH_2);
+    public static final ThrowableValidator<ImmutableEgg, ValidationFailure> validateParent42 = validatedEgg -> validatedEgg
+            .filter(Operations::throwableOperation3)
+            .getOrElse(() -> Either.left(ABOUT_TO_HATCH_P_3));
 
     // Child with multiple Parent Validations
-    public static final Validator<Yolk, ValidationFailure> validateChild4 = validatedYolk -> validatedYolk
-            .map(yolk -> liftTry(Operations::throwableNestedOperation3).apply(yolk))
-            .flatMap(tryResult -> tryResult.toEither().mapLeft(cause -> ValidationFailure.withErrorMessage(cause.getMessage())))
-            .filterOrElse(result -> result, ignore -> YOLK_IS_IN_WRONG_COLOR_C_3);
+    public static final ThrowableValidator<Yolk, ValidationFailure> validateChild4 = validatedYolk -> validatedYolk
+            .filter(Operations::throwableNestedOperation3)
+            .getOrElse(() -> Either.left(YOLK_IS_IN_WRONG_COLOR_C_3));
 
 }

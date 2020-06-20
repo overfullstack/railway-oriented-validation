@@ -10,6 +10,7 @@ import lombok.experimental.UtilityClass;
 
 import java.util.stream.Stream;
 
+import static algebra.ConfigDsl.liftAllThrowable;
 import static algebra.ConfigDsl.liftAllToParentValidationType;
 import static algebra.ConfigDsl.liftThrowable;
 import static algebra.ConfigDsl.liftToParentValidationType;
@@ -35,19 +36,17 @@ public class Config {
      * If these parent-child dependencies are complex, we can make use of some graph algorithm to create a linear dependency graph of all validations.
      */
     private static final List<Validator<ImmutableEgg, ValidationFailure>> PARENT_VALIDATION_CHAIN =
-            List.of(validate1Simple, liftThrowable(validate2Throwable, ValidationFailure::withThrowable), validateParent3);
+            List.of(validate1Simple).appendAll(liftAllThrowable(List.of(validate2Throwable, validateParent3), ValidationFailure::withThrowable));
 
     private static final List<Validator<Yolk, ValidationFailure>> CHILD_VALIDATION_CHAIN
-            = List.of(liftThrowable(validateChild31, ValidationFailure::withThrowable), validateChild32);
+            = liftAllThrowable(List.of(validateChild31, validateChild32), ValidationFailure::withThrowable);
 
     public static final List<Validator<ImmutableEgg, ValidationFailure>> EGG_VALIDATION_CHAIN =
             PARENT_VALIDATION_CHAIN
                     .appendAll(liftAllToParentValidationType(CHILD_VALIDATION_CHAIN, ImmutableEgg::yolk, NO_PARENT_TO_VALIDATE_CHILD, NO_CHILD_TO_VALIDATE))
-                    .appendAll(List.of(
-                            validateParent41,
-                            validateParent42,
-                            liftToParentValidationType(validateChild4, ImmutableEgg::yolk, NO_PARENT_TO_VALIDATE_CHILD, NO_CHILD_TO_VALIDATE))
-                    );
+                    .appendAll(liftAllThrowable(List.of(validateParent41, validateParent42), ValidationFailure::withThrowable))
+                    .append(liftToParentValidationType(liftThrowable(validateChild4, ValidationFailure::withThrowable),
+                            ImmutableEgg::yolk, NO_PARENT_TO_VALIDATE_CHILD, NO_CHILD_TO_VALIDATE));
 
     /**
      * The above chain can also be achieved this way using `andThen.
@@ -58,7 +57,6 @@ public class Config {
             .andThen(validateParent3);
     private static final Function1<Either<ValidationFailure, Yolk>, Either<ValidationFailure, ?>>
             CHILD_VALIDATION_COMPOSITION = liftThrowable(validateChild31, ValidationFailure::withThrowable).andThen(validateChild32);*/
-
     public static <E> Stream<E> getStreamBySize(List<E> list) {
         return list.size() >= Constants.MAX_SIZE_FOR_PARALLEL
                 ? list.toJavaParallelStream()
