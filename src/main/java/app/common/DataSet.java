@@ -72,7 +72,7 @@ public class DataSet {
             10, YOLK_IS_IN_WRONG_COLOR_C_3,
             11, ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_31)
     );
-
+    
     public static final List<Either<ValidationFailure, ?>> EXPECTED_DECLARATIVE_VALIDATION_RESULTS = List.of(
             Either.left(NOTHING_TO_VALIDATE),
             Either.left(ABOUT_TO_HATCH_P_3),
@@ -82,6 +82,21 @@ public class DataSet {
             Either.left(ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3)),
             Either.left(TOO_LATE_TO_HATCH_2),
             Either.right(new Yolk(GOOD, GOLD)),
+            Either.left(ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3)),
+            Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
+            Either.left(YOLK_IS_IN_WRONG_COLOR_C_3),
+            Either.left(NO_CHILD_TO_VALIDATE)
+    );
+
+    public static final List<Either<ValidationFailure, ?>> EXPECTED_DECLARATIVE_VALIDATION_RESULTS_2 = List.of(
+            Either.left(NOTHING_TO_VALIDATE),
+            Either.left(ABOUT_TO_HATCH_P_3),
+            Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
+            Either.left(ValidationFailure.withErrorMessage(THROWABLE_OPERATION_2)),
+            Either.right(new ImmutableEgg(5, new Yolk(GOOD, YELLOW))),
+            Either.left(ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3)),
+            Either.left(TOO_LATE_TO_HATCH_2),
+            Either.right(new ImmutableEgg(14, new Yolk(GOOD, GOLD))),
             Either.left(ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3)),
             Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
             Either.left(YOLK_IS_IN_WRONG_COLOR_C_3),

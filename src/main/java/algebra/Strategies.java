@@ -3,6 +3,7 @@ package algebra;
 import algebra.types.AccumulationStrategy;
 import algebra.types.FailFastStrategy;
 import algebra.types.Validator;
+import io.vavr.collection.Iterator;
 import io.vavr.collection.List;
 import io.vavr.control.Either;
 import lombok.experimental.UtilityClass;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.function.BiFunction;
 
 /**
+ * These Strategies compose multiple validations and return a single function which can be applied on the Validatable.
+ * 
  * gakshintala created on 3/21/20.
  */
 @UtilityClass
@@ -60,20 +63,21 @@ public class Strategies {
         };
     }
 
-    private static <FailureT, ValidatableT> FailFastStrategy<ValidatableT, FailureT> failFastStrategy2(
+    public static <FailureT, ValidatableT> FailFastStrategy<ValidatableT, FailureT> failFastStrategy2(
             List<Validator<ValidatableT, FailureT>> validations, FailureT invalidValidatable) {
         return toBeValidated -> toBeValidated == null
                 ? Either.left(invalidValidatable)
                 : applyValidations(toBeValidated, validations).getOrElse(Either.right(toBeValidated));
     }
 
-    private static <FailureT, ValidatableT> List<Either<FailureT, ?>> applyValidations(
+    private static <FailureT, ValidatableT> Iterator<Either<FailureT, ?>> applyValidations(
             ValidatableT toBeValidated, List<Validator<ValidatableT, FailureT>> validations) {
         Either<FailureT, ValidatableT> toBeValidatedRight = Either.right(toBeValidated);
-        final List<Either<FailureT, ?>> validationResults =
-                validations
+        final Iterator<Either<FailureT, ?>> validationResults =
+                validations.iterator() // This is vavr iterator, which is lazy by default.
                         .map(validation -> validation.apply(toBeValidatedRight));
-        return validationResults.filter(Either::isLeft);
+        // This is just returning the description, nothing shall be run without terminal operator.
+        return validationResults.filter(Either::isLeft); 
     }
 
     /* ---------------------------ACCUMULATION--------------------------- */

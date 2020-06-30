@@ -10,8 +10,10 @@ import java.util.stream.Collectors;
 
 import static algebra.Strategies.accumulationStrategy;
 import static algebra.Strategies.failFastStrategy;
+import static algebra.Strategies.failFastStrategy2;
 import static algebra.Strategies.runAllValidationsFailFastImperative;
 import static app.common.DataSet.EXPECTED_DECLARATIVE_VALIDATION_RESULTS;
+import static app.common.DataSet.EXPECTED_DECLARATIVE_VALIDATION_RESULTS_2;
 import static app.common.DataSet.IMMUTABLE_EGG_CARTON;
 import static app.declarative.Config.EGG_VALIDATION_CHAIN;
 import static app.declarative.Config.getStreamBySize;
@@ -54,7 +56,7 @@ public class RailwayValidation2Test {
      * </pre>
      */
     @Test
-    void failFast() {
+    void failFast1() {
         val validationResults = IMMUTABLE_EGG_CARTON.iterator()
                 .map(failFastStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE))
                 .toList();
@@ -63,16 +65,39 @@ public class RailwayValidation2Test {
     }
 
     @Test
-    void failFastNonBulk() {
+    void failFast2() {
+        val validationResults = IMMUTABLE_EGG_CARTON.iterator()
+                .map(failFastStrategy2(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE))
+                .toList();
+        validationResults.forEach(result -> log.info(result.toString()));
+        Assertions.assertEquals(EXPECTED_DECLARATIVE_VALIDATION_RESULTS_2, validationResults);
+    }
+
+    @Test
+    void failFastNonBulk1() {
         val validationResult =
                 failFastStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE).apply(IMMUTABLE_EGG_CARTON.get());
         log.info(validationResult.toString());
     }
 
     @Test
-    void noValidations() {
+    void failFastNonBulk2() {
+        val validationResult =
+                failFastStrategy2(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE).apply(IMMUTABLE_EGG_CARTON.get());
+        log.info(validationResult.toString());
+    }
+
+    @Test
+    void noValidations1() {
         val validationResult =
                 failFastStrategy(List.empty(), NOTHING_TO_VALIDATE).apply(IMMUTABLE_EGG_CARTON);
+        log.info(validationResult.toString());
+    }
+
+    @Test
+    void noValidations2() {
+        val validationResult =
+                failFastStrategy2(List.empty(), NOTHING_TO_VALIDATE).apply(IMMUTABLE_EGG_CARTON);
         log.info(validationResult.toString());
     }
 
@@ -88,12 +113,21 @@ public class RailwayValidation2Test {
      * Will switch to Parallel mode if EggCarton size is above `MAX_SIZE_FOR_PARALLEL`.
      */
     @Test
-    void parallel() {
+    void parallel1() {
         val validationResults = getStreamBySize(IMMUTABLE_EGG_CARTON)
                 .map(failFastStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE))
                 .collect(Collectors.toList());
         validationResults.forEach(result -> log.info(result.toString()));
         Assertions.assertEquals(EXPECTED_DECLARATIVE_VALIDATION_RESULTS.toJavaList(), validationResults);
+    }
+
+    @Test
+    void parallel2() {
+        val validationResults = getStreamBySize(IMMUTABLE_EGG_CARTON)
+                .map(failFastStrategy2(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE))
+                .collect(Collectors.toList());
+        validationResults.forEach(result -> log.info(result.toString()));
+        Assertions.assertEquals(EXPECTED_DECLARATIVE_VALIDATION_RESULTS_2.toJavaList(), validationResults);
     }
 
 }
