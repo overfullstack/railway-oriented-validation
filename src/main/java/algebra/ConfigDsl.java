@@ -38,8 +38,7 @@ public class ConfigDsl {
             return child
                     .filter(Objects::nonNull)
                     .map(childValidation)
-                    .getOrElse(Either.left(invalidChild))
-                    .flatMap(ignore -> validatedParent);
+                    .getOrElse(Either.left(invalidChild));
         };
     }
     

@@ -73,15 +73,15 @@ public class DataSet {
             11, ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_31)
     );
 
-    public static final List<Either<ValidationFailure, ImmutableEgg>> EXPECTED_DECLARATIVE_VALIDATION_RESULTS = List.of(
+    public static final List<Either<ValidationFailure, ?>> EXPECTED_DECLARATIVE_VALIDATION_RESULTS = List.of(
             Either.left(NOTHING_TO_VALIDATE),
             Either.left(ABOUT_TO_HATCH_P_3),
             Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
             Either.left(ValidationFailure.withErrorMessage(THROWABLE_OPERATION_2)),
-            Either.right(new ImmutableEgg(5, new Yolk(GOOD, YELLOW))),
+            Either.right(new Yolk(GOOD, YELLOW)),
             Either.left(ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3)),
             Either.left(TOO_LATE_TO_HATCH_2),
-            Either.right(new ImmutableEgg(14, new Yolk(GOOD, GOLD))),
+            Either.right(new Yolk(GOOD, GOLD)),
             Either.left(ValidationFailure.withErrorMessage(THROWABLE_VALIDATION_3)),
             Either.left(ValidationFailure.withErrorMessage(THROWABLE_NESTED_OPERATION_32)),
             Either.left(YOLK_IS_IN_WRONG_COLOR_C_3),
@@ -89,7 +89,7 @@ public class DataSet {
     );
 
     // TODO: 5/10/20 Incomplete, need to build it 
-    public static List<List<Either<ValidationFailure, ImmutableEgg>>> getExpectedImmutableEggAccumulatedValidationResults() {
+    public static List<List<Either<ValidationFailure, ?>>> getExpectedImmutableEggAccumulatedValidationResults() {
         return List.of(
                 List.of(
                         Either.left(NO_EGG_TO_VALIDATE_1),
