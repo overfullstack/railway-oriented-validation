@@ -5,7 +5,6 @@ import algebra.types.Validator;
 import app.domain.ImmutableEgg;
 import app.domain.Yolk;
 import app.domain.validation.ValidationFailure;
-import io.vavr.control.Either;
 import lombok.experimental.UtilityClass;
 
 import static app.domain.validation.ValidationFailures.ABOUT_TO_HATCH_P_3;
@@ -34,38 +33,30 @@ import static app.domain.validation.ValidationFailures.YOLK_IS_IN_WRONG_COLOR_C_
 public class RailwayValidation2 {
 
     public static final Validator<ImmutableEgg, ValidationFailure> validate1Simple = validatedEgg -> validatedEgg
-            .filter(Operations::simpleOperation1)
-            .getOrElse(() -> Either.left(NO_EGG_TO_VALIDATE_1));
+            .filterOrElse(Operations::simpleOperation1, ignore -> NO_EGG_TO_VALIDATE_1);
 
     public static final ThrowableValidator<ImmutableEgg, ValidationFailure> validate2Throwable = validatedEgg -> validatedEgg
-            .filter(Operations::throwableOperation2)
-            .getOrElse(() -> Either.left(TOO_LATE_TO_HATCH_2));
+            .filterOrElse(Operations::throwableOperation2, ignore -> TOO_LATE_TO_HATCH_2);
 
     public static final ThrowableValidator<ImmutableEgg, ValidationFailure> validateParent3 = validatedEgg -> validatedEgg
-            .filter(Operations::throwableOperation3)
-            .getOrElse(() -> Either.left(ABOUT_TO_HATCH_P_3));
+            .filterOrElse(Operations::throwableOperation3, ignore -> ABOUT_TO_HATCH_P_3);
 
     public static final ThrowableValidator<Yolk, ValidationFailure> validateChild31 = validatedYolk -> validatedYolk
-            .filter(Operations::throwableNestedOperation3)
-            .getOrElse(() -> Either.left(YOLK_IS_IN_WRONG_COLOR_C_3));
+            .filterOrElse(Operations::throwableNestedOperation3, ignore -> YOLK_IS_IN_WRONG_COLOR_C_3);
 
     /** ----------------------------------- JUST DUPLICATE PLACE-HOLDERS ----------------------------------- **/
 
     public static final ThrowableValidator<Yolk, ValidationFailure> validateChild32 = validatedYolk -> validatedYolk
-            .filter(Operations::throwableNestedOperation3)
-            .getOrElse(() -> Either.left(YOLK_IS_IN_WRONG_COLOR_C_3));
+            .filterOrElse(Operations::throwableNestedOperation3, ignore -> YOLK_IS_IN_WRONG_COLOR_C_3);
 
     public static final ThrowableValidator<ImmutableEgg, ValidationFailure> validateParent41 = validatedEgg -> validatedEgg
-            .filter(Operations::throwableOperation3)
-            .getOrElse(() -> Either.left(ABOUT_TO_HATCH_P_3));
+            .filterOrElse(Operations::throwableOperation3, ignore -> ABOUT_TO_HATCH_P_3);
 
     public static final ThrowableValidator<ImmutableEgg, ValidationFailure> validateParent42 = validatedEgg -> validatedEgg
-            .filter(Operations::throwableOperation3)
-            .getOrElse(() -> Either.left(ABOUT_TO_HATCH_P_3));
+            .filterOrElse(Operations::throwableOperation3, ignore -> ABOUT_TO_HATCH_P_3);
 
     // Child with multiple Parent Validations
     public static final ThrowableValidator<Yolk, ValidationFailure> validateChild4 = validatedYolk -> validatedYolk
-            .filter(Operations::throwableNestedOperation3)
-            .getOrElse(() -> Either.left(YOLK_IS_IN_WRONG_COLOR_C_3));
+            .filterOrElse(Operations::throwableNestedOperation3, ignore -> YOLK_IS_IN_WRONG_COLOR_C_3);
 
 }
