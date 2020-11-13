@@ -30,14 +30,14 @@ public class ImperativeValidation {
         int eggIndex = 0;
         for (Iterator<Egg> iterator = eggList.iterator(); iterator.hasNext(); eggIndex++) {
             Egg eggToBeValidated = iterator.next();
-            if (!Operations.simpleOperation1(eggToBeValidated)) {
+            if (!Rules.simpleOperation1(eggToBeValidated)) {
                 iterator.remove(); // Mutation
                 // How can you cleanly map validation-failure to which validation-method failed?
                 badEggFailureBucketMap.put(eggIndex, ValidationFailures.NO_EGG_TO_VALIDATE_1);
                 continue;
             }
             try {
-                if (!Operations.throwableOperation2(eggToBeValidated)) {
+                if (!Rules.throwableOperation2(eggToBeValidated)) {
                     iterator.remove();
                     badEggFailureBucketMap.put(eggIndex, ValidationFailures.TOO_LATE_TO_HATCH_2);
                     continue;
@@ -48,10 +48,10 @@ public class ImperativeValidation {
                 continue;
             }
             try { // Inter-dependent validations
-                if (Operations.throwableOperation3(eggToBeValidated)) {
+                if (Rules.throwableOperation3(eggToBeValidated)) {
                     var yolkTobeValidated = eggToBeValidated.getYolk();
                     try {
-                        if (!Operations.throwableNestedOperation3(yolkTobeValidated)) {
+                        if (!Rules.throwableNestedOperation3(yolkTobeValidated)) {
                             iterator.remove();
                             badEggFailureBucketMap.put(eggIndex, ValidationFailures.YOLK_IS_IN_WRONG_COLOR_C_3);
                         }

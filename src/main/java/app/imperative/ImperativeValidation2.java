@@ -15,10 +15,10 @@ import static app.domain.validation.ValidationFailures.ABOUT_TO_HATCH_P_3;
 import static app.domain.validation.ValidationFailures.NO_EGG_TO_VALIDATE_1;
 import static app.domain.validation.ValidationFailures.TOO_LATE_TO_HATCH_2;
 import static app.domain.validation.ValidationFailures.YOLK_IS_IN_WRONG_COLOR_C_3;
-import static app.imperative.Operations.simpleOperation1;
-import static app.imperative.Operations.throwableNestedOperation3;
-import static app.imperative.Operations.throwableOperation2;
-import static app.imperative.Operations.throwableOperation3;
+import static app.imperative.Rules.simpleOperation1;
+import static app.imperative.Rules.throwableNestedOperation3;
+import static app.imperative.Rules.throwableOperation2;
+import static app.imperative.Rules.throwableOperation3;
 
 /**
  * <pre>

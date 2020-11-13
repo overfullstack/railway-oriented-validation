@@ -17,7 +17,7 @@ import static app.domain.Condition.BAD;
  * Imagine these are out of our hands, like DB calls.
  */
 @UtilityClass
-class Operations {
+class Rules {
 
     static boolean simpleOperation1(Egg eggToBeValidated) {
         return eggToBeValidated != null;
