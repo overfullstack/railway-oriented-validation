@@ -15,11 +15,11 @@ import java.util.Map;
  * gakshintala created on 3/26/20.
  * <pre>
  * Problems:
- * ∙ Complexity
- * ∙ Mutation
+ * - Complexity
+ * - Mutation
  * . Non-sharable
- * ∙ Unit-Testability
- * ∙ Validation Jenga
+ * - Unit-Testability
+ * - Validation Jenga
  * </pre>
  */
 @Slf4j

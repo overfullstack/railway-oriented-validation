@@ -20,16 +20,16 @@ import static io.vavr.CheckedFunction1.liftTry;
  * This class contains validations as values.
  *
  * Requirements
- * ∙ Partial Failures
+ * - Partial Failures
  *
  * Problems solved:
- * ∙ Octopus Orchestrator - 😵 dead
- * ∙ Mutation to Transformation
- * ∙ Unit-Testability - 👍
+ * - Octopus Orchestrator - 😵 dead
+ * - Mutation to Transformation
+ * - Unit-Testability - 👍
  *
  * Results:
- * ∙ Complexity - Minimum
- * ∙ Chaos to Order
+ * - Complexity - Minimum
+ * - Chaos to Order
  * </pre>
  */
 public class RailwayValidation1 {

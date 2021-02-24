@@ -11,11 +11,11 @@ import static app.common.DataSet.EXPECTED_IMPERATIVE_VALIDATION_RESULTS;
 /**
  * <pre>
  * Problems:
- * ∙ Complexity
- * ∙ Mutation
+ * - Complexity
+ * - Mutation
  * . Non-sharable
- * ∙ Unit-Testability
- * ∙ Validation Jenga
+ * - Unit-Testability
+ * - Validation Jenga
  * </pre>
  */
 public class ImperativeValidationTest {

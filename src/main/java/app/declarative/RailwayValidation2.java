@@ -1,6 +1,5 @@
 package app.declarative;
 
-import algebra.types.ThrowableValidator;
 import algebra.types.Validator;
 import app.domain.ImmutableEgg;
 import app.domain.Rules;
@@ -18,16 +17,16 @@ import static app.domain.validation.ValidationFailures.YOLK_IS_IN_WRONG_COLOR_C_
  * This class contains validations as values.
  *
  * Requirements
- * ∙ Partial Failures
+ * - Partial Failures
  *
  * Problems solved:
- * ∙ Octopus Orchestrator - 😵 dead
- * ∙ Mutation to Transformation
- * ∙ Unit-Testability - 👍
+ * - Octopus Orchestrator - 😵 dead
+ * - Mutation to Transformation
+ * - Unit-Testability - 👍
  *
  * Results:
- * ∙ Complexity - Minimum
- * ∙ Chaos to Order
+ * - Complexity - Minimum
+ * - Chaos to Order
  * </pre>
  */
 @UtilityClass
@@ -36,28 +35,28 @@ public class RailwayValidation2 {
     public static final Validator<ImmutableEgg, ValidationFailure> validate1Simple = validatedEgg -> validatedEgg
             .filterOrElse(Rules::simpleOperation1, ignore -> NO_EGG_TO_VALIDATE_1);
 
-    public static final ThrowableValidator<ImmutableEgg, ValidationFailure> validate2Throwable = validatedEgg -> validatedEgg
+    public static final Validator<ImmutableEgg, ValidationFailure> validate2Throwable = validatedEgg -> validatedEgg
             .filterOrElse(Rules::throwableOperation2, ignore -> TOO_LATE_TO_HATCH_2);
 
-    public static final ThrowableValidator<ImmutableEgg, ValidationFailure> validateParent3 = validatedEgg -> validatedEgg
+    public static final Validator<ImmutableEgg, ValidationFailure> validateParent3 = validatedEgg -> validatedEgg
             .filterOrElse(Rules::throwableOperation3, ignore -> ABOUT_TO_HATCH_P_3);
 
-    public static final ThrowableValidator<Yolk, ValidationFailure> validateChild31 = validatedYolk -> validatedYolk
+    public static final Validator<Yolk, ValidationFailure> validateChild31 = validatedYolk -> validatedYolk
             .filterOrElse(Rules::throwableNestedOperation3, ignore -> YOLK_IS_IN_WRONG_COLOR_C_3);
 
     /** ----------------------------------- JUST DUPLICATE PLACE-HOLDERS ----------------------------------- **/
 
-    public static final ThrowableValidator<Yolk, ValidationFailure> validateChild32 = validatedYolk -> validatedYolk
+    public static final Validator<Yolk, ValidationFailure> validateChild32 = validatedYolk -> validatedYolk
             .filterOrElse(Rules::throwableNestedOperation3, ignore -> YOLK_IS_IN_WRONG_COLOR_C_3);
 
-    public static final ThrowableValidator<ImmutableEgg, ValidationFailure> validateParent41 = validatedEgg -> validatedEgg
+    public static final Validator<ImmutableEgg, ValidationFailure> validateParent41 = validatedEgg -> validatedEgg
             .filterOrElse(Rules::throwableOperation3, ignore -> ABOUT_TO_HATCH_P_3);
 
-    public static final ThrowableValidator<ImmutableEgg, ValidationFailure> validateParent42 = validatedEgg -> validatedEgg
+    public static final Validator<ImmutableEgg, ValidationFailure> validateParent42 = validatedEgg -> validatedEgg
             .filterOrElse(Rules::throwableOperation3, ignore -> ABOUT_TO_HATCH_P_3);
 
     // Child with multiple Parent Validations
-    public static final ThrowableValidator<Yolk, ValidationFailure> validateChild4 = validatedYolk -> validatedYolk
+    public static final Validator<Yolk, ValidationFailure> validateChild4 = validatedYolk -> validatedYolk
             .filterOrElse(Rules::throwableNestedOperation3, ignore -> YOLK_IS_IN_WRONG_COLOR_C_3);
 
 }

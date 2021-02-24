@@ -18,14 +18,14 @@ import static io.vavr.CheckedFunction1.liftTry;
  * This class contains validations as functions.
  *
  * Requirements
- * ∙ Partial Failures
+ * Partial Failures
  *
  * Problems solved:
- * ∙ Octopus Orchestrator - 😵 dead
- * ∙ Mutation to Transformation
- * ∙ Unit-Testability - 👍
- * ∙ Complexity - Minimum
- * ∙ Chaos to Order
+ * - Octopus Orchestrator - 😵 dead
+ * - Mutation to Transformation
+ * - Unit-Testability - 👍
+ * - Complexity - Minimum
+ * - Chaos to Order
  * </pre>
  */
 @UtilityClass

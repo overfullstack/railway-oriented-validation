@@ -1,5 +1,6 @@
 package app.declarative;
 
+import app.domain.validation.ValidationFailure;
 import io.vavr.collection.List;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -24,41 +25,41 @@ import static app.domain.validation.ValidationFailures.NOTHING_TO_VALIDATE;
  * This class contains validations as values.
  *
  * Requirements
- * ∙ Partial Failures
+ * - Partial Failures
  *
  * Problems solved:
- * ∙ Octopus Orchestrator - 😵 dead
- * ∙ Mutation to Transformation
- * ∙ Unit-Testability - 👍
+ * - Octopus Orchestrator - 😵 dead
+ * - Mutation to Transformation
+ * - Unit-Testability - 👍
  *
  * Results:
- * ∙ Complexity - Minimum
- * ∙ Chaos to Order
+ * - Complexity - Minimum
+ * - Chaos to Order
  * </pre>
  */
 @Slf4j
-public class RailwayValidation2Test {
+class RailwayValidation2Test {
     /**
      * Again mixing How-to-do from What-to-do.
      */
     @Test
     void plainOldImperativeOrchestration() {
-        val validationResults = runAllValidationsFailFastImperative(IMMUTABLE_EGG_CARTON, EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE);
+        val validationResults = runAllValidationsFailFastImperative(IMMUTABLE_EGG_CARTON, EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE, ValidationFailure::withThrowable);
         Assertions.assertEquals(EXPECTED_DECLARATIVE_VALIDATION_RESULTS.toJavaList(), validationResults);
     }
 
     /**
      * <pre>
-     * ∙ No need to comprehend every time, like nested for-loop
-     * ∙ No need to unit test
-     * ∙ Shared vocabulary
-     * ∙ Universal vocabulary
+     * - No need to comprehend every time, like nested for-loop
+     * - No need to unit test
+     * - Shared vocabulary
+     * - Universal vocabulary
      * </pre>
      */
     @Test
     void failFast1() {
         val validationResults = IMMUTABLE_EGG_CARTON.iterator()
-                .map(failFastStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE))
+                .map(failFastStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE, ValidationFailure::withThrowable))
                 .toList();
         validationResults.forEach(result -> log.info(result.toString()));
         Assertions.assertEquals(EXPECTED_DECLARATIVE_VALIDATION_RESULTS, validationResults);
@@ -67,7 +68,7 @@ public class RailwayValidation2Test {
     @Test
     void failFast2() {
         val validationResults = IMMUTABLE_EGG_CARTON.iterator()
-                .map(failFastStrategy2(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE))
+                .map(failFastStrategy2(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE, ValidationFailure::withThrowable))
                 .toList();
         validationResults.forEach(result -> log.info(result.toString()));
         Assertions.assertEquals(EXPECTED_DECLARATIVE_VALIDATION_RESULTS_2, validationResults);
@@ -76,35 +77,35 @@ public class RailwayValidation2Test {
     @Test
     void failFastNonBulk1() {
         val validationResult =
-                failFastStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE).apply(IMMUTABLE_EGG_CARTON.get());
+                failFastStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE, ValidationFailure::withThrowable).apply(IMMUTABLE_EGG_CARTON.get());
         log.info(validationResult.toString());
     }
 
     @Test
     void failFastNonBulk2() {
         val validationResult =
-                failFastStrategy2(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE).apply(IMMUTABLE_EGG_CARTON.get());
+                failFastStrategy2(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE, ValidationFailure::withThrowable).apply(IMMUTABLE_EGG_CARTON.get());
         log.info(validationResult.toString());
     }
 
     @Test
     void noValidations1() {
         val validationResult =
-                failFastStrategy(List.empty(), NOTHING_TO_VALIDATE).apply(IMMUTABLE_EGG_CARTON);
+                failFastStrategy(List.empty(), NOTHING_TO_VALIDATE, ValidationFailure::withThrowable).apply(IMMUTABLE_EGG_CARTON);
         log.info(validationResult.toString());
     }
 
     @Test
     void noValidations2() {
         val validationResult =
-                failFastStrategy2(List.empty(), NOTHING_TO_VALIDATE).apply(IMMUTABLE_EGG_CARTON);
+                failFastStrategy2(List.empty(), NOTHING_TO_VALIDATE, ValidationFailure::withThrowable).apply(IMMUTABLE_EGG_CARTON);
         log.info(validationResult.toString());
     }
 
     @Test
     void errorAccumulation() {
         val validationResultsAccumulated = IMMUTABLE_EGG_CARTON.iterator()
-                .map(accumulationStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE))
+                .map(accumulationStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE, ValidationFailure::withThrowable))
                 .toList();
         validationResultsAccumulated.forEach(result -> log.info(result.toString()));
     }
@@ -115,7 +116,7 @@ public class RailwayValidation2Test {
     @Test
     void parallel1() {
         val validationResults = getStreamBySize(IMMUTABLE_EGG_CARTON)
-                .map(failFastStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE))
+                .map(failFastStrategy(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE, ValidationFailure::withThrowable))
                 .collect(Collectors.toList());
         validationResults.forEach(result -> log.info(result.toString()));
         Assertions.assertEquals(EXPECTED_DECLARATIVE_VALIDATION_RESULTS.toJavaList(), validationResults);
@@ -124,7 +125,7 @@ public class RailwayValidation2Test {
     @Test
     void parallel2() {
         val validationResults = getStreamBySize(IMMUTABLE_EGG_CARTON)
-                .map(failFastStrategy2(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE))
+                .map(failFastStrategy2(EGG_VALIDATION_CHAIN, NOTHING_TO_VALIDATE, ValidationFailure::withThrowable))
                 .collect(Collectors.toList());
         validationResults.forEach(result -> log.info(result.toString()));
         Assertions.assertEquals(EXPECTED_DECLARATIVE_VALIDATION_RESULTS_2.toJavaList(), validationResults);

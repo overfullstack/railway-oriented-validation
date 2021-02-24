@@ -13,16 +13,16 @@ import static app.common.DataSet.EXPECTED_IMPERATIVE_VALIDATION_RESULTS;
  * Validations are broken down to separate functions.
  *
  * Problems:
- * ∙ Octopus Orchestration
- * ∙ Mutation
- * ∙ Unit-Testability
+ * - Octopus Orchestration
+ * - Mutation
+ * - Unit-Testability
  * . Non-sharable
- * ∙ Don't attempt to run in Parallel
+ * - Don't attempt to run in Parallel
  *
  * Major Problems
- * ∙ Management of Validation Order - how-to-do
- * ∙ Complexity
- * ∙ Chaos
+ * - Management of Validation Order - how-to-do
+ * - Complexity
+ * - Chaos
  * </pre>
  */
 public class ImperativeValidation2Test {
