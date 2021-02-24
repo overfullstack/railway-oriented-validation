@@ -1,11 +1,13 @@
 plugins {
-    id 'java'
-    id "io.freefair.lombok" version "5.1.0"
-    id "org.sonarqube" version "3.0"
+    id "se.patrikerdes.use-latest-versions" version "0.2.15"
+    id "com.github.ben-manes.versions" version "0.21.0"
+    id "java"
+    id "io.freefair.lombok" version "5.3.0"
+    id "org.sonarqube" version "3.1.1"
 }
 
-group 'com.gakshintala.fp'
-version '1.0-SNAPSHOT'
+group "com.gakshintala.fp"
+version "1.0-SNAPSHOT"
 
 repositories {
     jcenter()
@@ -17,11 +19,11 @@ java {
 }
 
 tasks.withType(JavaCompile).each {
-    it.options.compilerArgs.addAll(['--enable-preview'])
+    it.options.compilerArgs.addAll(["--enable-preview"])
 }
 
 test {
-    jvmArgs(['--enable-preview'])
+    jvmArgs(["--enable-preview"])
     useJUnitPlatform {
         excludeEngines("junit-vintage")
     }

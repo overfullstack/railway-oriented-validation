@@ -10,9 +10,7 @@ import lombok.experimental.UtilityClass;
 
 import java.util.stream.Stream;
 
-import static algebra.ConfigDsl.liftAllThrowable;
 import static algebra.ConfigDsl.liftAllToParentValidationType;
-import static algebra.ConfigDsl.liftThrowable;
 import static algebra.ConfigDsl.liftToParentValidationType;
 import static app.declarative.RailwayValidation2.validate1Simple;
 import static app.declarative.RailwayValidation2.validate2Throwable;
@@ -36,17 +34,17 @@ public class Config {
      * If these parent-child dependencies are complex, we can make use of some graph algorithm to create a linear dependency graph of all validations.
      */
     private static final List<Validator<ImmutableEgg, ValidationFailure>> PARENT_VALIDATION_CHAIN =
-            List.of(validate1Simple).appendAll(liftAllThrowable(List.of(validate2Throwable, validateParent3), ValidationFailure::withThrowable));
+            List.of(validate1Simple, validate2Throwable, validateParent3);
 
     private static final List<Validator<Yolk, ValidationFailure>> CHILD_VALIDATION_CHAIN
-            = liftAllThrowable(List.of(validateChild31, validateChild32), ValidationFailure::withThrowable);
+            = List.of(validateChild31, validateChild32);
 
     public static final List<Validator<ImmutableEgg, ValidationFailure>> EGG_VALIDATION_CHAIN =
             PARENT_VALIDATION_CHAIN
                     .appendAll(liftAllToParentValidationType(CHILD_VALIDATION_CHAIN, ImmutableEgg::yolk, NO_PARENT_TO_VALIDATE_CHILD, NO_CHILD_TO_VALIDATE))
-                    .appendAll(liftAllThrowable(List.of(validateParent41, validateParent42), ValidationFailure::withThrowable))
-                    .append(liftToParentValidationType(liftThrowable(validateChild4, ValidationFailure::withThrowable),
-                            ImmutableEgg::yolk, NO_PARENT_TO_VALIDATE_CHILD, NO_CHILD_TO_VALIDATE));
+                    .appendAll(List.of(validateParent41, validateParent42,
+                            liftToParentValidationType(validateChild4,
+                                    ImmutableEgg::yolk, NO_PARENT_TO_VALIDATE_CHILD, NO_CHILD_TO_VALIDATE)));
 
     /**
      * The above chain can also be achieved this way using `andThen.
