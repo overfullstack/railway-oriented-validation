@@ -1,5 +1,5 @@
 package app.domain;
 
 public enum Color {
-    YELLOW, GOLD, ORANGE
+  YELLOW, GOLD, ORANGE
 }

@@ -1,15 +1,5 @@
 package app.declarative;/* gakshintala created on 8/20/19 */
 
-import algebra.types.Validator;
-import app.common.Constants;
-import app.domain.ImmutableEgg;
-import app.domain.Yolk;
-import app.domain.validation.ValidationFailure;
-import io.vavr.collection.List;
-import lombok.experimental.UtilityClass;
-
-import java.util.stream.Stream;
-
 import static algebra.ConfigDsl.liftAllToParentValidationType;
 import static algebra.ConfigDsl.liftToParentValidationType;
 import static app.declarative.RailwayValidation2.validate1Simple;
@@ -23,43 +13,53 @@ import static app.declarative.RailwayValidation2.validateParent42;
 import static app.domain.validation.ValidationFailures.NO_CHILD_TO_VALIDATE;
 import static app.domain.validation.ValidationFailures.NO_PARENT_TO_VALIDATE_CHILD;
 
+import algebra.types.Validator;
+import app.common.Constants;
+import app.domain.ImmutableEgg;
+import app.domain.Yolk;
+import app.domain.validation.ValidationFailure;
+import io.vavr.collection.List;
+import java.util.stream.Stream;
+import lombok.experimental.UtilityClass;
+
 /**
- * Config to prepare various instances and constants.
- * gakshintala created on 3/23/20.
+ * Config to prepare various instances and constants. gakshintala created on 3/23/20.
  */
 @UtilityClass
 public class Config {
-    /**
-     * The Validation Chains.<br>
-     * If these parent-child dependencies are complex, we can make use of some graph algorithm to create a linear dependency graph of all validations.
-     */
-    private static final List<Validator<ImmutableEgg, ValidationFailure>> PARENT_VALIDATION_CHAIN =
-            List.of(validate1Simple, validate2Throwable, validateParent3);
+  /**
+   * The Validation Chains.<br> If these parent-child dependencies are complex, we can make use of some graph algorithm
+   * to create a linear dependency graph of all validations.
+   */
+  private static final List<Validator<ImmutableEgg, ValidationFailure>> PARENT_VALIDATION_CHAIN =
+      List.of(validate1Simple, validate2Throwable, validateParent3);
 
-    private static final List<Validator<Yolk, ValidationFailure>> CHILD_VALIDATION_CHAIN
-            = List.of(validateChild31, validateChild32);
+  private static final List<Validator<Yolk, ValidationFailure>> CHILD_VALIDATION_CHAIN
+      = List.of(validateChild31, validateChild32);
 
-    public static final List<Validator<ImmutableEgg, ValidationFailure>> EGG_VALIDATION_CHAIN =
-            PARENT_VALIDATION_CHAIN
-                    .appendAll(liftAllToParentValidationType(CHILD_VALIDATION_CHAIN, ImmutableEgg::yolk, NO_PARENT_TO_VALIDATE_CHILD, NO_CHILD_TO_VALIDATE))
-                    .appendAll(List.of(validateParent41, validateParent42,
-                            liftToParentValidationType(validateChild4,
-                                    ImmutableEgg::yolk, NO_PARENT_TO_VALIDATE_CHILD, NO_CHILD_TO_VALIDATE)));
+  public static final List<Validator<ImmutableEgg, ValidationFailure>> EGG_VALIDATION_CHAIN =
+      PARENT_VALIDATION_CHAIN
+          .appendAll(
+              liftAllToParentValidationType(CHILD_VALIDATION_CHAIN, ImmutableEgg::yolk, NO_PARENT_TO_VALIDATE_CHILD,
+                  NO_CHILD_TO_VALIDATE))
+          .appendAll(List.of(validateParent41, validateParent42,
+              liftToParentValidationType(validateChild4,
+                  ImmutableEgg::yolk, NO_PARENT_TO_VALIDATE_CHILD, NO_CHILD_TO_VALIDATE)));
 
-    /**
-     * The above chain can also be achieved this way using `andThen.
-     */
+  /**
+   * The above chain can also be achieved this way using `andThen.
+   */
     /*private static final Function1<Either<ValidationFailure, ImmutableEgg>, Either<ValidationFailure, ?>>
             PARENT_VALIDATION_COMPOSITION = validate1Simple
             .andThen(liftThrowable(validate2Throwable, ValidationFailure::withThrowable))
             .andThen(validateParent3);
     private static final Function1<Either<ValidationFailure, Yolk>, Either<ValidationFailure, ?>>
             CHILD_VALIDATION_COMPOSITION = liftThrowable(validateChild31, ValidationFailure::withThrowable).andThen(validateChild32);*/
-    public static <E> Stream<E> getStreamBySize(List<E> list) {
-        return list.size() >= Constants.MAX_SIZE_FOR_PARALLEL
-                ? list.toJavaParallelStream()
-                : list.toJavaStream();
-    }
+  public static <E> Stream<E> getStreamBySize(List<E> list) {
+    return list.size() >= Constants.MAX_SIZE_FOR_PARALLEL
+        ? list.toJavaParallelStream()
+        : list.toJavaStream();
+  }
 
 }
 

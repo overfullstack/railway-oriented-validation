@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Egg {
-    int daysToHatch;
-    Yolk yolk;
+  int daysToHatch;
+  Yolk yolk;
 }
 

@@ -1,27 +1,19 @@
 package app.domain.validation;
 
 
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 public interface ValidationFailure {
 
-    static ValidationFailure withErrorMessage(String exceptionMessage) {
-        return new ValidationWithException(exceptionMessage);
-    }
+  static ValidationFailure withErrorMessage(String exceptionMessage) {
+    return new FailureForThrowable(exceptionMessage);
+  }
 
-    static ValidationFailure withThrowable(Throwable throwable) {
-        return new ValidationWithException(throwable.getMessage());
-    }
+  static ValidationFailure withThrowable(Throwable throwable) {
+    return new FailureForThrowable(throwable.getMessage());
+  }
 
-    @EqualsAndHashCode
-    @ToString
-    static class ValidationWithException implements ValidationFailure {
-        private final String exceptionMessage;
-
-        ValidationWithException(String exceptionMessage) {
-            this.exceptionMessage = exceptionMessage;
-        }
-    }
+  @ToString
+  record FailureForThrowable(String exceptionMessage) implements ValidationFailure {}
 }
 
